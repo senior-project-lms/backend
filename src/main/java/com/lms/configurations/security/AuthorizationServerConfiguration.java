@@ -1,8 +1,9 @@
-package com.lms.configurations;
+package com.lms.configurations.security;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,14 +26,25 @@ import javax.sql.DataSource;
 @Configuration
 @EnableAuthorizationServer
 @EnableResourceServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
+public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter{
 
-	
-	static final String CLIENT_ID = "learningmanagementsystem";
-    static final String CLIENT_SECRET = "df05e4ef-08ae-4950-aaec-29dabda5ad62";
-    static final String SCOPE_READ = "read";
-    static final String SCOPE_WRITE = "write";
-    static final String RESOURCES_IDS = "kjkl932nklnkvu9ij33nlf0ijal";
+    @Value("${security.jwt.client-id}")
+    private String clientId;
+
+    @Value("${security.jwt.client-secret}")
+    private String clientSecret;
+
+    @Value("#{'${security.jwt.grant-type}'.split(', ')}")
+    private String[] grantType;
+
+    @Value("${security.jwt.scope-read}")
+    private String scopeRead;
+
+    @Value("${security.jwt.scope-write}")
+    private String scopeWrite = "write";
+
+    @Value("${security.jwt.resource-ids}")
+    private String resourceIds;
 	
     @Autowired
     private DataSource dataSource;
@@ -63,11 +75,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients
 		.inMemory()
-		.withClient(CLIENT_ID)
-		.secret(CLIENT_SECRET)
-		.authorizedGrantTypes("password", "refresh_token", "access_token")
-		.scopes(SCOPE_READ, SCOPE_WRITE)
-		.resourceIds(RESOURCES_IDS )
+		.withClient(clientId)
+		.secret(clientSecret)
+		.authorizedGrantTypes(grantType)
+		.scopes(scopeRead, scopeWrite)
+		.resourceIds(resourceIds )
 		.accessTokenValiditySeconds(600)
 		.refreshTokenValiditySeconds(60 * 60 * 24);
 		

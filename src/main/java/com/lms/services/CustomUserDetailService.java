@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class CustomUserDetailService implements UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -26,10 +26,10 @@ public class UserService implements UserDetailsService {
 	@Autowired 
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	public void save(User user) {
+	public User save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setPublicId(UUID.randomUUID().toString());
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	@Override

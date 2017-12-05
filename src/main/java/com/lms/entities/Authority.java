@@ -60,6 +60,7 @@ public class Authority {
 	public void setAcessLevel(int acessLevel) {
 		this.acessLevel = acessLevel;
 	}
-    
+
+
     
 }

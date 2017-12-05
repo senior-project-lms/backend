@@ -1,10 +1,11 @@
-package com.lms.configurations;
+package com.lms.configurations.security;
 
 
 import javax.sql.DataSource;
 
 import com.lms.properties.AccessLevel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -27,16 +28,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Order(-1)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	static final String SIGNING_KEY = "kKSMJ92Mknk38njs9HJ8KNALiuc938FH";
-	static final int ENCODING_STRENGTH = 256;
-	static final String SECURITY_REALM = "LMS";
+
+	@Value("${security.signing-key}")
+	private String signinKey;
+
+
+	@Value("${security.encoding-strength}")
+	private Integer encodingStrength;
+
+	@Value("${security.security-realm}")
+	private String securityRealm;
 
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+
 
 	@Autowired
 	private DataSource dataSource;
@@ -47,7 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		 auth
-		 .userDetailsService(userDetailsService)
+		 .userDetailsService(userDetailsService())
          .passwordEncoder(passwordEncoder)
          .and()
          .authenticationProvider(authenticationProvider())
@@ -75,7 +82,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .httpBasic()
-        .realmName(SECURITY_REALM);
+        .realmName(this.securityRealm);
 
 
 
@@ -91,7 +98,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }

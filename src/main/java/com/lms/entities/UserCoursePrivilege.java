@@ -31,6 +31,8 @@ public class UserCoursePrivilege {
     )
     private List<Privilege> privileges;
 
+    private boolean visible;
+
 
     public int getId() {
         return id;

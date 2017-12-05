@@ -12,25 +12,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
-public class Course {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @Column(unique = true)
-    private String publicId;
+public class Course extends BaseEntity{
 
     @Column(unique = true)
     private String code;
 
     private String name;
-
-    @CreationTimestamp
-    private Date date;
-
-    @OneToOne
-    private User createdBy;
 
     @ManyToMany
     private List<User> registeredUsers;
@@ -41,22 +28,17 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<GradeType> gradeTypes;
 
+    @OneToMany(mappedBy = "course")
+    private List<Assignment> assignments;
 
-    public int getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "course")
+    private List<Announcement> announcements;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "course")
+    private List<QaQuestion> qaQuestions;
 
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
-    }
+    @OneToMany(mappedBy = "course")
+    private List<QuizTest> quizTests;
 
     public String getCode() {
         return code;
@@ -72,22 +54,6 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
     }
 
     public List<User> getRegisteredUsers() {
@@ -112,5 +78,21 @@ public class Course {
 
     public void setGradeTypes(List<GradeType> gradeTypes) {
         this.gradeTypes = gradeTypes;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
     }
 }

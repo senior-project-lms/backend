@@ -9,11 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "privalages")
-public class Privilege {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Privilege extends BaseEntity{
 
     private String publicId;
 
@@ -24,21 +20,19 @@ public class Privilege {
     @ManyToMany(mappedBy = "privileges")
     private List<UserCoursePrivilege> userCoursePrivileges;
 
+    @ManyToMany
+    @JoinTable(
+            name = "default_user_type_privileges",
+            joinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"),
+            inverseJoinColumns= @JoinColumn(name = "user_type_default_privilege_id", referencedColumnName = "id"))
+    private List<UserTypeDefaultPrivilege> userTypeDefaultPrivileges;
 
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @Override
     public String getPublicId() {
         return publicId;
     }
 
+    @Override
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }

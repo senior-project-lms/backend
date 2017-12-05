@@ -11,12 +11,8 @@ import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="authorities")
-public class Authority {
+public class Authority extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(name="id")
-    private Long id;
     
     private String name;
     
@@ -36,19 +32,6 @@ public class Authority {
     public void setName(String name) {
         this.name = name;
     }
-
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 
 
 	public int getAcessLevel() {

@@ -16,6 +16,21 @@ public class QtQuestionUserAnswer extends BaseEntity {
 
     @OneToOne
     private  QtAvailableAnswers answer;
-    
 
+
+    public QtQuestion getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(QtQuestion question) {
+        this.question = question;
+    }
+
+    public QtAvailableAnswers getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(QtAvailableAnswers answer) {
+        this.answer = answer;
+    }
 }

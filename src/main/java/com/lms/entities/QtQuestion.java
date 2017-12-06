@@ -21,4 +21,36 @@ public class QtQuestion extends BaseEntity{
 
     private float weight;
 
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public List<QtAvailableAnswers> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<QtAvailableAnswers> answers) {
+        this.answers = answers;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
 }

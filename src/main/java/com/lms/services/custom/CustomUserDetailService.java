@@ -1,4 +1,4 @@
-package com.lms.services;
+package com.lms.services.custom;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,14 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired 
-	private BCryptPasswordEncoder passwordEncoder;
-	
-	public User save(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setPublicId(UUID.randomUUID().toString());
-		return userRepository.save(user);
-	}
+
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -53,17 +46,5 @@ public class CustomUserDetailService implements UserDetailsService {
 		return this.userRepository.findByUsername(username);
 	}
 	
-	public List<User> findByUsernameContaining(String username){
-		return this.userRepository.findByUsernameContaining(username);
-	}
-	
-	
-	public List<User> findByPublicIdIn(List<String> publicIds){
-		return this.userRepository.findByPublicIdIn(publicIds);
-	}
-	
-	
-	public User findByPublicId(String publicId) {
-		return this.userRepository.findByPublicId(publicId);
-	}
+
 }

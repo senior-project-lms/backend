@@ -7,7 +7,8 @@ import com.lms.properties.AccessLevel;
 import com.lms.properties.Privileges;
 import com.lms.repositories.*;
 
-import com.lms.services.CustomUserDetailService;
+import com.lms.services.UserService;
+import com.lms.services.custom.CustomUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -38,7 +39,7 @@ public class App {
 	// if there is no user initially creates a user
 	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepositoy courseRepositoy, final PrivilegeRepository privilegeRepository
-	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService) throws Exception {
+	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, UserService userService) throws Exception {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
@@ -54,7 +55,7 @@ public class App {
 			user.setAuthority(role);
 			user.setBlocked(false);
 			user.setEnabled(true);
-			user = customUserDetailService.save(user);
+			user = userService.save(user);
 			//
 
 			Privilege privilege1 = new Privilege();

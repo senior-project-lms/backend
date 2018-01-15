@@ -40,6 +40,9 @@ public class Course extends BaseEntity{
     @OneToMany(mappedBy = "course")
     private List<QuizTest> quizTests;
 
+    @ManyToOne
+    private User owner;
+
     public String getCode() {
         return code;
     }

@@ -31,7 +31,11 @@ public class User extends BaseEntity{
 
 
     @ManyToMany(mappedBy = "registeredUsers")
-	private List<Course> courses;
+	private List<Course> registeredCoursesAsStudent;
+
+    @OneToMany(mappedBy = "owner")
+	private List<Course> ownedCourses;
+
 
 	public String getUsername() {
 		return username;
@@ -97,11 +101,19 @@ public class User extends BaseEntity{
 		this.authority = authority;
 	}
 
-	public List<Course> getCourses() {
-		return courses;
+	public List<Course> getRegisteredCoursesAsStudent() {
+		return registeredCoursesAsStudent;
 	}
 
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
+	public void setRegisteredCoursesAsStudent(List<Course> registeredCoursesAsStudent) {
+		this.registeredCoursesAsStudent = registeredCoursesAsStudent;
+	}
+
+	public List<Course> getOwnedCourses() {
+		return ownedCourses;
+	}
+
+	public void setOwnedCourses(List<Course> ownedCourses) {
+		this.ownedCourses = ownedCourses;
 	}
 }

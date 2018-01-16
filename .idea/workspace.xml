@@ -2,11 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f065aafe-6dd8-445a-a5c9-a3b9da1b30ac" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/CustomUserDetailService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lms/App.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__mysql_mysql_connector_java_6_0_6.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_main.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_test.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/App.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -35,109 +42,128 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CustomUserDetails.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/CustomUserDetails.java">
+      <file leaf-file-name="Course.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
-              <folding />
+            <state relative-caret-position="818">
+              <caret line="105" column="46" lean-forward="false" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
+              <folding>
+                <element signature="e#1054#1055#0" expanded="true" />
+                <element signature="e#1081#1082#0" expanded="true" />
+                <element signature="e#1121#1122#0" expanded="true" />
+                <element signature="e#1153#1154#0" expanded="true" />
+                <element signature="e#2417#2418#0" expanded="true" />
+                <element signature="e#2481#2482#0" expanded="true" />
+                <element signature="e#2527#2528#0" expanded="true" />
+                <element signature="e#2571#2572#0" expanded="true" />
+                <element signature="e#2603#2604#0" expanded="true" />
+                <element signature="e#2661#2662#0" expanded="true" />
+                <element signature="e#2703#2704#0" expanded="true" />
+                <element signature="e#2733#2734#0" expanded="true" />
+                <element signature="e#2761#2762#0" expanded="true" />
+                <element signature="e#2801#2802#0" expanded="true" />
+                <element signature="e#2835#2836#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MethodSecurity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Hello.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/Hello.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="21" column="61" lean-forward="false" selection-start-line="21" selection-start-column="61" selection-end-line="21" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebSecurityConfiguration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/WebSecurityConfiguration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-119">
-              <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="App.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="57" column="30" lean-forward="false" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
+            <state relative-caret-position="486">
+              <caret line="79" column="32" lean-forward="false" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
               <folding>
-                <element signature="e#911#912#0" expanded="true" />
-                <element signature="e#956#957#0" expanded="true" />
+                <marker date="1516098075720" expanded="true" signature="2950:2960" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.properties" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <file leaf-file-name="QtQuestion.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestion.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/repositories/UserRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="35" column="33" lean-forward="false" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
+            <state relative-caret-position="378">
+              <caret line="24" column="30" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
               <folding>
-                <element signature="e#641#642#0" expanded="true" />
+                <element signature="e#484#485#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomUserDetailService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java">
+      <file leaf-file-name="QtQuestionUserAnswer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestionUserAnswer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+            <state relative-caret-position="324">
+              <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+              <folding>
+                <element signature="e#451#452#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QuizTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QuizTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java">
+      <file leaf-file-name="Resource.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Resource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+            <state relative-caret-position="323">
+              <caret line="23" column="43" lean-forward="false" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Score.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Score.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#465#466#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserCoursePrivilege.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="14" column="29" lean-forward="false" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+              <folding>
+                <element signature="e#299#300#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserTypeDefaultPrivilege.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserTypeDefaultPrivilege.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -164,7 +190,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1" />
+        <entry key="$PROJECT_DIR$" value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -395,8 +421,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="3023752354000" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="2332378164" />
+        <entry key="$PROJECT_DIR$" value="3031732347000" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2280518291" />
+        <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="3442123891" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -432,76 +459,142 @@
               <option name="name" value="backend" />
               <option name="projectBuildClasspath">
                 <list>
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-model-groovy-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-docs-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-base-services-groovy-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-ui-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-model-core-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-launcher-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-core-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-script-kotlin-0.8.0.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-wrapper-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-messaging-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-installation-beacon-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-open-api-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-tooling-api-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-process-services-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-version-info-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/groovy-all-2.4.10.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/ant-launcher-1.9.6.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-logging-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-cli-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-base-services-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-runtime-api-info-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-resources-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-jvm-services-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/ant-1.9.6.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/gradle-native-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-test-kit-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-language-jvm-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-testing-jvm-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-resources-s3-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-ivy-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-tooling-api-builders-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-platform-jvm-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-signing-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-maven-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-platform-native-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-javascript-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-osgi-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-reporting-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-ide-play-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-composite-builds-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-publish-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-build-cache-http-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-workers-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-language-groovy-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-plugin-development-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-plugin-use-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-antlr-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-jetty-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-plugins-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-testing-native-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-code-quality-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-dependency-management-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-testing-base-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-jacoco-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-resources-sftp-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-scala-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-ide-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-announce-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-build-comparison-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-build-init-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-language-java-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-diagnostics-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-language-scala-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/ivy-2.2.0.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-platform-base-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-resources-http-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-ear-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-ide-native-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-platform-play-3.5.1.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-bin/5aglzaqc99i3lll5iwkbm96su/gradle-3.5.1/lib/plugins/gradle-language-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/plugin-development" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/signing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/wrapper" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/dependency-management" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/jetty" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/testing-base" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/base-services-groovy" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ide" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/process-services" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/jvm-services" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/messaging" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/antlr" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/model-core" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/resources-s3" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/code-quality" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/jacoco" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/osgi" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/language-jvm" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/internal-testing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ide-play" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/language-java" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/launcher" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/platform-native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/test-kit" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/plugins" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/internal-performance-testing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/composite-builds" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/language-native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ivy" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/testing-jvm" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ide-native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ui" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/installation-beacon" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/reporting" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/diagnostics" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/resources-http" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/build-init" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/resources-sftp" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/language-scala" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/language-groovy" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/logging" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/core" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/build-cache-http" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/workers" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/platform-jvm" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/build-comparison" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/model-groovy" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/testing-native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/plugin-use" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/publish" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/base-services" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/resources" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/internal-integ-testing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/maven" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/platform-base" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/open-api" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/ear" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/tooling-api" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/tooling-api-builders" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/cli" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/scala" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/platform-play" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/internal-android-performance-testing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/announce" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/src/javascript" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-launcher-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-messaging-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-base-services-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-cli-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-tooling-api-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/ant-launcher-1.9.6.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-resources-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-runtime-api-info-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-script-kotlin-0.8.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-version-info-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-docs-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/groovy-all-2.4.10.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-installation-beacon-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-open-api-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-base-services-groovy-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-model-groovy-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-wrapper-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/ant-1.9.6.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-core-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-ui-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-logging-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-process-services-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-model-core-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/gradle-jvm-services-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-test-kit-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-testing-base-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-osgi-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-build-comparison-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-jetty-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-platform-base-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-signing-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-jacoco-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-ide-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-maven-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-workers-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-platform-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-language-groovy-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-antlr-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-composite-builds-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-dependency-management-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-javascript-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-platform-jvm-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-language-scala-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-tooling-api-builders-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-plugin-use-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-resources-sftp-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-scala-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-diagnostics-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-ide-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-language-jvm-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-language-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-testing-jvm-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-ear-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-testing-native-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-code-quality-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-announce-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-language-java-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-resources-s3-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-ivy-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-resources-http-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/ivy-2.2.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-reporting-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-ide-play-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-build-cache-http-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-build-init-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-publish-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-plugins-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-platform-play-3.5.1.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.5.1-all/42vjebfdws9pjts3l4bouoq0p/gradle-3.5.1/lib/plugins/gradle-plugin-development-3.5.1.jar" />
                   <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
                   <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
                 </list>
@@ -514,16 +607,17 @@
     <option name="externalProjectsViewState">
       <projects_view />
     </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/controllers/Hello.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Authority.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Announcement.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Grade.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/GradeType.java" />
@@ -533,14 +627,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/UserType.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/UserTypeDefaultSetting.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Assignment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Question.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QaAnswer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QaQuestion.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/UserTypeDefaultPrivilege.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QuizTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestionUserAnswer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestion.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/QtAvailableAnswers.java" />
@@ -549,6 +640,15 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lms/services/CustomUserDetailService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/User.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/resources/database.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
       </list>
     </option>
@@ -559,7 +659,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="986" />
     <option name="y" value="24" />
     <option name="width" value="934" />
@@ -580,9 +680,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -623,34 +720,6 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="configurations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="configurations" type="462c0819:PsiDirectoryNode" />
-              <item name="security" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
               <item name="entities" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -660,26 +729,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="repositories" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="custom" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -688,10 +738,34 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="lms" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -722,15 +796,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.App">
-    <configuration name="App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lms.App" />
-      <option name="DEBUG_MODE" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <module name="backend_main" />
-      <envs />
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -772,18 +838,20 @@
       <envs />
       <patterns />
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+    </configuration>
+    <configuration name="App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lms.App" />
+      <option name="DEBUG_MODE" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <module name="backend_main" />
+      <envs />
     </configuration>
     <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -819,6 +887,12 @@
       <properties />
       <listeners />
     </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -842,18 +916,30 @@
       <workItem from="1512495356191" duration="9774000" />
       <workItem from="1515500608595" duration="4248000" />
       <workItem from="1515681588852" duration="2677000" />
+      <workItem from="1515870497832" duration="7958000" />
+      <workItem from="1516007148327" duration="2858000" />
+      <workItem from="1516092554741" duration="1109000" />
+      <workItem from="1516097097635" duration="1009000" />
     </task>
+    <task id="LOCAL-00001" summary="course owner is added to course entity">
+      <created>1516013550215</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1516013550216</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20330000" />
+    <option name="totallyTimeSpent" value="33391000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="-4" width="1634" height="1054" extended-state="7" />
+    <frame x="986" y="24" width="1867" height="1092" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -866,14 +952,17 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34012875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.7218814" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2298995" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22949062" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -883,8 +972,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -892,6 +981,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="course owner is added to course entity" />
+    <option name="LAST_COMMIT_MESSAGE" value="course owner is added to course entity" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -902,30 +995,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Grade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="94" column="46" lean-forward="false" selection-start-line="94" selection-start-column="46" selection-end-line="94" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QaQuestion.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -951,10 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#561#562#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -962,9 +1027,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#641#642#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -972,7 +1034,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -980,7 +1041,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -988,9 +1048,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#641#642#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -998,7 +1055,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1006,7 +1062,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1024,21 +1079,12 @@
         <state relative-caret-position="756">
           <caret line="42" column="48" lean-forward="false" selection-start-line="42" selection-start-column="48" selection-end-line="42" selection-end-column="48" />
           <folding>
-            <element signature="e#911#912#0" expanded="true" />
-            <element signature="e#956#957#0" expanded="true" />
+            <marker date="1516098075720" expanded="true" signature="2950:2960" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/AuthorizationServerConfig.java" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/AuthorizationServerConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1061,34 +1107,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserTypeDefaultPrivilege.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="29" lean-forward="false" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Score.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/ResourcePackage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1096,98 +1114,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Resource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="23" column="43" lean-forward="false" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QuizTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestionUserAnswer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="30" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtAvailableAnswers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QaQuestion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QaAnswer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="21" column="32" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="24" column="46" lean-forward="false" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/GradeType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="27" column="29" lean-forward="false" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Grade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="94" column="46" lean-forward="false" selection-start-line="94" selection-start-column="46" selection-end-line="94" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Authority.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="13" column="42" lean-forward="false" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1195,9 +1125,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1205,10 +1132,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#561#562#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1216,7 +1139,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1224,7 +1146,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1232,7 +1153,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="21" column="61" lean-forward="false" selection-start-line="21" selection-start-column="61" selection-end-line="21" selection-end-column="61" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1244,21 +1164,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="33" lean-forward="false" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
-          <folding>
-            <element signature="e#641#642#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/repositories/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1266,36 +1175,235 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="45" column="11" lean-forward="false" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Grade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="22" column="31" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="31" />
+          <folding>
+            <element signature="e#494#495#0" expanded="false" />
+            <element signature="e#521#522#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="36" column="36" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mailService.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/database.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
+        <state relative-caret-position="126">
           <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="19" column="12" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Privilege.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="57" column="30" lean-forward="false" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
+        <state relative-caret-position="450">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/GradeType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="27" column="29" lean-forward="false" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
           <folding>
-            <element signature="e#911#912#0" expanded="true" />
-            <element signature="e#956#957#0" expanded="true" />
+            <element signature="e#534#535#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QaAnswer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="342">
+          <caret line="21" column="32" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+          <folding>
+            <element signature="e#425#426#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QaQuestion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
+          <folding>
+            <element signature="e#581#582#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtAvailableAnswers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+          <folding>
+            <element signature="e#507#508#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="24" column="30" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+          <folding>
+            <element signature="e#484#485#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QtQuestionUserAnswer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+          <folding>
+            <element signature="e#451#452#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/QuizTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Resource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="23" column="43" lean-forward="false" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Score.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+          <folding>
+            <element signature="e#465#466#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserCoursePrivilege.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="14" column="29" lean-forward="false" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+          <folding>
+            <element signature="e#299#300#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/UserTypeDefaultPrivilege.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="818">
+          <caret line="105" column="46" lean-forward="false" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
+          <folding>
+            <element signature="e#1054#1055#0" expanded="true" />
+            <element signature="e#1081#1082#0" expanded="true" />
+            <element signature="e#1121#1122#0" expanded="true" />
+            <element signature="e#1153#1154#0" expanded="true" />
+            <element signature="e#2417#2418#0" expanded="true" />
+            <element signature="e#2481#2482#0" expanded="true" />
+            <element signature="e#2527#2528#0" expanded="true" />
+            <element signature="e#2571#2572#0" expanded="true" />
+            <element signature="e#2603#2604#0" expanded="true" />
+            <element signature="e#2661#2662#0" expanded="true" />
+            <element signature="e#2703#2704#0" expanded="true" />
+            <element signature="e#2733#2734#0" expanded="true" />
+            <element signature="e#2761#2762#0" expanded="true" />
+            <element signature="e#2801#2802#0" expanded="true" />
+            <element signature="e#2835#2836#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="79" column="32" lean-forward="false" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
+          <folding>
+            <marker date="1516098075720" expanded="true" signature="2950:2960" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

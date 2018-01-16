@@ -11,8 +11,6 @@ import java.util.List;
 @Table(name = "privalages")
 public class Privilege extends BaseEntity{
 
-    private String publicId;
-
     private String code;
 
     private String name;
@@ -26,16 +24,6 @@ public class Privilege extends BaseEntity{
             joinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"),
             inverseJoinColumns= @JoinColumn(name = "user_type_default_privilege_id", referencedColumnName = "id"))
     private List<UserTypeDefaultPrivilege> userTypeDefaultPrivileges;
-
-    @Override
-    public String getPublicId() {
-        return publicId;
-    }
-
-    @Override
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
-    }
 
     public String getCode() {
         return code;

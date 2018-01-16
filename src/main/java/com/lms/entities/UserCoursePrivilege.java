@@ -8,11 +8,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "user_course_root_privalage")
-public class UserCoursePrivilege {
+public class UserCoursePrivilege extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
 
     @OneToOne
     private User user;
@@ -34,13 +31,6 @@ public class UserCoursePrivilege {
     private boolean visible;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;

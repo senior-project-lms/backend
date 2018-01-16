@@ -3,6 +3,7 @@ package com.lms.entities;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +15,11 @@ import java.util.List;
 @Table(name = "courses")
 public class Course extends BaseEntity{
 
+    @NotNull
     @Column(unique = true)
     private String code;
 
+    @NotNull
     private String name;
 
     @ManyToMany
@@ -40,6 +43,7 @@ public class Course extends BaseEntity{
     @OneToMany(mappedBy = "course")
     private List<QuizTest> quizTests;
 
+    @NotNull
     @ManyToOne
     private User owner;
 
@@ -97,5 +101,29 @@ public class Course extends BaseEntity{
 
     public void setAnnouncements(List<Announcement> announcements) {
         this.announcements = announcements;
+    }
+
+    public List<QaQuestion> getQaQuestions() {
+        return qaQuestions;
+    }
+
+    public void setQaQuestions(List<QaQuestion> qaQuestions) {
+        this.qaQuestions = qaQuestions;
+    }
+
+    public List<QuizTest> getQuizTests() {
+        return quizTests;
+    }
+
+    public void setQuizTests(List<QuizTest> quizTests) {
+        this.quizTests = quizTests;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

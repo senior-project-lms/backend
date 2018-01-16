@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -16,6 +17,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     @Column(unique = true)
     private String publicId;
 

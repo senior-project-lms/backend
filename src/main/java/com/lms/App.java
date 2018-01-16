@@ -43,6 +43,7 @@ public class App {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
+			role.setPublicId(UUID.randomUUID().toString());
 			role.setAcessLevel(AccessLevel.SUPER_ADMIN.CODE);
 			role.setName(AccessLevel.SUPER_ADMIN.toString());
 			authorityRepository.save(role);
@@ -76,10 +77,12 @@ public class App {
 			course.setName("Test 1");
 			course.setCode("tst 101");
 			course.setRegisteredUsers(Arrays.asList(user));
+			course.setOwner(user);
 			course = courseRepositoy.save(course);
 
 
 			UserCoursePrivilege userCoursePrivilege = new UserCoursePrivilege();
+			userCoursePrivilege.setPublicId(UUID.randomUUID().toString());
 			userCoursePrivilege.setCourse(course);
 			userCoursePrivilege.setUser(user);
 

@@ -25,4 +25,7 @@ public class UserService {
         user.setPublicId(UUID.randomUUID().toString());
         return userRepository.save(user);
     }
+
+
+
 }

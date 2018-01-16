@@ -22,7 +22,8 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(User user) {
         this.user = user;
-        this.authorities = translate(Arrays.asList( user.getAuthority()));
+		this.authorities = translate(Arrays.asList( user.getAuthority()));
+		
     }
 
     private Collection<? extends GrantedAuthority> translate(List<Authority> roles) {

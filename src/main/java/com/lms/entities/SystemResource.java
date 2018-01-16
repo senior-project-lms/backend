@@ -1,4 +1,19 @@
 package com.lms.entities;
 
-public class SystemResource {
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class SystemResource extends BaseEntity{
+
+
+    private String name;
+
+    private String path;
+
+    @ManyToOne
+    private SystemAnnouncement systemAnnouncement;
+
+
 }

@@ -103,24 +103,12 @@ public class Course extends BaseEntity{
         this.announcements = announcements;
     }
 
-    public List<QaQuestion> getQaQuestions() {
-        return qaQuestions;
-    }
-
     public void setQaQuestions(List<QaQuestion> qaQuestions) {
         this.qaQuestions = qaQuestions;
     }
 
-    public List<QuizTest> getQuizTests() {
-        return quizTests;
-    }
-
     public void setQuizTests(List<QuizTest> quizTests) {
         this.quizTests = quizTests;
-    }
-
-    public User getOwner() {
-        return owner;
     }
 
     public void setOwner(User owner) {

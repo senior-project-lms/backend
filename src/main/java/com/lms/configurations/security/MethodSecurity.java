@@ -22,11 +22,11 @@ public class MethodSecurity {
     @Autowired
     private CourseRepositoy courseRepositoy;
 
-    public boolean hasCoursePrivilege(String coursePublicId, Privileges priveleges){
+    public boolean hasCoursePrivilege(String coursePublicKey, Privileges priveleges){
         try {
             User user = customUserDetailService.getAuthenticatedUser();
 
-            Course course = this.courseRepositoy.findByPublicId(coursePublicId);
+            Course course = this.courseRepositoy.findByPublicKey(coursePublicKey);
 
             if (user == null || course == null){
                 return false;

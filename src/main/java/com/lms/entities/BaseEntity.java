@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by umit.kas on 05.12.2017.
@@ -19,7 +20,7 @@ public class BaseEntity {
 
     @NotNull
     @Column(unique = true)
-    private String publicId;
+    private String publicKey;
 
 
     @CreationTimestamp
@@ -43,12 +44,12 @@ public class BaseEntity {
         return id;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public String getPublicKey() {
+        return publicKey;
     }
 
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
     public Date getCreatedAt() {
@@ -95,5 +96,10 @@ public class BaseEntity {
     public boolean equals(Object o) {
         BaseEntity object = (BaseEntity) o;
         return this.getId() == object.getId();
+    }
+
+
+    public void generatePublicKey(){
+        this.setPublicKey(UUID.randomUUID().toString());
     }
 }

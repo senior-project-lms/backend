@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface CourseRepositoy extends JpaRepository<Course, Integer> {
 
-    Course findByPublicId(String publicId);
+    Course findByPublicKey(String publicKey);
 
     List<Course> findAllByRegisteredUsersIn(List<User> registeredUsers);
 }

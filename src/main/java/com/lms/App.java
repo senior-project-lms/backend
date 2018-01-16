@@ -35,20 +35,20 @@ public class App {
 	}
 
 
-
-	// if there is no user initially creates a user
+	// initially insert the db
 	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepositoy courseRepositoy, final PrivilegeRepository privilegeRepository
 	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, UserService userService) throws Exception {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
-			role.setPublicId(UUID.randomUUID().toString());
+			role.generatePublicKey();
 			role.setAcessLevel(AccessLevel.SUPER_ADMIN.CODE);
 			role.setName(AccessLevel.SUPER_ADMIN.toString());
 			authorityRepository.save(role);
 
 			User user = new User();
+			user.generatePublicKey();
 			user.setUsername("super.admin");
 			user.setName("super");
 			user.setSurname("admin");
@@ -60,7 +60,7 @@ public class App {
 			//
 
 			Privilege privilege1 = new Privilege();
-			privilege1.setPublicId(UUID.randomUUID().toString());
+			privilege1.generatePublicKey();
 			privilege1.setCode(UUID.randomUUID().toString());
 			privilege1.setName(Privileges.METHOD_X.toString());
 
@@ -73,7 +73,7 @@ public class App {
 
 
 			Course course = new Course();
-			course.setPublicId(UUID.randomUUID().toString());
+			course.generatePublicKey();
 			course.setName("Test 1");
 			course.setCode("tst 101");
 			course.setRegisteredUsers(Arrays.asList(user));
@@ -82,7 +82,7 @@ public class App {
 
 
 			UserCoursePrivilege userCoursePrivilege = new UserCoursePrivilege();
-			userCoursePrivilege.setPublicId(UUID.randomUUID().toString());
+			userCoursePrivilege.generatePublicKey();
 			userCoursePrivilege.setCourse(course);
 			userCoursePrivilege.setUser(user);
 

@@ -22,7 +22,6 @@ public class UserService {
 
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPublicId(UUID.randomUUID().toString());
         return userRepository.save(user);
     }
 

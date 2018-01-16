@@ -13,16 +13,10 @@ import org.hibernate.annotations.ManyToAny;
 @Table(name="authorities")
 public class Authority extends BaseEntity {
 
-    
-    private String name;
-    
-   private int acessLevel;
-   
-   
-    
-       
-    public Authority() {}
 
+    private String name;
+
+    private int acessLevel;
 
 
     public String getName() {

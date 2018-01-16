@@ -17,6 +17,8 @@ public class Resource extends BaseEntity{
 
     private String name;
 
+    private String path;
+
     @ManyToOne
     private Course course;
 
@@ -30,7 +32,7 @@ public class Resource extends BaseEntity{
     private Date deletedAt;
 
     @OneToOne
-    private User deleteddBy;
+    private User deletedBy;
 
     public String getName() {
         return name;
@@ -72,11 +74,19 @@ public class Resource extends BaseEntity{
         this.deletedAt = deletedAt;
     }
 
-    public User getDeleteddBy() {
-        return deleteddBy;
+    public String getPath() {
+        return path;
     }
 
-    public void setDeleteddBy(User deleteddBy) {
-        this.deleteddBy = deleteddBy;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public User getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(User deletedBy) {
+        this.deletedBy = deletedBy;
     }
 }

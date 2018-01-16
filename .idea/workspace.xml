@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f065aafe-6dd8-445a-a5c9-a3b9da1b30ac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -907,7 +906,7 @@
       <workItem from="1515870497832" duration="7958000" />
       <workItem from="1516007148327" duration="2858000" />
       <workItem from="1516092554741" duration="1109000" />
-      <workItem from="1516097097635" duration="1843000" />
+      <workItem from="1516097097635" duration="1862000" />
     </task>
     <task id="LOCAL-00001" summary="course owner is added to course entity">
       <created>1516013550215</created>
@@ -916,11 +915,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516013550216</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary=".gitignore change">
+      <created>1516099021025</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1516099021025</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34225000" />
+    <option name="totallyTimeSpent" value="34244000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="986" y="24" width="1867" height="1092" extended-state="6" />
@@ -972,7 +978,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="course owner is added to course entity" />
-    <option name="LAST_COMMIT_MESSAGE" value="course owner is added to course entity" />
+    <MESSAGE value=".gitignore change" />
+    <option name="LAST_COMMIT_MESSAGE" value=".gitignore change" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

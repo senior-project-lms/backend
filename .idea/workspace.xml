@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f065aafe-6dd8-445a-a5c9-a3b9da1b30ac" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/SystemAnnouncement.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/SystemResource.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/App.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/configurations/CustomUserDetails.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/configurations/CustomUserDetails.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/Authority.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/Authority.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/Course.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/Resource.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/Resource.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/CourseRepositoy.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/CourseRepositoy.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/PrivilegeRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/PrivilegeRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/UserRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/UserRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/UserService.java" />
+      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.buildship.core.prefs" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -44,34 +31,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SystemAnnouncement.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/SystemAnnouncement.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#445#446#0" expanded="true" />
-                <element signature="e#473#474#0" expanded="true" />
-                <element signature="e#515#516#0" expanded="true" />
-                <element signature="e#549#550#0" expanded="true" />
-                <element signature="e#583#584#0" expanded="true" />
-                <element signature="e#613#614#0" expanded="true" />
-                <element signature="e#659#660#0" expanded="true" />
-                <element signature="e#697#698#0" expanded="true" />
-                <element signature="e#744#745#0" expanded="true" />
-                <element signature="e#780#781#0" expanded="true" />
-                <element signature="e#845#846#0" expanded="true" />
-                <element signature="e#895#896#0" expanded="true" />
-                <element signature="e#945#946#0" expanded="true" />
-                <element signature="e#977#978#0" expanded="true" />
-                <element signature="e#1041#1042#0" expanded="true" />
-                <element signature="e#1083#1084#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="application.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
@@ -82,7 +41,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="App.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-126">
@@ -90,6 +49,16 @@
               <folding>
                 <marker date="1516117614063" expanded="true" signature="2869:2879" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.properties" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bin/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -949,7 +918,7 @@
       <workItem from="1515870497832" duration="7958000" />
       <workItem from="1516007148327" duration="2858000" />
       <workItem from="1516092554741" duration="1109000" />
-      <workItem from="1516097097635" duration="5510000" />
+      <workItem from="1516097097635" duration="5649000" />
     </task>
     <task id="LOCAL-00001" summary="course owner is added to course entity">
       <created>1516013550215</created>
@@ -969,11 +938,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37892000" />
+    <option name="totallyTimeSpent" value="38031000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="986" y="24" width="1867" height="1092" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -996,7 +964,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7218814" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22949062" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22949062" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -1044,13 +1012,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/Hello.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/Authority.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1492,6 +1453,14 @@
           <folding>
             <marker date="1516117614063" expanded="true" signature="2869:2879" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

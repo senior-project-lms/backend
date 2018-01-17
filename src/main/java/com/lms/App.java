@@ -38,7 +38,7 @@ public class App {
 	// initially insert the db
 	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepositoy courseRepositoy, final PrivilegeRepository privilegeRepository
-	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, UserService userService) throws Exception {
+	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService) throws Exception {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
@@ -49,14 +49,15 @@ public class App {
 
 			User user = new User();
 			user.generatePublicKey();
-			user.setUsername("super.admin");
-			user.setName("super");
+			user.setUsername("mock.admin");
+			user.setEmail("umit.kas@std.antalya.edu.tr");
+			user.setName("mock");
 			user.setSurname("admin");
-			user.setPassword("123");
+			user.setPassword("test.password");
 			user.setAuthority(role);
 			user.setBlocked(false);
 			user.setEnabled(true);
-			user = userService.save(user);
+			user = customUserDetailService.save(user);
 			//
 
 			Privilege privilege1 = new Privilege();

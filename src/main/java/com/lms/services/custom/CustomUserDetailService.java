@@ -45,6 +45,14 @@ public class CustomUserDetailService implements UserDetailsService {
 	public User findByUsername(String username) {
 		return this.userRepository.findByUsername(username);
 	}
-	
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
+	public User save(User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPublicKey(UUID.randomUUID().toString());
+		return userRepository.save(user);
+	}
 
 }

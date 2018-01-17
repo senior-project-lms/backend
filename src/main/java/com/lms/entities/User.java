@@ -37,6 +37,8 @@ public class User extends BaseEntity{
 	private List<Course> ownedCourses;
 
 
+
+
 	public String getUsername() {
 		return username;
 	}

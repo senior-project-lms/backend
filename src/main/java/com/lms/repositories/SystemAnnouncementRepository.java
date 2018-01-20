@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public interface SystemAnnouncementRepository extends JpaRepository<SystemAnnouncement, Long>{
 
-    List<SystemAnnouncement> findAllByVisible(boolean visible, Pageable pageable);
+    List<SystemAnnouncement> findAllByVisibleOrderByUpdatedAtDesc(boolean visible, Pageable pageable);
 
     SystemAnnouncement findByPublicKey(String publicKey);
 

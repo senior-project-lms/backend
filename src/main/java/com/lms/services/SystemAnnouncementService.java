@@ -83,7 +83,7 @@ public class SystemAnnouncementService {
     public List<SystemAnnouncementPojo> getAnnouncements(int page) throws Exception{
         List<SystemAnnouncementPojo> announcementPojos = new ArrayList<>();
 
-        for (SystemAnnouncement announcement : systemAnnouncementRepository.findAllByVisible(true, new PageRequest(page, 5))){
+        for (SystemAnnouncement announcement : systemAnnouncementRepository.findAllByVisibleOrderByUpdatedAtDesc(true, new PageRequest(page, 5))){
             announcementPojos.add(this.entityToPojo(announcement, true));
         }
         return announcementPojos;

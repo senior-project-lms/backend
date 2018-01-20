@@ -17,11 +17,16 @@ import java.util.List;
 @Service
 public class SystemAnnouncementService {
 
-    @Autowired
-    private SystemResourceService systemResourceService;
 
     @Autowired
     private SystemAnnouncementRepository systemAnnouncementRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SystemResourceService systemResourceService;
+
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -32,6 +37,9 @@ public class SystemAnnouncementService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
         pojo.setTitle(entity.getTitle());
+        pojo.setCreatedAt(entity.getCreatedAt());
+        pojo.setUpdatedAt(entity.getUpdatedAt());
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy(), false, false, false));
 
         if (systemResource) {
             List<SystemResourcePojo> resourcePojos = new ArrayList<>();

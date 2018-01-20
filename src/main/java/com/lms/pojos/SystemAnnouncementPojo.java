@@ -1,15 +1,12 @@
-package com.lms.entities;
+package com.lms.pojos;
 
-
+import com.lms.entities.SystemResource;
 import com.lms.properties.PriorityColor;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class SystemAnnouncement extends BaseEntity{
-
+public class SystemAnnouncementPojo extends BasePojo {
 
     private String title;
 
@@ -17,9 +14,7 @@ public class SystemAnnouncement extends BaseEntity{
 
     private PriorityColor priorityColor;
 
-    @OneToMany(mappedBy = "systemAnnouncement")
-    private List<SystemResource> resources;
-
+    private List<SystemResourcePojo> resources;
 
     public String getTitle() {
         return title;
@@ -45,11 +40,11 @@ public class SystemAnnouncement extends BaseEntity{
         this.priorityColor = priorityColor;
     }
 
-    public List<SystemResource> getResources() {
+    public List<SystemResourcePojo> getResources() {
         return resources;
     }
 
-    public void setResources(List<SystemResource> resources) {
+    public void setResources(List<SystemResourcePojo> resources) {
         this.resources = resources;
     }
 }

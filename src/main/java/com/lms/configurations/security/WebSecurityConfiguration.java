@@ -77,8 +77,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.OPTIONS, "/**", "/oauth/token").permitAll()
 		.antMatchers("/api/**").authenticated()
 
-				.antMatchers("/api/admin/**").hasRole(Integer.toString(AccessLevel.SUPER_ADMIN.CODE))
-		.and()
+				.antMatchers("/api/admin/**").hasRole(Long.toString(AccessLevel.SUPER_ADMIN.CODE))
+				.antMatchers("/api/admin/**").hasRole(Long.toString(AccessLevel.ADMIN.CODE))
+
+				.and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .httpBasic()

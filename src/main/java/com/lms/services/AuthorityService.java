@@ -11,7 +11,7 @@ public class AuthorityService {
     public AuthorityPojo entityToPojo(Authority authority){
         AuthorityPojo pojo = new AuthorityPojo();
         if (authority != null){
-            pojo.setAcessLevel(authority.getAcessLevel());
+            pojo.setAccessLevel(authority.getAccessLevel());
             pojo.setName(authority.getName());
             return pojo;
         }

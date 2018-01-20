@@ -11,7 +11,7 @@ import java.util.List;
  * Created by umit.kas on 28.11.2017.
  */
 @Repository
-public interface CourseRepositoy extends JpaRepository<Course, Integer> {
+public interface CourseRepositoy extends JpaRepository<Course, Long> {
 
     Course findByPublicKey(String publicKey);
 

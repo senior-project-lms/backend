@@ -43,7 +43,7 @@ public class App {
 
 			Authority role = new Authority();
 			role.generatePublicKey();
-			role.setAcessLevel(AccessLevel.SUPER_ADMIN.CODE);
+			role.setAccessLevel(AccessLevel.SUPER_ADMIN.CODE);
 			role.setName(AccessLevel.SUPER_ADMIN.toString());
 			authorityRepository.save(role);
 

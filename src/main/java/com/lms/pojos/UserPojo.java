@@ -2,7 +2,7 @@ package com.lms.pojos;
 
 import java.util.List;
 
-public class UserPojo {
+public class UserPojo extends BasePojo {
 
 
     private String username;

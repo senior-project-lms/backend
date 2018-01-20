@@ -19,6 +19,8 @@ public class Resource extends BaseEntity{
 
     private String path;
 
+    private String type;
+
     @ManyToOne
     private Course course;
 

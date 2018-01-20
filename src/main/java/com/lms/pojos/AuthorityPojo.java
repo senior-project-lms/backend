@@ -1,11 +1,11 @@
 package com.lms.pojos;
 
-public class AuthorityPojo {
+public class AuthorityPojo extends BasePojo {
 
 
     private String name;
 
-    private int acessLevel;
+    private Long accessLevel;
 
 
     public String getName() {
@@ -16,11 +16,17 @@ public class AuthorityPojo {
         this.name = name;
     }
 
-    public int getAcessLevel() {
-        return acessLevel;
+    public Long getAccessLevel() {
+        return accessLevel;
     }
 
-    public void setAcessLevel(int acessLevel) {
-        this.acessLevel = acessLevel;
+    public void setAccessLevel(Long accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        BasePojo object = (BasePojo) o;
+        return getPublicKey().matches(object.getPublicKey());
     }
 }

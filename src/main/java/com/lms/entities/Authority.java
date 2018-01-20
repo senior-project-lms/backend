@@ -16,7 +16,7 @@ public class Authority extends BaseEntity {
 
     private String name;
 
-    private int acessLevel;
+    private long accessLevel;
 
 
     public String getName() {
@@ -27,17 +27,11 @@ public class Authority extends BaseEntity {
         this.name = name;
     }
 
+    public long getAccessLevel() {
+        return accessLevel;
+    }
 
-	public int getAcessLevel() {
-		return acessLevel;
-	}
-
-
-
-	public void setAcessLevel(int acessLevel) {
-		this.acessLevel = acessLevel;
-	}
-
-
-    
+    public void setAccessLevel(long accessLevel) {
+        this.accessLevel = accessLevel;
+    }
 }

@@ -1,12 +1,6 @@
-package com.lms.entities;
+package com.lms.pojos;
 
-
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-
-@Entity
-public class SystemResource extends BaseEntity{
-
+public class SystemResourcePojo extends BasePojo{
 
     private String name;
 
@@ -14,8 +8,7 @@ public class SystemResource extends BaseEntity{
 
     private String type;
 
-    @ManyToOne
-    private SystemAnnouncement systemAnnouncement;
+    private SystemAnnouncementPojo announcment;
 
 
     public String getName() {
@@ -34,12 +27,13 @@ public class SystemResource extends BaseEntity{
         this.path = path;
     }
 
-    public SystemAnnouncement getSystemAnnouncement() {
-        return systemAnnouncement;
+
+    public SystemAnnouncementPojo getAnnouncment() {
+        return announcment;
     }
 
-    public void setSystemAnnouncement(SystemAnnouncement systemAnnouncement) {
-        this.systemAnnouncement = systemAnnouncement;
+    public void setAnnouncment(SystemAnnouncementPojo announcment) {
+        this.announcment = announcment;
     }
 
     public String getType() {

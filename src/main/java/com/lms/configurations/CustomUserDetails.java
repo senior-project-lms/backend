@@ -29,7 +29,7 @@ public class CustomUserDetails implements UserDetails {
     private Collection<? extends GrantedAuthority> translate(List<Authority> roles) {
         List<GrantedAuthority> authorities = new ArrayList();
         for (Authority role : roles) {
-            String level = Integer.toString(role.getAcessLevel());
+            String level = Long.toString(role.getAccessLevel());
             //Make sure that all roles start with "ROLE_"
             level = "ROLE_" + level;
             authorities.add(new SimpleGrantedAuthority(level));

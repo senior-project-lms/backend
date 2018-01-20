@@ -6,12 +6,12 @@ public enum AccessLevel {
 	ADMIN(1010000101),
 	LECTURER(1001010010),
 	ASISTANT(1100101100),
-	STUDENT(001010110010);
+	STUDENT(1101011010);
 
 	
-	public int CODE;
+	public long CODE;
 
-	private AccessLevel(int CODE) {
+	private AccessLevel(long CODE) {
 		this.CODE = CODE;
 	}
 	

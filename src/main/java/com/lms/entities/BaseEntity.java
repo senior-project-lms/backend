@@ -16,7 +16,7 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @NotNull
     @Column(unique = true)
@@ -40,7 +40,7 @@ public class BaseEntity {
     private boolean visible;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

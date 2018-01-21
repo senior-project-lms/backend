@@ -33,7 +33,17 @@ public class CustomUserDetailService implements UserDetailsService {
 		return new CustomUserDetails(user);
 
 	}
-	
+
+	/**
+	 *
+	 * Returns authenticated user,
+	 * Finds username by SecurityContextHolder, then finds the entity by username returns it
+	 *
+	 * @author umit.kas
+	 * @param
+	 * @return User
+	 *
+	 */
 	public User getAuthenticatedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
@@ -48,6 +58,17 @@ public class CustomUserDetailService implements UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
+	/**
+	 *
+	 * Save user,
+	 * Used in App class,
+	 * Don't userin services
+	 *
+	 * @author umit.kas
+	 * @param user
+	 * @return User
+	 *
+	 */
 	public User save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setPublicKey(UUID.randomUUID().toString());

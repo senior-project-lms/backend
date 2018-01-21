@@ -8,13 +8,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorityService {
 
-    public AuthorityPojo entityToPojo(Authority authority){
+
+    /**
+     * Converts Authority entity to AuthorityPojo according to boolean variables,
+     * some relational objects are converted to pojo with their own services
+     *
+     * @author umit.kas
+     * @param entity
+     * @return AuthorityPojo
+     *
+     */
+    public AuthorityPojo entityToPojo(Authority entity){
         AuthorityPojo pojo = new AuthorityPojo();
-        if (authority != null){
-            pojo.setAccessLevel(authority.getAccessLevel());
-            pojo.setName(authority.getName());
+        if (entity != null){
+            pojo.setAccessLevel(entity.getAccessLevel());
+            pojo.setName(entity.getName());
             return pojo;
         }
-        return null;
+        return pojo;
     }
 }

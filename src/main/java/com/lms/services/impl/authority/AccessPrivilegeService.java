@@ -6,7 +6,7 @@ import com.lms.entities.authority.Privilege;
 import com.lms.entities.user.User;
 import com.lms.pojos.authority.AccessPrivilegePojo;
 import com.lms.pojos.authority.PrivilegePojo;
-import com.lms.repositories.authority.AcessPrivilegeRepository;
+import com.lms.repositories.authority.AccessPrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.impl.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class AccessPrivilegeService {
 
     @Autowired
-    private AcessPrivilegeRepository acessPrivilegeRepository;
+    private AccessPrivilegeRepository accessPrivilegeRepository;
 
     @Autowired
     private UserService userService;
@@ -31,6 +31,15 @@ public class AccessPrivilegeService {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+    /**
+     * Converts AccessPrivilege entity to AccessPrivilegePojo according to boolean variables,
+     * some relational objects are converted to pojo with their own services
+     *
+     * @author umit.kas
+     * @param entity
+     * @return AccessPrivilegePojo
+     *
+     */
     public AccessPrivilegePojo entityToPojo(AccessPrivilege entity) throws Exception{
         AccessPrivilegePojo pojo = new AccessPrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
@@ -47,11 +56,22 @@ public class AccessPrivilegeService {
     }
 
 
+
+    /**
+     *
+     * Returns privileges code list
+     * according to authenticated user, finds the privileges of authenticated user, and returns it
+     *
+     * @author umit.kas
+     * @param
+     * @return List<Long>
+     *
+     */
     public List<Long> getPrivileges() throws Exception{
         List<Long> privileges = new ArrayList<>();
         User user = customUserDetailService.getAuthenticatedUser();
         if (user != null){
-            AccessPrivilege entity = acessPrivilegeRepository.findByUser(user);
+            AccessPrivilege entity = accessPrivilegeRepository.findByUser(user);
             if (entity != null){
                 privileges = entity.getPrivileges().stream().map(privilege -> privilege.getCode())
                 .collect(Collectors.toList());

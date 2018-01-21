@@ -32,6 +32,15 @@ public class SystemAnnouncementService {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+
+    /**
+     * Converts SystemAnnouncement entity to SystemAnnouncement pojo according to boolean variables,
+     * some relational objects are converted to pojo with their own services
+     *
+     * @author umit.kas
+     * @param entity, systemResource
+     * @return SystemAnnouncementPojo
+     */
     public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource) throws Exception{
         SystemAnnouncementPojo pojo = new SystemAnnouncementPojo();
 
@@ -54,6 +63,13 @@ public class SystemAnnouncementService {
     }
 
 
+    /**
+     * Converts SystemAnnouncementPojo to SystemAnnouncement  according to values, if the value is null passes it,
+
+     * @author umit.kas
+     * @param pojo
+     * @return SystemAnnouncement
+     */
     public SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo) throws Exception{
         SystemAnnouncement entity = new SystemAnnouncement();
 
@@ -81,6 +97,15 @@ public class SystemAnnouncementService {
     }
 
 
+    /**
+     *
+     * Returns a list of 5 SystemAnnouncementPojos,
+     * Selects the visible SystemAnnouncement by desc order, converts it to pojo than returns
+     *
+     * @author umit.kas
+     * @param page
+     * @return  List<SystemAnnouncementPojo>
+     */
     public List<SystemAnnouncementPojo> getAnnouncements(int page) throws Exception{
         List<SystemAnnouncementPojo> announcementPojos = new ArrayList<>();
 
@@ -90,6 +115,24 @@ public class SystemAnnouncementService {
         return announcementPojos;
     }
 
+
+
+    /**
+     *
+     * Save the SystemAnnouncement, converts input pojo to entity, also convers resources to entity
+     * add who creates(authenticated user)
+     * generates publicKey
+     * put resources to a list
+     * then set null resource list in entity
+     * set visible to entity
+     * save entity
+     * then iterate resources, add who create it, visibilty and announcement, which is saved
+     * then save the resources by its service
+     *
+     * @author umit.kas
+     * @param pojo
+     * @return boolean
+     */
     public boolean save(SystemAnnouncementPojo pojo) throws Exception{
 
         User createdBy = customUserDetailService.getAuthenticatedUser();
@@ -97,20 +140,41 @@ public class SystemAnnouncementService {
 
         entity.generatePublicKey();
         entity.setCreatedBy(createdBy);
-        if (entity.getResources() != null){
 
-            entity.getResources().stream().map(resource -> {
-                resource.setCreatedBy(createdBy);
-                return resource;
-            });
-
-        }
-
+        List<SystemResource> resources = entity.getResources();
+        entity.setResources(null);
         entity.setVisible(true);
-        return systemAnnouncementRepository.save(entity).getId() > 0;
+        entity = systemAnnouncementRepository.save(entity);
+
+
+        if (resources != null){
+
+            for (SystemResource resource : resources) {
+                resource.setCreatedBy(createdBy);
+                resource.setVisible(true);
+                resource.setSystemAnnouncement(entity);
+            }
+            return systemResourceService.save(resources);
+        }
+        else {
+            return entity.getId() > 0;
+        }
     }
 
 
+
+    /**
+     *
+     * Delete the system announcement,
+     * Delete means set visible false to property of it.
+     * add who deletes it,
+     * update visibily false
+     * then save it.
+     *
+     * @author umit.kas
+     * @param publicKey
+     * @return boolean
+     */
     public boolean delete(String publicKey) throws Exception{
 
         User deletedBy = customUserDetailService.getAuthenticatedUser();

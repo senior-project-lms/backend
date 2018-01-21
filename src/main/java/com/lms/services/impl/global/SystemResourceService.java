@@ -20,6 +20,15 @@ public class SystemResourceService {
 
     // file is not added inside the pojo and entity
 
+
+    /**
+     * Converts SystemResource entity to SystemResourcePojo according to boolean variables,
+     * some relational objects are converted to pojo with their own services
+     *
+     * @author umit.kas
+     * @param entity, systemAnnouncement
+     * @return SystemResourcePojo
+     */
     public SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement) throws Exception{
 
         SystemResourcePojo pojo = new SystemResourcePojo();
@@ -35,6 +44,14 @@ public class SystemResourceService {
         return pojo;
     }
 
+
+    /**
+     * Converts SystemResourcePojo to SystemResource  according to values, if the value is null passes it,
+
+     * @author umit.kas
+     * @param pojo
+     * @return SystemResource
+     */
     public SystemResource pojoToEntity(SystemResourcePojo pojo) throws Exception{
         SystemResource entity = new SystemResource();
 
@@ -51,6 +68,14 @@ public class SystemResourceService {
         return  entity;
     }
 
+
+    /**
+     * Save entity list to database.
+
+     * @author umit.kas
+     * @param resources
+     * @return boolean
+     */
     public boolean save(List<SystemResource> resources) throws Exception{
 
         resources.stream().map(resource -> {

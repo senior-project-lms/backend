@@ -2,10 +2,13 @@ package com.lms.repositories.authority;
 
 import com.lms.entities.authority.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- * Created by umit.kas on 28.11.2017.
- */
+import javax.transaction.Transactional;
+
+
+@Repository
+@Transactional
 public interface PrivilegeRepository extends JpaRepository<Privilege, Long>{
 
 

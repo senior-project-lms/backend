@@ -31,7 +31,18 @@ public class UserService {
     @Autowired
     private AccessPrivilegeService accessPrivilegeService;
 
-    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent){
+
+    /**
+     * Converts User entity to user pojo according to boolean variables,
+     * some relational objects are converted to pojo with their own services
+     *
+     *
+     * @author umit.kas
+     * @param user, authority, ownedCourses, registeredCoursesAsStudent
+     * @return UserPojo
+     *
+     */
+    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) throws Exception{
         UserPojo pojo = new UserPojo();
         if (user != null){
             pojo.setUsername(user.getUsername());
@@ -58,6 +69,15 @@ public class UserService {
     }
 
 
+    /**
+     *
+     * Returns authenticated user informations with the access privileges
+     *
+     * @author umit.kas
+     * @param
+     * @return UserPojo
+     *
+     */
     public UserPojo getMe() throws Exception{
         UserPojo pojo = new UserPojo();
         User user = customUserDetailService.getAuthenticatedUser();

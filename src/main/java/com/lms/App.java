@@ -9,10 +9,10 @@ import com.lms.properties.AccessLevel;
 
 import com.lms.properties.Privileges;
 
-import com.lms.repositories.authority.AcessPrivilegeRepository;
+import com.lms.repositories.authority.AccessPrivilegeRepository;
 import com.lms.repositories.authority.AuthorityRepository;
 import com.lms.repositories.authority.PrivilegeRepository;
-import com.lms.repositories.course.CourseRepositoy;
+import com.lms.repositories.course.CourseRepository;
 import com.lms.repositories.authority.UserCoursePrivilegeRepository;
 import com.lms.repositories.user.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -44,8 +44,8 @@ public class App {
 
 	// initially insert the db
 	@Autowired
-	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepositoy courseRepositoy, final PrivilegeRepository privilegeRepository
-	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService, final AcessPrivilegeRepository acessPrivilegeRepository) throws Exception {
+	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepository courseRepository, final PrivilegeRepository privilegeRepository
+	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService, final AccessPrivilegeRepository accessPrivilegeRepository) throws Exception {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
@@ -86,7 +86,7 @@ public class App {
 			accessPrivilege.setVisible(true);
 			accessPrivilege.setCreatedBy(user);
 			accessPrivilege.setUser(user);
-			acessPrivilegeRepository.save(accessPrivilege);
+			accessPrivilegeRepository.save(accessPrivilege);
 
 
 			user = new User();

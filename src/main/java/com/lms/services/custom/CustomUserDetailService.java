@@ -1,10 +1,9 @@
 package com.lms.services.custom;
 
-import java.util.List;
 import java.util.UUID;
 
-import com.lms.entities.User;
-import com.lms.repositories.UserRepository;
+import com.lms.entities.user.User;
+import com.lms.repositories.user.UserRepository;
 import com.lms.configurations.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;

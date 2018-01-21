@@ -11,7 +11,7 @@ public enum AccessLevel {
 	
 	public long CODE;
 
-	private AccessLevel(long CODE) {
+	AccessLevel(long CODE) {
 		this.CODE = CODE;
 	}
 	

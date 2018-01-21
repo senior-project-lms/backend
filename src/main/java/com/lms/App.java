@@ -1,13 +1,20 @@
 package com.lms;
 
 
-import com.lms.entities.*;
+import com.lms.entities.authority.AccessPrivilege;
+import com.lms.entities.authority.Privilege;
+import com.lms.entities.authority.Authority;
+import com.lms.entities.user.User;
 import com.lms.properties.AccessLevel;
 
 import com.lms.properties.Privileges;
-import com.lms.repositories.*;
 
-import com.lms.services.UserService;
+import com.lms.repositories.authority.AcessPrivilegeRepository;
+import com.lms.repositories.authority.AuthorityRepository;
+import com.lms.repositories.authority.PrivilegeRepository;
+import com.lms.repositories.course.CourseRepositoy;
+import com.lms.repositories.authority.UserCoursePrivilegeRepository;
+import com.lms.repositories.user.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class App {
@@ -38,7 +45,7 @@ public class App {
 	// initially insert the db
 	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepositoy courseRepositoy, final PrivilegeRepository privilegeRepository
-	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService) throws Exception {
+	, final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService, final AcessPrivilegeRepository acessPrivilegeRepository) throws Exception {
 		if (userRepository.count() == 0) {
 
 			Authority role = new Authority();
@@ -49,9 +56,9 @@ public class App {
 
 			User user = new User();
 			user.generatePublicKey();
-			user.setUsername("mock.admin");
+			user.setUsername("super.admin");
 			user.setEmail("umit.kas@std.antalya.edu.tr");
-			user.setName("mock");
+			user.setName("super");
 			user.setSurname("admin");
 			user.setPassword("test.password");
 			user.setAuthority(role);
@@ -60,40 +67,42 @@ public class App {
 			user = customUserDetailService.save(user);
 			//
 
-			Privilege privilege1 = new Privilege();
-			privilege1.generatePublicKey();
-			privilege1.setCode(UUID.randomUUID().toString());
-			privilege1.setName(Privileges.METHOD_X.toString());
+			AccessPrivilege accessPrivilege = new AccessPrivilege();
 
-			privilege1 = privilegeRepository.save(privilege1);
+			List<Privilege> privileges = new ArrayList<>();
+
+			for(Privileges privilege : Privileges.values()){
+				Privilege privilege1 = new Privilege();
+				privilege1.generatePublicKey();
+				privilege1.setCode(privilege.CODE);
+				privilege1.setName(privilege.toString());
+				privilege1.setCreatedBy(user);
+				privilege1 = privilegeRepository.save(privilege1);
+				privileges.add(privilege1);
+			}
+
+			accessPrivilege.setPrivileges(privileges);
+			accessPrivilege.generatePublicKey();
+			accessPrivilege.setVisible(true);
+			accessPrivilege.setCreatedBy(user);
+			accessPrivilege.setUser(user);
+			acessPrivilegeRepository.save(accessPrivilege);
+
+
+			user = new User();
+			user.generatePublicKey();
+			user.setUsername("mock.admin");
+			user.setEmail("umit.kas@outlook.com");
+			user.setName("mock");
+			user.setSurname("admin");
+			user.setPassword("test.password");
+			user.setAuthority(role);
+			user.setBlocked(false);
+			user.setEnabled(true);
+			user = customUserDetailService.save(user);
 
 
 
-
-
-
-
-			Course course = new Course();
-			course.generatePublicKey();
-			course.setName("Test 1");
-			course.setCode("tst 101");
-			course.setRegisteredUsers(Arrays.asList(user));
-			course.setOwner(user);
-			course = courseRepositoy.save(course);
-
-
-			UserCoursePrivilege userCoursePrivilege = new UserCoursePrivilege();
-			userCoursePrivilege.generatePublicKey();
-			userCoursePrivilege.setCourse(course);
-			userCoursePrivilege.setUser(user);
-
-			userCoursePrivilege.setPrivileges(Arrays.asList(privilege1));
-
-			userCoursePrivilege = userCoursePrivilegeRepository.save(userCoursePrivilege);
-
-			course.setUserCoursePrivileges(Arrays.asList(userCoursePrivilege));
-
-			course = courseRepositoy.save(course);
 
 		}
 	}

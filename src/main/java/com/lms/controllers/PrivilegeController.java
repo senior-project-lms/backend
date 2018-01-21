@@ -1,31 +1,30 @@
 package com.lms.controllers;
 
-import com.lms.pojos.user.UserPojo;
-import com.lms.services.impl.user.UserService;
+import com.lms.services.impl.authority.AccessPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = {"/api"})
-public class UserController {
-
+public class PrivilegeController {
 
     @Autowired
-    private UserService userService;
+    private AccessPrivilegeService accessPrivilegeService;
 
-
-    @RequestMapping(value = {"/me"}, method = RequestMethod.GET)
-    public UserPojo getMe(){
-
+    @RequestMapping(value = {"/admin/me/priveleges"}, method = RequestMethod.GET)
+    public List<Long> getAdminPrivileges(){
         try {
-            return userService.getMe();
+            return accessPrivilegeService.getPrivilege();
         }
         catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
+
 
 }

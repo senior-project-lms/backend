@@ -1,5 +1,6 @@
 package com.lms.entities;
 
+import com.lms.entities.user.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

@@ -1,10 +1,14 @@
 package com.lms.configurations.security;
 
-import com.lms.entities.Course;
-import com.lms.entities.User;
-import com.lms.entities.UserCoursePrivilege;
+import com.lms.entities.authority.AccessPrivilege;
+import com.lms.entities.authority.Privilege;
+import com.lms.entities.course.Course;
+import com.lms.entities.user.User;
+import com.lms.entities.authority.UserCoursePrivilege;
 import com.lms.properties.Privileges;
-import com.lms.repositories.CourseRepositoy;
+import com.lms.repositories.authority.AcessPrivilegeRepository;
+import com.lms.repositories.course.CourseRepositoy;
+import com.lms.repositories.authority.PrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +26,20 @@ public class MethodSecurity {
     @Autowired
     private CourseRepositoy courseRepositoy;
 
-    public boolean hasCoursePrivilege(String coursePublicKey, Privileges priveleges){
+    @Autowired
+    private AcessPrivilegeRepository acessPrivilegeRepository;
+
+    @Autowired
+    private PrivilegeRepository privilegeRepository;
+
+
+    public boolean hasCoursePrivilege(String coursePublicKey, Privileges privelege){
         try {
             User user = customUserDetailService.getAuthenticatedUser();
 
             Course course = this.courseRepositoy.findByPublicKey(coursePublicKey);
+
+
 
             if (user == null || course == null){
                 return false;
@@ -35,7 +48,7 @@ public class MethodSecurity {
             for (UserCoursePrivilege userCoursePrivilege: course.getUserCoursePrivileges()) {
 
                 if (userCoursePrivilege.getUser().equals(user)){
-                    return userCoursePrivilege.getPrivileges().parallelStream().filter(privilege -> privilege.getName().matches(priveleges.toString())).findAny().isPresent();
+                    return userCoursePrivilege.getPrivileges().parallelStream().filter(p -> p.getCode() == privelege.CODE).findAny().isPresent();
 //                    for (Privilege privilege : userCoursePrivilege.getPrivileges()){
 //                        if (privilege.getName().toString().matches(priveleges.toString())){
 //                            return true;
@@ -55,5 +68,25 @@ public class MethodSecurity {
 
 
 
+    }
+
+
+    public boolean hasAdminPrivilege(Privileges privilege){
+        try {
+                User user = customUserDetailService.getAuthenticatedUser();
+                Privilege p = privilegeRepository.findByCode(privilege.CODE);
+                if (user != null && p != null){
+                    AccessPrivilege accessPrivilege = acessPrivilegeRepository.findByUserAndPrivilegesIn(user, p);
+                    if (accessPrivilege != null){
+                        return true;
+                    }
+                }
+                return false;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return false;
     }
 }

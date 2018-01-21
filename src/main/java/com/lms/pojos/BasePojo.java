@@ -1,5 +1,7 @@
 package com.lms.pojos;
 
+import com.lms.pojos.user.UserPojo;
+
 import java.io.Serializable;
 import java.util.Date;
 

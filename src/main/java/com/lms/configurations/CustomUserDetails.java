@@ -1,7 +1,7 @@
 package com.lms.configurations;
 
-import com.lms.entities.Authority;
-import com.lms.entities.User;
+import com.lms.entities.authority.Authority;
+import com.lms.entities.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

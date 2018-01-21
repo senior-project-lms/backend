@@ -18,7 +18,7 @@ public class SystemAnnouncementController {
 
 
 
-    @PreAuthorize("@methodSecurity.hasAdminPrivilege(T(com.lms.properties.Privileges).SAVE_SYSTEM_ANNOUNCEMENT)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).SAVE_SYSTEM_ANNOUNCEMENT)")
     @RequestMapping(value = {"/admin/system-announcement"}, method = RequestMethod.POST)
     public boolean save(@RequestBody SystemAnnouncementPojo pojo){
         try{
@@ -32,7 +32,7 @@ public class SystemAnnouncementController {
         return true;
     }
 
-    @PreAuthorize("@methodSecurity.hasAdminPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT)")
     @RequestMapping(value = {"/admin/system-announcement/{publicKey}"}, method = RequestMethod.DELETE)
     public boolean delete(@PathVariable String publicKey){
         if (publicKey != null){

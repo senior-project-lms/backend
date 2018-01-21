@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,15 +16,15 @@ public class PrivilegeController {
     @Autowired
     private AccessPrivilegeService accessPrivilegeService;
 
-    @RequestMapping(value = {"/admin/me/priveleges"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/me/priveleges"}, method = RequestMethod.GET)
     public List<Long> getAdminPrivileges(){
         try {
-            return accessPrivilegeService.getPrivilege();
+            return accessPrivilegeService.getPrivileges();
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
 

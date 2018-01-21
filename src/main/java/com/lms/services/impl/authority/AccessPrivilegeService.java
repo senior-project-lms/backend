@@ -47,7 +47,7 @@ public class AccessPrivilegeService {
     }
 
 
-    public List<Long> getPrivilege() throws Exception{
+    public List<Long> getPrivileges() throws Exception{
         List<Long> privileges = new ArrayList<>();
         User user = customUserDetailService.getAuthenticatedUser();
         if (user != null){

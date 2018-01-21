@@ -3,6 +3,7 @@ package com.lms.services.impl.user;
 import com.lms.entities.user.User;
 import com.lms.pojos.user.UserPojo;
 import com.lms.repositories.user.UserRepository;
+import com.lms.services.impl.authority.AccessPrivilegeService;
 import com.lms.services.impl.authority.AuthorityService;
 import com.lms.services.custom.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AccessPrivilegeService accessPrivilegeService;
 
     public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent){
         UserPojo pojo = new UserPojo();
@@ -60,6 +63,7 @@ public class UserService {
         User user = customUserDetailService.getAuthenticatedUser();
         if (user != null){
             pojo = entityToPojo(user, true, false, false);
+            pojo.setAccessPrivileges(accessPrivilegeService.getPrivileges());
         }
 
         return pojo;

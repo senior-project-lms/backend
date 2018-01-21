@@ -3,6 +3,8 @@ package com.lms.pojos.user;
 import com.lms.pojos.BasePojo;
 import com.lms.pojos.authority.AuthorityPojo;
 
+import java.util.List;
+
 public class UserPojo extends BasePojo {
 
 
@@ -17,6 +19,9 @@ public class UserPojo extends BasePojo {
     private String password;
 
     private AuthorityPojo authority;
+
+    private List<Long> accessPrivileges;
+
 
     public String getUsername() {
         return username;
@@ -65,4 +70,13 @@ public class UserPojo extends BasePojo {
     public void setAuthority(AuthorityPojo authority) {
         this.authority = authority;
     }
+
+    public List<Long> getAccessPrivileges() {
+        return accessPrivileges;
+    }
+
+    public void setAccessPrivileges(List<Long> accessPrivileges) {
+        this.accessPrivileges = accessPrivileges;
+    }
 }
+

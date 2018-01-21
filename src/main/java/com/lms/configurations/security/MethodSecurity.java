@@ -71,7 +71,7 @@ public class MethodSecurity {
     }
 
 
-    public boolean hasAdminPrivilege(Privileges privilege){
+    public boolean hasAccessPrivilege(Privileges privilege){
         try {
                 User user = customUserDetailService.getAuthenticatedUser();
                 Privilege p = privilegeRepository.findByCode(privilege.CODE);

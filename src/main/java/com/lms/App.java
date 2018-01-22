@@ -17,7 +17,9 @@ import com.lms.repositories.authority.UserCoursePrivilegeRepository;
 import com.lms.repositories.user.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
 
+import com.lms.services.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +41,14 @@ public class App {
 	// run the app
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
+	}
+
+
+	@Autowired
+	CommandLineRunner init(StorageService storageService){
+		return (args) ->{
+			storageService.init();
+		};
 	}
 
 
@@ -100,9 +110,6 @@ public class App {
 			user.setBlocked(false);
 			user.setEnabled(true);
 			user = customUserDetailService.save(user);
-
-
-
 
 		}
 	}

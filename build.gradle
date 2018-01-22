@@ -24,6 +24,8 @@ repositories {
 
 
 dependencies {
+	compile "org.springframework.boot:spring-boot-configuration-processor"
+
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.10.RELEASE'
 	//compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
 
@@ -48,3 +50,4 @@ dependencies {
 	testCompile('org.springframework.security:spring-security-test')
 
 }
+

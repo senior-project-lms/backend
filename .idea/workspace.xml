@@ -2,23 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f065aafe-6dd8-445a-a5c9-a3b9da1b30ac" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageException.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageFileNotFoundException.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/authority/FileUploadController.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/interfaces/IStorageService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/storage/StorageService.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_main.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_test.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change beforePath="$PROJECT_DIR$/out/production/resources/application.properties" afterPath="$PROJECT_DIR$/out/production/resources/application.properties" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/App.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/properties/Privileges.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/properties/Privileges.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AcessPrivilegeRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AccessPrivilegeRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AuthorityRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AuthorityRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/PrivilegeRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/PrivilegeRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/UserCoursePrivilegeRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/UserCoursePrivilegeRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/course/CourseRepositoy.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/course/CourseRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/AccessPrivilegeService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/AccessPrivilegeService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/AuthorityService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/AuthorityService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/PrivilegeService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/authority/PrivilegeService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemResourceService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemResourceService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/user/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/user/UserService.java" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -48,21 +44,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CustomUserDetailService.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java">
+      <file leaf-file-name="StorageService.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/storage/StorageService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="45" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="67">
+              <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#805#822#1" expanded="true" />
+                <element signature="e#949#950#0" expanded="true" />
+                <element signature="e#1001#1002#0" expanded="true" />
+                <element signature="e#1858#1859#0" expanded="true" />
+                <element signature="e#1911#1912#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebSecurityConfiguration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/WebSecurityConfiguration.java">
+      <file leaf-file-name="BeanUtils.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.12.RELEASE/afe9285e063739083bc9ea986731901f9a216fce/spring-beans-4.3.12.RELEASE-sources.jar!/org/springframework/beans/BeanUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-504">
-              <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+            <state relative-caret-position="166">
+              <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -71,102 +74,9 @@
       <file leaf-file-name="application.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="1" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+            <state relative-caret-position="522">
+              <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MethodSecurity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="102" column="83" lean-forward="false" selection-start-line="102" selection-start-column="83" selection-end-line="102" selection-end-column="83" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CourseRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/repositories/course/CourseRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="13" column="17" lean-forward="false" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-              <folding>
-                <element signature="e#1349#1350#0" expanded="true" />
-                <element signature="e#1394#1395#0" expanded="true" />
-                <marker date="1516561019431" expanded="true" signature="3573:3581" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Privilege.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/Privilege.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
-              <folding>
-                <element signature="e#1170#1171#0" expanded="true" />
-                <element signature="e#1208#1209#0" expanded="true" />
-                <element signature="e#1240#1241#0" expanded="true" />
-                <element signature="e#1316#1317#0" expanded="true" />
-                <element signature="e#1364#1365#0" expanded="true" />
-                <element signature="e#1602#1603#0" expanded="true" />
-                <element signature="e#1641#1642#0" expanded="true" />
-                <element signature="e#1807#1808#0" expanded="true" />
-                <element signature="e#1834#1835#0" expanded="true" />
-                <element signature="e#1874#1875#0" expanded="true" />
-                <element signature="e#1906#1907#0" expanded="true" />
-                <element signature="e#1972#1973#0" expanded="true" />
-                <element signature="e#2015#2016#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccessPrivilegeRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AccessPrivilegeRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="14" lean-forward="false" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserCoursePrivilege.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/UserCoursePrivilege.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Privileges.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/properties/Privileges.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-              <folding>
-                <element signature="e#1294#1295#0" expanded="true" />
-                <element signature="e#1326#1327#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -177,8 +87,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Kotlin File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -193,6 +103,8 @@
       <find>1000000110</find>
       <find>1000001100</find>
       <find>00101001</find>
+      <find>warn</find>
+      <find>null4</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/main/java/com/lms/repositories/authority</dir>
@@ -435,8 +347,8 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="3031732347000" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="2280518291" />
+        <entry key="$PROJECT_DIR$" value="3032482343000" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="365515736" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="3442123891" />
       </map>
     </option>
@@ -630,19 +542,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/authority/UserTypeDefaultPrivilege.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/global/SystemResource.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/admin/AdminPrivileges.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/user/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/properties/AccessLevel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/authority/Privilege.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/admin/AdminPrivilege.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/controllers/Hello.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/repositories/PrivilegeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/repositories/AdminPrivilegeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/controllers/Test.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lms/services/PrivilegeService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/services/AdminPrivilegeService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/pojos/PrivilegePojo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/pojos/AdminPrivilegePojo.java" />
@@ -678,9 +577,22 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/PrivilegeRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AuthorityRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/repositories/authority/AccessPrivilegeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/properties/Privileges.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/services/uploader/UploaderService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/services/storage/UploaderService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/authority/FileUploadContoller.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/entities/authority/FileUploadController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageFileNotFoundException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/interfaces/IStorageService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/App.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/properties/custom/StorageProperties.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/global.properties" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lms/services/storage/StorageService.java" />
       </list>
     </option>
   </component>
@@ -772,8 +684,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="configurations" type="462c0819:PsiDirectoryNode" />
-              <item name="security" type="462c0819:PsiDirectoryNode" />
+              <item name="controllers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -783,18 +694,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="entities" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="entities" type="462c0819:PsiDirectoryNode" />
-              <item name="authority" type="462c0819:PsiDirectoryNode" />
+              <item name="interfaces" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -814,7 +714,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
-              <item name="repositories" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -825,6 +725,7 @@
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="lms" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
+              <item name="storage" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -1000,7 +901,7 @@
       <workItem from="1516092554741" duration="1109000" />
       <workItem from="1516097097635" duration="18631000" />
       <workItem from="1516269810977" duration="18410000" />
-      <workItem from="1516439910274" duration="28066000" />
+      <workItem from="1516439910274" duration="34804000" />
     </task>
     <task id="LOCAL-00001" summary="course owner is added to course entity">
       <created>1516013550215</created>
@@ -1020,36 +921,38 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97489000" />
+    <option name="totallyTimeSpent" value="104227000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="1046" width="1865" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24958768" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997955" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39895287" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32822084" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277487" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45092025" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.45026177" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26756033" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27432656" sideWeight="0.5" order="12" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -1059,7 +962,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1087,7 +989,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="9" />
+      <option name="time" value="12" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1096,115 +998,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/course/Resource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/course/Announcement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/course/Assignment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/BaseEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="37" column="27" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="37" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/UserType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/global/SystemAnnouncement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/global/SystemResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/UserTypeDefaultPrivilege.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/user/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/properties/AccessLevel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/Authority.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="34" column="16" lean-forward="false" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
-          <folding>
-            <element signature="e#676#677#0" expanded="false" />
-            <element signature="e#722#723#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="20" column="10" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/pojos/PriviligePojo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -1242,14 +1035,14 @@
         <state relative-caret-position="72">
           <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
           <folding>
-            <element signature="e#189#190#0" expanded="true" />
-            <element signature="e#216#217#0" expanded="true" />
-            <element signature="e#254#255#0" expanded="true" />
-            <element signature="e#286#287#0" expanded="true" />
-            <element signature="e#317#318#0" expanded="true" />
-            <element signature="e#344#345#0" expanded="true" />
-            <element signature="e#384#385#0" expanded="true" />
-            <element signature="e#416#417#0" expanded="true" />
+            <element signature="e#189#190#0" expanded="false" />
+            <element signature="e#216#217#0" expanded="false" />
+            <element signature="e#254#255#0" expanded="false" />
+            <element signature="e#286#287#0" expanded="false" />
+            <element signature="e#317#318#0" expanded="false" />
+            <element signature="e#344#345#0" expanded="false" />
+            <element signature="e#384#385#0" expanded="false" />
+            <element signature="e#416#417#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1283,15 +1076,15 @@
         <state relative-caret-position="162">
           <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#330#331#0" expanded="true" />
-            <element signature="e#357#358#0" expanded="true" />
-            <element signature="e#399#400#0" expanded="true" />
-            <element signature="e#431#432#0" expanded="true" />
-            <element signature="e#481#482#0" expanded="true" />
-            <element signature="e#514#515#0" expanded="true" />
-            <element signature="e#579#580#0" expanded="true" />
-            <element signature="e#623#624#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#330#331#0" expanded="false" />
+            <element signature="e#357#358#0" expanded="false" />
+            <element signature="e#399#400#0" expanded="false" />
+            <element signature="e#431#432#0" expanded="false" />
+            <element signature="e#481#482#0" expanded="false" />
+            <element signature="e#514#515#0" expanded="false" />
+            <element signature="e#579#580#0" expanded="false" />
+            <element signature="e#623#624#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1301,15 +1094,15 @@
         <state relative-caret-position="270">
           <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#531#532#0" expanded="true" />
-            <element signature="e#558#559#0" expanded="true" />
-            <element signature="e#596#597#0" expanded="true" />
-            <element signature="e#628#629#0" expanded="true" />
-            <element signature="e#674#675#0" expanded="true" />
-            <element signature="e#707#708#0" expanded="true" />
-            <element signature="e#768#769#0" expanded="true" />
-            <element signature="e#812#813#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#531#532#0" expanded="false" />
+            <element signature="e#558#559#0" expanded="false" />
+            <element signature="e#596#597#0" expanded="false" />
+            <element signature="e#628#629#0" expanded="false" />
+            <element signature="e#674#675#0" expanded="false" />
+            <element signature="e#707#708#0" expanded="false" />
+            <element signature="e#768#769#0" expanded="false" />
+            <element signature="e#812#813#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1322,22 +1115,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/AuthorizationServerConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="27" column="21" lean-forward="true" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/pojos/user/UserPojo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="782">
           <caret line="73" column="45" lean-forward="false" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="45" />
           <folding>
-            <element signature="e#1376#1377#0" expanded="true" />
-            <element signature="e#1444#1445#0" expanded="true" />
-            <element signature="e#1500#1501#0" expanded="true" />
+            <element signature="e#1376#1377#0" expanded="false" />
+            <element signature="e#1444#1445#0" expanded="false" />
+            <element signature="e#1500#1501#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1388,18 +1173,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="71" selection-end-column="7" />
-          <folding>
-            <element signature="method#entityToPojo#0;class#SystemAnnouncementService#0" expanded="false" />
-            <element signature="method#pojoToEntity#0;class#SystemAnnouncementService#0" expanded="false" />
-            <element signature="method#save#0;class#SystemAnnouncementService#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemResourceService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="530">
@@ -1439,17 +1212,9 @@
         <state relative-caret-position="490">
           <caret line="58" column="0" lean-forward="true" selection-start-line="58" selection-start-column="0" selection-end-line="68" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
             <element signature="method#entityToPojo#0;class#AccessPrivilegeService#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/CustomUserDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1482,7 +1247,7 @@
         <state relative-caret-position="216">
           <caret line="12" column="14" lean-forward="false" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1495,44 +1260,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="1" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding>
-            <element signature="e#1349#1350#0" expanded="true" />
-            <element signature="e#1394#1395#0" expanded="true" />
-            <marker date="1516561019431" expanded="true" signature="3573:3581" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/Privilege.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
           <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
           <folding>
-            <element signature="e#1170#1171#0" expanded="true" />
-            <element signature="e#1208#1209#0" expanded="true" />
-            <element signature="e#1240#1241#0" expanded="true" />
-            <element signature="e#1316#1317#0" expanded="true" />
-            <element signature="e#1364#1365#0" expanded="true" />
-            <element signature="e#1602#1603#0" expanded="true" />
-            <element signature="e#1641#1642#0" expanded="true" />
-            <element signature="e#1807#1808#0" expanded="true" />
-            <element signature="e#1834#1835#0" expanded="true" />
-            <element signature="e#1874#1875#0" expanded="true" />
-            <element signature="e#1906#1907#0" expanded="true" />
-            <element signature="e#1972#1973#0" expanded="true" />
-            <element signature="e#2015#2016#0" expanded="true" />
+            <element signature="e#1170#1171#0" expanded="false" />
+            <element signature="e#1208#1209#0" expanded="false" />
+            <element signature="e#1240#1241#0" expanded="false" />
+            <element signature="e#1316#1317#0" expanded="false" />
+            <element signature="e#1364#1365#0" expanded="false" />
+            <element signature="e#1602#1603#0" expanded="false" />
+            <element signature="e#1641#1642#0" expanded="false" />
+            <element signature="e#1807#1808#0" expanded="false" />
+            <element signature="e#1834#1835#0" expanded="false" />
+            <element signature="e#1874#1875#0" expanded="false" />
+            <element signature="e#1906#1907#0" expanded="false" />
+            <element signature="e#1972#1973#0" expanded="false" />
+            <element signature="e#2015#2016#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1542,25 +1287,9 @@
         <state relative-caret-position="196">
           <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
           <folding>
-            <element signature="e#1294#1295#0" expanded="true" />
-            <element signature="e#1326#1327#0" expanded="true" />
+            <element signature="e#1294#1295#0" expanded="false" />
+            <element signature="e#1326#1327#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/WebSecurityConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-504">
-          <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="102" column="83" lean-forward="false" selection-start-line="102" selection-start-column="83" selection-end-line="102" selection-end-column="83" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1574,9 +1303,198 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/custom/CustomUserDetailService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="45" selection-end-column="7" />
+        <state relative-caret-position="270">
+          <caret line="28" column="65" lean-forward="true" selection-start-line="28" selection-start-column="65" selection-end-line="28" selection-end-column="65" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/uploader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="71" selection-end-column="7" />
+          <folding>
+            <element signature="method#entityToPojo#0;class#SystemAnnouncementService#0" expanded="false" />
+            <element signature="method#pojoToEntity#0;class#SystemAnnouncementService#0" expanded="false" />
+            <element signature="method#save#0;class#SystemAnnouncementService#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/entities/authority/FileUploadController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="27" lean-forward="false" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#137#138#0" expanded="true" />
+            <element signature="e#167#168#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/customExceptions/StorageFileNotFoundException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="66" lean-forward="false" selection-start-line="2" selection-start-column="66" selection-end-line="2" selection-end-column="66" />
+          <folding>
+            <element signature="e#161#162#0" expanded="true" />
+            <element signature="e#191#192#0" expanded="true" />
+            <element signature="e#267#268#0" expanded="true" />
+            <element signature="e#304#305#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/interfaces/IStorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="36" lean-forward="false" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/properties/AccessLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="26" column="11" lean-forward="false" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="40" lean-forward="false" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="31" column="22" lean-forward="false" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
+          <folding>
+            <element signature="e#1448#1449#0" expanded="true" />
+            <element signature="e#1493#1494#0" expanded="true" />
+            <marker date="1516615311132" expanded="true" signature="3793:3801" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/resource/ResourceServerConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/CustomUserDetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/AuthorizationServerConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="39" column="36" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/MethodSecurity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="102" column="83" lean-forward="false" selection-start-line="102" selection-start-column="83" selection-end-line="102" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/configurations/security/WebSecurityConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/properties/custom/StorageProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="59" lean-forward="true" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/global.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.12.RELEASE/afe9285e063739083bc9ea986731901f9a216fce/spring-beans-4.3.12.RELEASE-sources.jar!/org/springframework/beans/BeanUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/services/storage/StorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#805#822#1" expanded="true" />
+            <element signature="e#949#950#0" expanded="true" />
+            <element signature="e#1001#1002#0" expanded="true" />
+            <element signature="e#1858#1859#0" expanded="true" />
+            <element signature="e#1911#1912#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

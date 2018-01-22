@@ -5,10 +5,12 @@ import com.lms.entities.authority.AccessPrivilege;
 import com.lms.entities.authority.Privilege;
 import com.lms.entities.authority.Authority;
 import com.lms.entities.user.User;
+import com.lms.services.interfaces.StorageService;
 import com.lms.properties.AccessLevel;
 
 import com.lms.properties.Privileges;
 
+import com.lms.properties.custom.StorageProperties;
 import com.lms.repositories.authority.AccessPrivilegeRepository;
 import com.lms.repositories.authority.AuthorityRepository;
 import com.lms.repositories.authority.PrivilegeRepository;
@@ -17,11 +19,11 @@ import com.lms.repositories.authority.UserCoursePrivilegeRepository;
 import com.lms.repositories.user.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
 
-import com.lms.services.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageProperties.class)
 public class App {
 
 	@Bean
@@ -44,7 +47,7 @@ public class App {
 	}
 
 
-	@Autowired
+	@Bean
 	CommandLineRunner init(StorageService storageService){
 		return (args) ->{
 			storageService.init();

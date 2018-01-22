@@ -1,16 +1,15 @@
-package com.lms.interfaces;
+package com.lms.services.interfaces;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
-public interface IStorageService {
+public interface StorageService {
 
     void init();
 
-    void store(MultipartFile[] files);
+    void store(MultipartFile file);
 
     Path load(String filename);
 

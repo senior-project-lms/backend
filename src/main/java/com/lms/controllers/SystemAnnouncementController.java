@@ -1,7 +1,8 @@
 package com.lms.controllers;
 
 import com.lms.pojos.global.SystemAnnouncementPojo;
-import com.lms.services.impl.global.SystemAnnouncementService;
+import com.lms.services.impl.global.SystemAnnouncementServiceImpl;
+import com.lms.services.interfaces.SystemAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

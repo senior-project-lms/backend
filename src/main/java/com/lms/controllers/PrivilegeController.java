@@ -1,6 +1,7 @@
 package com.lms.controllers;
 
-import com.lms.services.impl.authority.AccessPrivilegeService;
+import com.lms.services.impl.authority.AccessPrivilegeServiceImpl;
+import com.lms.services.interfaces.AccessPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +20,7 @@ public class PrivilegeController {
     @RequestMapping(value = {"/me/priveleges"}, method = RequestMethod.GET)
     public List<Long> getAdminPrivileges(){
         try {
-            return accessPrivilegeService.getPrivileges();
+            return accessPrivilegeService.getAuthenticatedUserAccessPrivileges();
         }
         catch (Exception e){
             e.printStackTrace();

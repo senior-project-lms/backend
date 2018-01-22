@@ -8,7 +8,9 @@ import com.lms.pojos.authority.AccessPrivilegePojo;
 import com.lms.pojos.authority.PrivilegePojo;
 import com.lms.repositories.authority.AccessPrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.impl.user.UserService;
+import com.lms.services.interfaces.AccessPrivilegeService;
+import com.lms.services.interfaces.PrivilegeService;
+import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AccessPrivilegeService {
+public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
 
     @Autowired
     private AccessPrivilegeRepository accessPrivilegeRepository;
@@ -31,6 +33,14 @@ public class AccessPrivilegeService {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+
+
+
+    @Override
+    public AccessPrivilege pojoToEntity(AccessPrivilegePojo pojo) throws Exception {
+        return null;
+    }
+
     /**
      * Converts AccessPrivilege entity to AccessPrivilegePojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
@@ -40,6 +50,8 @@ public class AccessPrivilegeService {
      * @return AccessPrivilegePojo
      *
      */
+
+    @Override
     public AccessPrivilegePojo entityToPojo(AccessPrivilege entity) throws Exception{
         AccessPrivilegePojo pojo = new AccessPrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
@@ -67,7 +79,8 @@ public class AccessPrivilegeService {
      * @return List<Long>
      *
      */
-    public List<Long> getPrivileges() throws Exception{
+    @Override
+    public List<Long> getAuthenticatedUserAccessPrivileges() throws Exception{
         List<Long> privileges = new ArrayList<>();
         User user = customUserDetailService.getAuthenticatedUser();
         if (user != null){

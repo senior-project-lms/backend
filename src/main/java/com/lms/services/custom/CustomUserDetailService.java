@@ -21,7 +21,10 @@ public class CustomUserDetailService implements UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 
 
 	@Override
@@ -55,8 +58,6 @@ public class CustomUserDetailService implements UserDetailsService {
 		return this.userRepository.findByUsername(username);
 	}
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 
 	/**
 	 *

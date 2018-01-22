@@ -3,10 +3,11 @@ package com.lms.services.impl.authority;
 
 import com.lms.entities.authority.Privilege;
 import com.lms.pojos.authority.PrivilegePojo;
+import com.lms.services.interfaces.PrivilegeService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PrivilegeService {
+public class PrivilegeServiceImpl implements PrivilegeService{
 
 
 
@@ -19,7 +20,7 @@ public class PrivilegeService {
      * @return PrivilegePojo
      *
      */
-    public PrivilegePojo entityToPojo(Privilege entity, boolean userCoursePrivileges, boolean userTypeDefaultPrivileges, boolean adminPrivileges){
+    public PrivilegePojo entityToPojo(Privilege entity, boolean userCoursePrivileges, boolean userTypeDefaultPrivileges, boolean adminPrivileges) throws Exception{
         PrivilegePojo pojo = new PrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
@@ -37,5 +38,8 @@ public class PrivilegeService {
     }
 
 
-
+    @Override
+    public Privilege pojoToEntity(PrivilegePojo pojo) throws Exception {
+        return null;
+    }
 }

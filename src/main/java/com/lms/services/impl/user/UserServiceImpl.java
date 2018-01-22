@@ -3,9 +3,12 @@ package com.lms.services.impl.user;
 import com.lms.entities.user.User;
 import com.lms.pojos.user.UserPojo;
 import com.lms.repositories.user.UserRepository;
-import com.lms.services.impl.authority.AccessPrivilegeService;
-import com.lms.services.impl.authority.AuthorityService;
+import com.lms.services.impl.authority.AccessPrivilegeServiceImpl;
+import com.lms.services.impl.authority.AuthorityServiceImpl;
 import com.lms.services.custom.CustomUserDetailService;
+import com.lms.services.interfaces.AccessPrivilegeService;
+import com.lms.services.interfaces.AuthorityService;
+import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Service;
  * Created by umit.kas on 11.01.2018.
  */
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -32,6 +35,11 @@ public class UserService {
     private AccessPrivilegeService accessPrivilegeService;
 
 
+    @Override
+    public User pojoToEntity(UserPojo pojo) throws Exception {
+        return null;
+    }
+
     /**
      * Converts User entity to user pojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
@@ -42,6 +50,7 @@ public class UserService {
      * @return UserPojo
      *
      */
+    @Override
     public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) throws Exception{
         UserPojo pojo = new UserPojo();
         if (user != null){
@@ -78,12 +87,13 @@ public class UserService {
      * @return UserPojo
      *
      */
+    @Override
     public UserPojo getMe() throws Exception{
         UserPojo pojo = new UserPojo();
         User user = customUserDetailService.getAuthenticatedUser();
         if (user != null){
             pojo = entityToPojo(user, true, false, false);
-            pojo.setAccessPrivileges(accessPrivilegeService.getPrivileges());
+            pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
         }
 
         return pojo;

@@ -7,7 +7,9 @@ import com.lms.pojos.global.SystemAnnouncementPojo;
 import com.lms.pojos.global.SystemResourcePojo;
 import com.lms.repositories.global.SystemAnnouncementRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.impl.user.UserService;
+import com.lms.services.interfaces.SystemAnnouncementService;
+import com.lms.services.interfaces.SystemResourceService;
+import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SystemAnnouncementService {
+public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
 
 
     @Autowired
@@ -41,6 +43,7 @@ public class SystemAnnouncementService {
      * @param entity, systemResource
      * @return SystemAnnouncementPojo
      */
+    @Override
     public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource) throws Exception{
         SystemAnnouncementPojo pojo = new SystemAnnouncementPojo();
 
@@ -70,6 +73,7 @@ public class SystemAnnouncementService {
      * @param pojo
      * @return SystemAnnouncement
      */
+    @Override
     public SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo) throws Exception{
         SystemAnnouncement entity = new SystemAnnouncement();
 
@@ -106,6 +110,7 @@ public class SystemAnnouncementService {
      * @param page
      * @return  List<SystemAnnouncementPojo>
      */
+    @Override
     public List<SystemAnnouncementPojo> getAnnouncements(int page) throws Exception{
         List<SystemAnnouncementPojo> announcementPojos = new ArrayList<>();
 
@@ -133,6 +138,7 @@ public class SystemAnnouncementService {
      * @param pojo
      * @return boolean
      */
+    @Override
     public boolean save(SystemAnnouncementPojo pojo) throws Exception{
 
         User createdBy = customUserDetailService.getAuthenticatedUser();
@@ -154,7 +160,7 @@ public class SystemAnnouncementService {
                 resource.setVisible(true);
                 resource.setSystemAnnouncement(entity);
             }
-            return systemResourceService.save(resources);
+            return systemResourceService.saveEntities(resources);
         }
         else {
             return entity.getId() > 0;
@@ -175,6 +181,7 @@ public class SystemAnnouncementService {
      * @param publicKey
      * @return boolean
      */
+    @Override
     public boolean delete(String publicKey) throws Exception{
 
         User deletedBy = customUserDetailService.getAuthenticatedUser();

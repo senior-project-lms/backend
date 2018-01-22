@@ -2,10 +2,12 @@ package com.lms.services.storage;
 
 import com.lms.customExceptions.StorageException;
 import com.lms.customExceptions.StorageFileNotFoundException;
-import com.lms.interfaces.IStorageService;
+import com.lms.services.interfaces.StorageService;
+import com.lms.properties.custom.StorageProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,17 +20,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class StorageService implements IStorageService{
+public class StorageServiceImpl implements StorageService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${storage.path}")
-    private String path = "/home/umitkas/Pictures/files";
 
-    private final Path rootLocation;
 
-    public StorageService() {
-        this.rootLocation  = Paths.get(path);
+
+    private  Path rootLocation;
+
+
+    @Autowired
+    public StorageServiceImpl(StorageProperties properties) {
+        this.rootLocation  = Paths.get(properties.getRootPath());
     }
 
     @Override
@@ -38,27 +42,29 @@ public class StorageService implements IStorageService{
             Files.createDirectories(rootLocation);
         }
         catch (IOException e){
-            throw new StorageException("Could not initilize storage", e);
+            throw new StorageException("Could not initialize storage", e);
         }
     }
 
 
     @Override
-    public void store(MultipartFile[] files) {
+    public void store(MultipartFile file) {
 
-        for(MultipartFile file : files){
+
             try {
 
                 if (file.isEmpty()) {
                     throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
                 }
                 Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
             }
-        }
+
 
     }
+
 
 
     @Override
@@ -86,6 +92,8 @@ public class StorageService implements IStorageService{
     public void deleteAll() {
 
     }
+
+
 
 
 

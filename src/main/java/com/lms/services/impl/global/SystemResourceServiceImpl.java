@@ -3,14 +3,15 @@ package com.lms.services.impl.global;
 import com.lms.entities.global.SystemResource;
 import com.lms.pojos.global.SystemResourcePojo;
 import com.lms.repositories.global.SystemResourceRepository;
-import com.lms.services.impl.global.SystemAnnouncementService;
+import com.lms.services.interfaces.SystemAnnouncementService;
+import com.lms.services.interfaces.SystemResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SystemResourceService {
+public class SystemResourceServiceImpl implements SystemResourceService{
 
     @Autowired
     SystemAnnouncementService systemAnnouncementService;
@@ -29,6 +30,7 @@ public class SystemResourceService {
      * @param entity, systemAnnouncement
      * @return SystemResourcePojo
      */
+    @Override
     public SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement) throws Exception{
 
         SystemResourcePojo pojo = new SystemResourcePojo();
@@ -52,6 +54,7 @@ public class SystemResourceService {
      * @param pojo
      * @return SystemResource
      */
+    @Override
     public SystemResource pojoToEntity(SystemResourcePojo pojo) throws Exception{
         SystemResource entity = new SystemResource();
 
@@ -76,13 +79,22 @@ public class SystemResourceService {
      * @param resources
      * @return boolean
      */
-    public boolean save(List<SystemResource> resources) throws Exception{
-
+    @Override
+    public boolean saveEntities(List<SystemResource> resources) throws Exception {
         resources.stream().map(resource -> {
             resource.generatePublicKey();
             return resource;
         });
         systemResourceRepository.save(resources);
-        return true;
+        return true;    }
+
+    @Override
+    public boolean save(SystemResourcePojo pojo) throws Exception {
+        return false;
+    }
+
+    @Override
+    public boolean save(List<SystemResourcePojo> pojos) throws Exception {
+        return false;
     }
 }

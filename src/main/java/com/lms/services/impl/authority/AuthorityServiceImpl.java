@@ -2,11 +2,12 @@ package com.lms.services.impl.authority;
 
 import com.lms.entities.authority.Authority;
 import com.lms.pojos.authority.AuthorityPojo;
+import com.lms.services.interfaces.AuthorityService;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthorityService {
+public class AuthorityServiceImpl implements AuthorityService{
 
 
     /**
@@ -18,7 +19,8 @@ public class AuthorityService {
      * @return AuthorityPojo
      *
      */
-    public AuthorityPojo entityToPojo(Authority entity){
+    @Override
+    public AuthorityPojo entityToPojo(Authority entity) throws Exception{
         AuthorityPojo pojo = new AuthorityPojo();
         if (entity != null){
             pojo.setAccessLevel(entity.getAccessLevel());

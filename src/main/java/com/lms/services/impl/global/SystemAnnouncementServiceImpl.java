@@ -141,30 +141,30 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
     @Override
     public boolean save(SystemAnnouncementPojo pojo) throws Exception{
 
+        List<String> resourceKeys = pojo.getResourceKeys();
+
         User createdBy = customUserDetailService.getAuthenticatedUser();
         SystemAnnouncement entity = this.pojoToEntity(pojo);
 
         entity.generatePublicKey();
         entity.setCreatedBy(createdBy);
 
-        List<SystemResource> resources = entity.getResources();
         entity.setResources(null);
         entity.setVisible(true);
         entity = systemAnnouncementRepository.save(entity);
 
 
-        if (resources != null){
+        if (resourceKeys != null){
 
-            for (SystemResource resource : resources) {
-                resource.setCreatedBy(createdBy);
-                resource.setVisible(true);
-                resource.setSystemAnnouncement(entity);
+            for (String key: resourceKeys) {
+                systemResourceService.setResourceAnnouncement(key, entity);
             }
-            return systemResourceService.saveEntities(resources);
+            return true;
         }
         else {
             return entity.getId() > 0;
         }
+
     }
 
 

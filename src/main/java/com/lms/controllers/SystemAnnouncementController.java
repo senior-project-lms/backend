@@ -14,6 +14,8 @@ import java.util.List;
 @RequestMapping(value = {"/api"})
 public class SystemAnnouncementController {
 
+    private final String systemAnnouncementServeFileURLPath = "/api/system-announcement/storage/file";
+
     @Autowired
     private SystemAnnouncementService systemAnnouncementService;
 

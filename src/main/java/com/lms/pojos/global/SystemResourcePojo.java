@@ -12,6 +12,10 @@ public class SystemResourcePojo extends BasePojo {
 
     private SystemAnnouncementPojo announcment;
 
+    private String originalFileName;
+
+    private String url;
+
 
     public String getName() {
         return name;
@@ -44,5 +48,21 @@ public class SystemResourcePojo extends BasePojo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

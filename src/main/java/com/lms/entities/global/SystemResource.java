@@ -16,6 +16,10 @@ public class SystemResource extends BaseEntity {
 
     private String type;
 
+    private String originalFileName;
+
+    private String url;
+
     @ManyToOne
     private SystemAnnouncement systemAnnouncement;
 
@@ -50,5 +54,21 @@ public class SystemResource extends BaseEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

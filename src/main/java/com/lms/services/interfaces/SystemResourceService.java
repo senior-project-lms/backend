@@ -1,5 +1,6 @@
 package com.lms.services.interfaces;
 
+import com.lms.entities.global.SystemAnnouncement;
 import com.lms.entities.global.SystemResource;
 import com.lms.pojos.global.SystemResourcePojo;
 
@@ -17,5 +18,14 @@ public interface SystemResourceService {
     boolean save(SystemResourcePojo pojo) throws Exception;
 
     boolean save(List<SystemResourcePojo> pojos) throws Exception;
+
+    boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws Exception;
+
+    SystemResourcePojo getByName(String name) throws Exception;
+
+    SystemResourcePojo getByPublicKey(String publicKey) throws Exception;
+
+    boolean delete(String publicKey) throws Exception;
+
 
 }

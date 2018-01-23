@@ -9,12 +9,14 @@ public interface StorageService {
 
     void init();
 
-    void store(MultipartFile file);
+    void store(String path, String filename, MultipartFile file);
 
-    Path load(String filename);
+    Path load(String path, String filename);
 
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String path, String filename);
 
     void deleteAll();
+
+    void delete(String path, String filename);
 
 }

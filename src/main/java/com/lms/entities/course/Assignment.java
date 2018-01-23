@@ -20,7 +20,7 @@ public class Assignment extends BaseEntity {
     private Course course;
 
     @OneToMany
-    private List<Resource> resources;
+    private List<CourseResource> courseResources;
 
     private String content;
 
@@ -40,12 +40,12 @@ public class Assignment extends BaseEntity {
         this.course = course;
     }
 
-    public List<Resource> getResources() {
-        return resources;
+    public List<CourseResource> getCourseResources() {
+        return courseResources;
     }
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
+    public void setCourseResources(List<CourseResource> courseResources) {
+        this.courseResources = courseResources;
     }
 
     public String getContent() {

@@ -14,4 +14,9 @@ import java.util.List;
 public interface SystemResourceRepository extends JpaRepository<SystemResource, Long>{
 
     List<SystemResource> findAllBySystemAnnouncement(SystemAnnouncement systemAnnouncement);
+
+    SystemResource findByName(String name);
+
+    SystemResource findByPublicKey(String publicKey);
+
 }

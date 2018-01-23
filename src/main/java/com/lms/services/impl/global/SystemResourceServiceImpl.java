@@ -1,8 +1,11 @@
 package com.lms.services.impl.global;
 
+import com.lms.entities.global.SystemAnnouncement;
 import com.lms.entities.global.SystemResource;
+import com.lms.entities.user.User;
 import com.lms.pojos.global.SystemResourcePojo;
 import com.lms.repositories.global.SystemResourceRepository;
+import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import com.lms.services.interfaces.SystemResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,13 @@ import java.util.List;
 public class SystemResourceServiceImpl implements SystemResourceService{
 
     @Autowired
-    SystemAnnouncementService systemAnnouncementService;
+    private CustomUserDetailService customUserDetailService;
 
     @Autowired
-    SystemResourceRepository systemResourceRepository;
+    private SystemAnnouncementService systemAnnouncementService;
+
+    @Autowired
+    private SystemResourceRepository systemResourceRepository;
 
     // file is not added inside the pojo and entity
 
@@ -37,9 +43,12 @@ public class SystemResourceServiceImpl implements SystemResourceService{
 
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
-        pojo.setPath(entity.getPath());
+        //pojo.setPath(entity.getPath());
+        pojo.setUrl(entity.getUrl());
         pojo.setType(entity.getType());
 
+
+        pojo.setOriginalFileName(entity.getOriginalFileName());
         if (systemAnnouncement){
             pojo.setAnnouncment(systemAnnouncementService.entityToPojo(entity.getSystemAnnouncement(), false));
         }
@@ -59,7 +68,10 @@ public class SystemResourceServiceImpl implements SystemResourceService{
         SystemResource entity = new SystemResource();
 
         entity.setName(pojo.getName());
-
+        entity.setPath(pojo.getPath());
+        entity.setType(pojo.getType());
+        entity.setOriginalFileName(pojo.getOriginalFileName());
+        entity.setUrl(pojo.getUrl());
         if (pojo.getPublicKey() != null){
             entity.setPublicKey(pojo.getPublicKey());
         }
@@ -90,11 +102,58 @@ public class SystemResourceServiceImpl implements SystemResourceService{
 
     @Override
     public boolean save(SystemResourcePojo pojo) throws Exception {
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        SystemResource entity = this.pojoToEntity(pojo);
+        entity.generatePublicKey();
+        entity.setVisible(true);
+        entity.setCreatedBy(authenticatedUser);
+        return systemResourceRepository.save(entity).getId() > 0;
+    }
+
+    @Override
+    public boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws Exception{
+        SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
+        if (entity != null){
+            entity.setSystemAnnouncement(announcement);
+            return systemResourceRepository.save(entity).getId() > 0;
+        }
         return false;
+
     }
 
     @Override
     public boolean save(List<SystemResourcePojo> pojos) throws Exception {
+        return false;
+    }
+
+    @Override
+    public SystemResourcePojo getByName(String name) throws Exception {
+        SystemResource entity = systemResourceRepository.findByName(name);
+        if (entity != null){
+            return this.entityToPojo(entity, false);
+        }
+        return null;
+    }
+
+    @Override
+    public SystemResourcePojo getByPublicKey(String publicKey) throws Exception {
+        SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
+        if (entity != null){
+            return this.entityToPojo(entity, false);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean delete(String publicKey) throws Exception{
+
+        SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
+
+        if (entity != null){
+            entity.setVisible(false);
+            return systemResourceRepository.save(entity).getId() > 0;
+        }
         return false;
     }
 }

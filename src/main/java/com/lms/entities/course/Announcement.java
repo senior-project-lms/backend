@@ -1,8 +1,6 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.entities.course.Course;
-import com.lms.entities.course.Resource;
 import com.lms.properties.PriorityColor;
 
 import javax.persistence.*;
@@ -29,7 +27,7 @@ public class Announcement extends BaseEntity {
     private int priority;
 
     @OneToMany(mappedBy = "announcement")
-    private List<Resource> resources;
+    private List<CourseResource> courseResources;
 
     public String getTitle() {
         return title;
@@ -71,11 +69,11 @@ public class Announcement extends BaseEntity {
         this.priority = priority;
     }
 
-    public List<Resource> getResources() {
-        return resources;
+    public List<CourseResource> getCourseResources() {
+        return courseResources;
     }
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
+    public void setCourseResources(List<CourseResource> courseResources) {
+        this.courseResources = courseResources;
     }
 }

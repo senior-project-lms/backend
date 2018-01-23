@@ -15,6 +15,12 @@ public class SystemAnnouncementPojo extends BasePojo {
 
     private List<SystemResourcePojo> resources;
 
+    private List<String> imagePublicKeys;
+
+    private List<String> resourceKeys;
+
+
+
     public String getTitle() {
         return title;
     }
@@ -45,5 +51,21 @@ public class SystemAnnouncementPojo extends BasePojo {
 
     public void setResources(List<SystemResourcePojo> resources) {
         this.resources = resources;
+    }
+
+    public List<String> getImagePublicKeys() {
+        return imagePublicKeys;
+    }
+
+    public void setImagePublicKeys(List<String> imagePublicKeys) {
+        this.imagePublicKeys = imagePublicKeys;
+    }
+
+    public List<String> getResourceKeys() {
+        return resourceKeys;
+    }
+
+    public void setResourceKeys(List<String> resourceKeys) {
+        this.resourceKeys = resourceKeys;
     }
 }

@@ -18,7 +18,7 @@ public class ResourcePackage extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "resourcePackage")
-    private List<Resource> resources;
+    private List<CourseResource> courseResources;
 
     public String getName() {
         return name;
@@ -28,11 +28,11 @@ public class ResourcePackage extends BaseEntity {
         this.name = name;
     }
 
-    public List<Resource> getResources() {
-        return resources;
+    public List<CourseResource> getCourseResources() {
+        return courseResources;
     }
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
+    public void setCourseResources(List<CourseResource> courseResources) {
+        this.courseResources = courseResources;
     }
 }

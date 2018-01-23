@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "resources")
-public class Resource extends BaseEntity {
+public class CourseResource extends BaseEntity {
 
 
     private String name;

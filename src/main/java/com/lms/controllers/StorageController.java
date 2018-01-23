@@ -59,6 +59,16 @@ public class StorageController {
         return  upload(properties.getSystemAnnouncementFilePath(), file);
     }
 
+    @RequestMapping(value = {"/system-announcement/storage/file/{filename:.+}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Resource> systemAnnouncementServeFile(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(properties.getSystemAnnouncementFilePath(), filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+
     @RequestMapping(value = {"/admin/system-announcement/storage/image/{publicKey}"}, method = RequestMethod.DELETE)
     public void systemAnnouncementDeleteImage(@PathVariable String publicKey){
         try {

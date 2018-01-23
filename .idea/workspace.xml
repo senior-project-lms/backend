@@ -2,30 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f065aafe-6dd8-445a-a5c9-a3b9da1b30ac" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/configurations/resource/StaticResourceConfiguration.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/storage/StorageServiceImpl.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_main.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/backend_test.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/application.properties" afterPath="$PROJECT_DIR$/out/production/resources/application.properties" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/controllers/SystemAnnouncementController.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/controllers/SystemAnnouncementController.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/Announcement.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/Announcement.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/Assignment.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/Assignment.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/Resource.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/CourseResource.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/ResourcePackage.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/course/ResourcePackage.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/entities/global/SystemResource.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/entities/global/SystemResource.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/pojos/global/SystemAnnouncementPojo.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/pojos/global/SystemAnnouncementPojo.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/pojos/global/SystemResourcePojo.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/pojos/global/SystemResourcePojo.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/properties/custom/StorageProperties.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/properties/custom/StorageProperties.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/repositories/global/SystemResourceRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/repositories/global/SystemResourceRepository.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemAnnouncementServiceImpl.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemResourceServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/impl/global/SystemResourceServiceImpl.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/interfaces/StorageService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/interfaces/StorageService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/interfaces/SystemResourceService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lms/services/interfaces/SystemResourceService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lms/services/storage/StorageServiceImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -109,8 +86,8 @@
       <file leaf-file-name="StorageController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="954">
-              <caret line="116" column="37" lean-forward="false" selection-start-line="116" selection-start-column="37" selection-end-line="116" selection-end-column="37" />
+            <state relative-caret-position="594">
+              <caret line="65" column="96" lean-forward="false" selection-start-line="65" selection-start-column="96" selection-end-line="65" selection-end-column="96" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1068,7 +1045,7 @@
       <workItem from="1516092554741" duration="1109000" />
       <workItem from="1516097097635" duration="18631000" />
       <workItem from="1516269810977" duration="18410000" />
-      <workItem from="1516439910274" duration="80072000" />
+      <workItem from="1516439910274" duration="80733000" />
     </task>
     <task id="LOCAL-00001" summary="course owner is added to course entity">
       <created>1516013550215</created>
@@ -1088,7 +1065,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149495000" />
+    <option name="totallyTimeSpent" value="150156000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="1046" width="1865" height="1084" extended-state="6" />
@@ -1104,7 +1081,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24958768" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3068063" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2104712" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27958116" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1634,8 +1611,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lms/controllers/StorageController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="954">
-          <caret line="116" column="37" lean-forward="false" selection-start-line="116" selection-start-column="37" selection-end-line="116" selection-end-column="37" />
+        <state relative-caret-position="594">
+          <caret line="65" column="96" lean-forward="false" selection-start-line="65" selection-start-column="96" selection-end-line="65" selection-end-column="96" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

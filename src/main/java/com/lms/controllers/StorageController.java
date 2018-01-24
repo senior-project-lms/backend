@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +34,6 @@ public class StorageController {
     private SystemResourceService systemResourceService;
 
 
-
-
     @RequestMapping(value = {"/admin/system-announcement/storage/image"}, method = RequestMethod.POST)
     public SystemResourcePojo systemAnnouncementUploadImage(@RequestParam MultipartFile file){
 
@@ -52,23 +51,6 @@ public class StorageController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-
-    @RequestMapping(value = {"/admin/system-announcement/storage/file"}, method = RequestMethod.POST)
-    public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file){
-
-        return  upload(properties.getSystemAnnouncementFilePath(), file);
-    }
-
-    @RequestMapping(value = {"/system-announcement/storage/file/{filename:.+}"}, method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Resource> systemAnnouncementServeFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(properties.getSystemAnnouncementFilePath(), filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
-
-
     @RequestMapping(value = {"/admin/system-announcement/storage/image/{publicKey}"}, method = RequestMethod.DELETE)
     public void systemAnnouncementDeleteImage(@PathVariable String publicKey){
         try {
@@ -85,6 +67,27 @@ public class StorageController {
     }
 
 
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
+    @RequestMapping(value = {"/admin/system-announcement/storage/file"}, method = RequestMethod.POST)
+    public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file){
+
+        return  upload(properties.getSystemAnnouncementFilePath(), file);
+    }
+
+
+    @RequestMapping(value = {"/system-announcement/storage/file/{filename:.+}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Resource> systemAnnouncementServeFile(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(properties.getSystemAnnouncementFilePath(), filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+
+
+
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
     @RequestMapping(value = {"/admin/system-announcement/storage/file/{publicKey}"}, method = RequestMethod.DELETE)
     public boolean systemAnnouncementDeleteFile(@PathVariable String publicKey){
         try {

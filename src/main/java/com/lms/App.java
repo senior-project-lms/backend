@@ -102,7 +102,7 @@ public class App {
 			accessPrivilege.setVisible(true);
 			accessPrivilege.setCreatedBy(user);
 			accessPrivilege.setUser(user);
-			accessPrivilegeRepository.save(accessPrivilege);
+			accessPrivilege = accessPrivilegeRepository.save(accessPrivilege);
 
 
 			user = new User();

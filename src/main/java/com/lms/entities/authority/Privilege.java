@@ -29,11 +29,7 @@ public class Privilege extends BaseEntity {
     private List<UserTypeDefaultPrivilege> userTypeDefaultPrivileges;
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "admin_user_privileges",
-            joinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="admin_privilege_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "privileges")
     private List<AccessPrivilege> accessPrivileges;
 
 

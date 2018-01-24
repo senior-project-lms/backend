@@ -3,10 +3,13 @@ package com.lms.services.impl.global;
 import com.lms.entities.global.SystemAnnouncement;
 import com.lms.entities.global.SystemResource;
 import com.lms.entities.user.User;
+import com.lms.pojos.MailPojo;
 import com.lms.pojos.global.SystemAnnouncementPojo;
 import com.lms.pojos.global.SystemResourcePojo;
+import com.lms.pojos.user.UserPojo;
 import com.lms.repositories.global.SystemAnnouncementRepository;
 import com.lms.services.custom.CustomUserDetailService;
+import com.lms.services.interfaces.MailService;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import com.lms.services.interfaces.SystemResourceService;
 import com.lms.services.interfaces.UserService;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
@@ -33,6 +37,10 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private MailService mailService;
+
 
 
     /**
@@ -133,6 +141,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * save entity
      * then iterate resources, add who create it, visibilty and announcement, which is saved
      * then save the resources by its service
+     * then sent mail to all users via mail service
      *
      * @author umit.kas
      * @param pojo
@@ -154,16 +163,29 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
         entity = systemAnnouncementRepository.save(entity);
 
 
-        if (resourceKeys != null){
+        if (entity.getId() > 0 && resourceKeys != null){
 
             for (String key: resourceKeys) {
                 systemResourceService.setResourceAnnouncement(key, entity);
             }
+            // mail stuff
+
+            // get mail addresses of all visible users
+            List<String> emailAddresses = userService.getAllByVisible(true).stream().map(user -> user.getEmail()).collect(Collectors.toList());
+
+            MailPojo mailPojo = new MailPojo();
+            mailPojo.setTo(emailAddresses);
+            mailPojo.setSubject(String.format("%s", "System Announcement"));
+            String mailText = String.format("%s", pojo.getContent());
+            mailPojo.setText(mailText);
+
+            // open later, tested, but mail informations will not shared on github
+            //mailService.send(mailPojo);
+
             return true;
         }
-        else {
-            return entity.getId() > 0;
-        }
+
+        return false;
 
     }
 

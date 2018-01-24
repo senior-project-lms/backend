@@ -3,6 +3,8 @@ package com.lms.services.interfaces;
 import com.lms.entities.user.User;
 import com.lms.pojos.user.UserPojo;
 
+import java.util.List;
+
 public interface UserService {
 
 
@@ -11,6 +13,8 @@ public interface UserService {
     User pojoToEntity(UserPojo pojo) throws Exception;
 
     UserPojo getMe() throws Exception;
+
+    List<UserPojo> getAllByVisible(boolean visible) throws Exception;
 
 
     }

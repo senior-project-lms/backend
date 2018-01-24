@@ -24,6 +24,10 @@ repositories {
 
 
 dependencies {
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.5.9.RELEASE'
+
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
 	compile "org.springframework.boot:spring-boot-configuration-processor"

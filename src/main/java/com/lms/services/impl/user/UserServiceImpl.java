@@ -13,6 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 /**
  * Created by umit.kas on 11.01.2018.
  */
@@ -100,6 +105,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public List<UserPojo> getAllByVisible(boolean visible) throws Exception{
+        List<User> entities = userRepository.findAllByVisible(true);
 
+        List<UserPojo> pojos = new ArrayList<>();
 
+        if (entities != null){
+
+            for (User user : entities){
+                pojos.add(entityToPojo(user, true, false, false));
+            }
+        }
+        return pojos;
+    }
 }

@@ -25,6 +25,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
@@ -32,7 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
+@EnableAsync
+@EnableConfigurationProperties({StorageProperties.class})
 public class App {
 
 	@Bean
@@ -77,6 +79,7 @@ public class App {
 			user.setAuthority(role);
 			user.setBlocked(false);
 			user.setEnabled(true);
+			user.setVisible(true);
 			user = customUserDetailService.save(user);
 			//
 
@@ -112,7 +115,9 @@ public class App {
 			user.setAuthority(role);
 			user.setBlocked(false);
 			user.setEnabled(true);
+			user.setVisible(true);
 			user = customUserDetailService.save(user);
+
 
 		}
 	}

@@ -16,5 +16,11 @@ public interface UserService {
 
     List<UserPojo> getAllByVisible(boolean visible) throws Exception;
 
+    UserPojo getUser(String publicKey) throws  Exception;
 
-    }
+    boolean save(UserPojo pojo) throws  Exception;
+
+    boolean save(List<UserPojo> pojos) throws  Exception;
+
+
+}

@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface AuthorityRepository extends JpaRepository<Authority, Long>{
+public interface AuthorityRepository extends JpaRepository<Authority, Long> {
+
+    Authority findByAccessLevel(long accessLevel);
 
 }

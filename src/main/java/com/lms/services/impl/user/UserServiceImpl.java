@@ -1,5 +1,6 @@
 package com.lms.services.impl.user;
 
+import com.lms.entities.authority.Authority;
 import com.lms.entities.user.User;
 import com.lms.pojos.user.UserPojo;
 import com.lms.repositories.user.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
@@ -42,23 +44,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User pojoToEntity(UserPojo pojo) throws Exception {
-        return null;
+        User entity = new User();
+
+        entity.setUsername(pojo.getUsername());
+        entity.setEmail(pojo.getEmail());
+        entity.setPassword(pojo.getPassword());
+        entity.setSurname(pojo.getSurname());
+        entity.setName(pojo.getName());
+        entity.setPublicKey(pojo.getPublicKey());
+        if (pojo.getAuthority() != null) {
+            entity.setAuthority(authorityService.pojoToEntity(pojo.getAuthority()));
+        }
+        //do not forget to convert other entities to pojos
+
+        return entity;
     }
+
 
     /**
      * Converts User entity to user pojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
      *
-     *
-     * @author umit.kas
      * @param user, authority, ownedCourses, registeredCoursesAsStudent
      * @return UserPojo
-     *
+     * @author umit.kas
      */
     @Override
-    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) throws Exception{
+    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) throws Exception {
         UserPojo pojo = new UserPojo();
-        if (user != null){
+        if (user != null) {
             pojo.setUsername(user.getUsername());
             pojo.setEmail(user.getEmail());
             pojo.setName(user.getName());
@@ -69,10 +83,10 @@ public class UserServiceImpl implements UserService {
             }
 
             // fill the empty if blocks as directive of the backend document
-            if(ownedCourses){
+            if (ownedCourses) {
 
             }
-            if (registeredCoursesAsStudent){
+            if (registeredCoursesAsStudent) {
 
             }
 
@@ -84,19 +98,17 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     *
      * Returns authenticated user informations with the access privileges
      *
-     * @author umit.kas
      * @param
      * @return UserPojo
-     *
+     * @author umit.kas
      */
     @Override
-    public UserPojo getMe() throws Exception{
+    public UserPojo getMe() throws Exception {
         UserPojo pojo = new UserPojo();
         User user = customUserDetailService.getAuthenticatedUser();
-        if (user != null){
+        if (user != null) {
             pojo = entityToPojo(user, true, false, false);
             pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
         }
@@ -106,17 +118,77 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserPojo> getAllByVisible(boolean visible) throws Exception{
+    public List<UserPojo> getAllByVisible(boolean visible) throws Exception {
         List<User> entities = userRepository.findAllByVisible(true);
 
         List<UserPojo> pojos = new ArrayList<>();
 
-        if (entities != null){
+        if (entities != null) {
 
-            for (User user : entities){
+            for (User user : entities) {
                 pojos.add(entityToPojo(user, true, false, false));
             }
         }
         return pojos;
     }
+
+    @Override
+    public UserPojo getUser(String publicKey) throws Exception {
+        UserPojo pojo = new UserPojo();
+        User entity = userRepository.findByPublicKey(publicKey);
+        if (entity != null) {
+            pojo = entityToPojo(entity, true, false, false);
+        }
+        return pojo;
+    }
+
+    @Override
+    public boolean save(UserPojo pojo) throws Exception {
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        User entity = pojoToEntity(pojo);
+        entity.generatePublicKey();
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        if (entity.getAuthority() != null) {
+            Authority authorityEntity = authorityService.getAuthorityByAccessLevel(entity.getAuthority().getAccessLevel());
+            entity.setAuthority(authorityEntity);
+            entity.setEnabled(true);
+            entity.setCreatedBy(authenticatedUser);
+            return userRepository.save(entity).getId() > 0;
+
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean save(List<UserPojo> pojos) throws Exception {
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        List<User> entities = new ArrayList<>();
+
+        for (UserPojo pojo : pojos) {
+
+            User entity = pojoToEntity(pojo);
+            entity.generatePublicKey();
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+
+            if (entity.getAuthority() != null) {
+                Authority authorityEntity = authorityService.getAuthorityByAccessLevel(entity.getAuthority().getAccessLevel());
+                entity.setAuthority(authorityEntity);
+                entity.setVisible(true);
+                entity.setEnabled(true);
+                entity.setCreatedBy(authenticatedUser);
+                entities.add(entity);
+
+            }
+
+        }
+
+        userRepository.save(entities);
+        return true;
+
+    }
+
+
 }

@@ -1,9 +1,11 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
+import com.lms.entities.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +22,9 @@ public class QaAnswer extends BaseEntity {
     private QaQuestion question;
 
     private boolean verified;
+
+    @OneToOne
+    private User verifiedBy;
 
     public String getContent() {
         return content;

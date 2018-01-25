@@ -16,4 +16,27 @@ public class UserCoursePrivilegePojo extends BaseEntity{
 
     private List<PrivilegePojo> privileges;
 
+    public UserPojo getUser() {
+        return user;
+    }
+
+    public void setUser(UserPojo user) {
+        this.user = user;
+    }
+
+    public CoursePojo getCourse() {
+        return course;
+    }
+
+    public void setCourse(CoursePojo course) {
+        this.course = course;
+    }
+
+    public List<PrivilegePojo> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(List<PrivilegePojo> privileges) {
+        this.privileges = privileges;
+    }
 }

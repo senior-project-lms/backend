@@ -17,7 +17,7 @@ public class QtQuestionUserAnswer extends BaseEntity {
     private QtQuestion question;
 
     @OneToOne
-    private  QtAvailableAnswers answer;
+    private QtAvailableAnswer answer;
 
 
     public QtQuestion getQuestion() {
@@ -28,11 +28,11 @@ public class QtQuestionUserAnswer extends BaseEntity {
         this.question = question;
     }
 
-    public QtAvailableAnswers getAnswer() {
+    public QtAvailableAnswer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(QtAvailableAnswers answer) {
+    public void setAnswer(QtAvailableAnswer answer) {
         this.answer = answer;
     }
 }

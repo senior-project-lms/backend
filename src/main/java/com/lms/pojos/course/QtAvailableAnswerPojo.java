@@ -1,18 +1,8 @@
-package com.lms.entities.course;
+package com.lms.pojos.course;
 
-import com.lms.entities.BaseEntity;
 import com.lms.properties.AnswerChoice;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-/**
- * Created by umit.kas on 05.12.2017.
- */
-@Entity
-@Table(name = "qt_available_answers")
-public class QtAvailableAnswers extends BaseEntity {
+public class QtAvailableAnswerPojo {
 
     private String text;
 
@@ -20,8 +10,7 @@ public class QtAvailableAnswers extends BaseEntity {
 
     private boolean correct;
 
-    @ManyToOne
-    private QtQuestion question;
+    private QtQuestionPojo question;
 
     public String getText() {
         return text;
@@ -47,11 +36,11 @@ public class QtAvailableAnswers extends BaseEntity {
         this.correct = correct;
     }
 
-    public QtQuestion getQuestion() {
+    public QtQuestionPojo getQuestion() {
         return question;
     }
 
-    public void setQuestion(QtQuestion question) {
+    public void setQuestion(QtQuestionPojo question) {
         this.question = question;
     }
 }

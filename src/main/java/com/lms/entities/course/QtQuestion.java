@@ -19,9 +19,8 @@ public class QtQuestion extends BaseEntity {
     private String content;
 
     @OneToMany
-    private List<QtAvailableAnswers> answers;
+    private List<QtAvailableAnswer> answers;
 
-    private float weight;
 
 
     public String getTitle() {
@@ -40,19 +39,12 @@ public class QtQuestion extends BaseEntity {
         this.content = content;
     }
 
-    public List<QtAvailableAnswers> getAnswers() {
+    public List<QtAvailableAnswer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<QtAvailableAnswers> answers) {
+    public void setAnswers(List<QtAvailableAnswer> answers) {
         this.answers = answers;
     }
 
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
 }

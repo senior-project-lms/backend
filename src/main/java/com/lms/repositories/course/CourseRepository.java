@@ -16,4 +16,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findByPublicKey(String publicKey);
 
     List<Course> findAllByRegisteredUsersIn(List<User> registeredUsers);
+
+    List<Course> findAllByVisible(boolean visible);
+
+
 }

@@ -1,6 +1,7 @@
 package com.lms.entities.authority;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "privileges")
+@Data
 public class Privilege extends BaseEntity {
 
     @Column(unique = true)
@@ -31,48 +33,5 @@ public class Privilege extends BaseEntity {
 
     @ManyToMany(mappedBy = "privileges")
     private List<AccessPrivilege> accessPrivileges;
-
-
-    public long getCode() {
-        return code;
-    }
-
-    public void setCode(long code) {
-        this.code = code;
-    }
-
-    public List<UserTypeDefaultPrivilege> getUserTypeDefaultPrivileges() {
-        return userTypeDefaultPrivileges;
-    }
-
-    public void setUserTypeDefaultPrivileges(List<UserTypeDefaultPrivilege> userTypeDefaultPrivileges) {
-        this.userTypeDefaultPrivileges = userTypeDefaultPrivileges;
-    }
-
-    public List<AccessPrivilege> getAccessPrivileges() {
-        return accessPrivileges;
-    }
-
-    public void setAccessPrivileges(List<AccessPrivilege> accessPrivileges) {
-        this.accessPrivileges = accessPrivileges;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<UserCoursePrivilege> getUserCoursePrivileges() {
-        return userCoursePrivileges;
-    }
-
-    public void setUserCoursePrivileges(List<UserCoursePrivilege> userCoursePrivileges) {
-        this.userCoursePrivileges = userCoursePrivileges;
-    }
-
-
 
 }

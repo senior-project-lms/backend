@@ -1,10 +1,12 @@
 package com.lms.pojos;
 
 import com.lms.pojos.user.UserPojo;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class BasePojo implements Serializable {
 
     private String publicKey;
@@ -18,45 +20,4 @@ public class BasePojo implements Serializable {
     private Date updatedAt;
 
     private UserPojo updatedBy;
-
-
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public UserPojo getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(UserPojo createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public UserPojo getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(UserPojo updatedBy) {
-        this.updatedBy = updatedBy;
-    }
 }

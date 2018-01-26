@@ -2,6 +2,7 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import com.lms.entities.user.User;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "qa_answers")
+@Data
 public class QaAnswer extends BaseEntity {
 
 
@@ -26,27 +28,4 @@ public class QaAnswer extends BaseEntity {
     @OneToOne
     private User verifiedBy;
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public QaQuestion getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QaQuestion question) {
-        this.question = question;
-    }
-
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
 }

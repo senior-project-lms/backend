@@ -2,6 +2,7 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import com.lms.properties.AnswerChoice;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "qt_available_answers")
+@Data
 public class QtAvailableAnswer extends BaseEntity {
 
     private String text;
@@ -23,35 +25,4 @@ public class QtAvailableAnswer extends BaseEntity {
     @ManyToOne
     private QtQuestion question;
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public AnswerChoice getType() {
-        return type;
-    }
-
-    public void setType(AnswerChoice type) {
-        this.type = type;
-    }
-
-    public boolean isCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
-    }
-
-    public QtQuestion getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QtQuestion question) {
-        this.question = question;
-    }
 }

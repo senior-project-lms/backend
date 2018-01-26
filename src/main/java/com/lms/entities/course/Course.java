@@ -3,6 +3,7 @@ package com.lms.entities.course;
 import com.lms.entities.BaseEntity;
 import com.lms.entities.authority.UserCoursePrivilege;
 import com.lms.entities.user.User;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
+@Data
 public class Course extends BaseEntity {
 
     @NotNull
@@ -48,71 +50,5 @@ public class Course extends BaseEntity {
     @ManyToOne
     private User owner;
 
-    public String getCode() {
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<User> getRegisteredUsers() {
-        return registeredUsers;
-    }
-
-    public void setRegisteredUsers(List<User> registeredUsers) {
-        this.registeredUsers = registeredUsers;
-    }
-
-    public List<UserCoursePrivilege> getUserCoursePrivileges() {
-        return userCoursePrivileges;
-    }
-
-    public void setUserCoursePrivileges(List<UserCoursePrivilege> userCoursePrivileges) {
-        this.userCoursePrivileges = userCoursePrivileges;
-    }
-
-    public List<GradeType> getGradeTypes() {
-        return gradeTypes;
-    }
-
-    public void setGradeTypes(List<GradeType> gradeTypes) {
-        this.gradeTypes = gradeTypes;
-    }
-
-    public List<Assignment> getAssignments() {
-        return assignments;
-    }
-
-    public void setAssignments(List<Assignment> assignments) {
-        this.assignments = assignments;
-    }
-
-    public List<Announcement> getAnnouncements() {
-        return announcements;
-    }
-
-    public void setAnnouncements(List<Announcement> announcements) {
-        this.announcements = announcements;
-    }
-
-    public void setQaQuestions(List<QaQuestion> qaQuestions) {
-        this.qaQuestions = qaQuestions;
-    }
-
-    public void setQuizTests(List<QuizTest> quizTests) {
-        this.quizTests = quizTests;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 }

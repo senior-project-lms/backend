@@ -1,6 +1,7 @@
 package com.lms.entities.authority;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,15 +11,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "user_types")
+@Data
 public class UserType extends BaseEntity {
 
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

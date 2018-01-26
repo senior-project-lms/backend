@@ -1,6 +1,7 @@
 package com.lms.entities;
 
 import com.lms.entities.user.User;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
  * Created by umit.kas on 05.12.2017.
  */
 @MappedSuperclass
+@Data
 public class BaseEntity {
 
     @Id
@@ -41,66 +43,7 @@ public class BaseEntity {
     private boolean visible;
 
 
-    public long getId() {
-        return id;
-    }
-
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public User getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        BaseEntity object = (BaseEntity) o;
-        return this.getId() == object.getId();
-    }
-
-
     public void generatePublicKey(){
-        this.setPublicKey(UUID.randomUUID().toString());
+        this.publicKey = UUID.randomUUID().toString();
     }
 }

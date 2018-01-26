@@ -2,14 +2,15 @@ package com.lms.entities.authority;
 
 
 import com.lms.entities.BaseEntity;
-import com.lms.entities.authority.Privilege;
 import com.lms.entities.user.User;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "access_privileges")
+@Data
 public class AccessPrivilege extends BaseEntity{
 
     @OneToOne
@@ -23,20 +24,4 @@ public class AccessPrivilege extends BaseEntity{
     )
     private List<Privilege> privileges;
 
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(List<Privilege> privileges) {
-        this.privileges = privileges;
-    }
 }

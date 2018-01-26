@@ -1,8 +1,12 @@
 package com.lms.entities.authority;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -10,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "user_type_default_settings")
+@Data
 public class UserTypeDefaultPrivilege extends BaseEntity {
 
     @OneToOne
@@ -18,20 +23,4 @@ public class UserTypeDefaultPrivilege extends BaseEntity {
     @ManyToMany
     private List<Privilege> privileges;
 
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
-
-    public List<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(List<Privilege> privileges) {
-        this.privileges = privileges;
-    }
 }

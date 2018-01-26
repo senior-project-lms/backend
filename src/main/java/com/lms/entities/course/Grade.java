@@ -1,8 +1,12 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -10,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Grades")
+@Data
 public class Grade extends BaseEntity {
 
     private String name;
@@ -20,27 +25,4 @@ public class Grade extends BaseEntity {
     @ManyToOne
     private GradeType gradeType;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Score> getScores() {
-        return scores;
-    }
-
-    public void setScores(List<Score> scores) {
-        this.scores = scores;
-    }
-
-    public GradeType getGradeType() {
-        return gradeType;
-    }
-
-    public void setGradeType(GradeType gradeType) {
-        this.gradeType = gradeType;
-    }
 }

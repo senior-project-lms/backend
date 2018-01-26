@@ -1,6 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "qt_questions")
+@Data
 public class QtQuestion extends BaseEntity {
 
     private String title;
@@ -22,29 +24,5 @@ public class QtQuestion extends BaseEntity {
     private List<QtAvailableAnswer> answers;
 
 
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public List<QtAvailableAnswer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<QtAvailableAnswer> answers) {
-        this.answers = answers;
-    }
 
 }

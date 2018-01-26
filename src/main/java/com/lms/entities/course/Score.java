@@ -2,14 +2,19 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import com.lms.entities.user.User;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Created by umit.kas on 28.11.2017.
  */
 @Entity
 @Table(name = "scores")
+@Data
 public class Score extends BaseEntity {
 
 
@@ -21,27 +26,5 @@ public class Score extends BaseEntity {
 
     private float score;
 
-    public Grade getGrade() {
-        return grade;
-    }
 
-    public void setGrade(Grade grade) {
-        this.grade = grade;
-    }
-
-    public User getStudent() {
-        return student;
-    }
-
-    public void setStudent(User student) {
-        this.student = student;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
-    }
 }

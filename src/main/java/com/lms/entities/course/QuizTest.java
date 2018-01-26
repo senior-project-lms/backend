@@ -1,6 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "course_quiz_tests")
+@Data
 public class QuizTest extends BaseEntity {
 
     private String name;
@@ -28,27 +30,4 @@ public class QuizTest extends BaseEntity {
 
     private Date endAt;
 
-    public List<QtQuestion> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<QtQuestion> questions) {
-        this.questions = questions;
-    }
-
-    public Date getStartAt() {
-        return startAt;
-    }
-
-    public void setStartAt(Date startAt) {
-        this.startAt = startAt;
-    }
-
-    public Date getEndAt() {
-        return endAt;
-    }
-
-    public void setEndAt(Date endAt) {
-        this.endAt = endAt;
-    }
 }

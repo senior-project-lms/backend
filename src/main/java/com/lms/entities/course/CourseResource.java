@@ -2,9 +2,13 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import com.lms.entities.user.User;
+import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -13,6 +17,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "resources")
+@Data
 public class CourseResource extends BaseEntity {
 
 
@@ -37,59 +42,5 @@ public class CourseResource extends BaseEntity {
     @OneToOne
     private User deletedBy;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public ResourcePackage getResourcePackage() {
-        return resourcePackage;
-    }
-
-    public void setResourcePackage(ResourcePackage resourcePackage) {
-        this.resourcePackage = resourcePackage;
-    }
-
-    public Announcement getAnnouncement() {
-        return announcement;
-    }
-
-    public void setAnnouncement(Announcement announcement) {
-        this.announcement = announcement;
-    }
-
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public User getDeletedBy() {
-        return deletedBy;
-    }
-
-    public void setDeletedBy(User deletedBy) {
-        this.deletedBy = deletedBy;
-    }
 }

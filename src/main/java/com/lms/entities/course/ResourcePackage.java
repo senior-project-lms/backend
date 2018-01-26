@@ -1,6 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "resource_packages")
+@Data
 public class ResourcePackage extends BaseEntity {
 
 
@@ -20,19 +22,5 @@ public class ResourcePackage extends BaseEntity {
     @OneToMany(mappedBy = "resourcePackage")
     private List<CourseResource> courseResources;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<CourseResource> getCourseResources() {
-        return courseResources;
-    }
-
-    public void setCourseResources(List<CourseResource> courseResources) {
-        this.courseResources = courseResources;
-    }
 }

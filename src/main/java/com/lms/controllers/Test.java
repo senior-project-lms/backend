@@ -1,5 +1,6 @@
 package com.lms.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class Test {
 
 
+    @GetMapping("/test")
+    public String test() {
+        return "OK";
+    }
 
 //
 //    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicId, T(com.lms.properties.Privileges).METHOD_Y)")

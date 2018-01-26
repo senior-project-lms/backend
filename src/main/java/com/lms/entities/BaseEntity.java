@@ -1,6 +1,5 @@
 package com.lms.entities;
 
-import com.lms.entities.user.User;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -40,7 +39,7 @@ public class BaseEntity {
     private User updatedBy;
 
 
-    private boolean visible;
+    private boolean visible = true;
 
 
     public void generatePublicKey(){

@@ -1,15 +1,15 @@
 package com.lms.configurations.security;
 
-import com.lms.entities.authority.AccessPrivilege;
-import com.lms.entities.authority.Privilege;
+import com.lms.entities.AccessPrivilege;
+import com.lms.entities.Privilege;
+import com.lms.entities.User;
+import com.lms.entities.UserCoursePrivilege;
 import com.lms.entities.course.Course;
-import com.lms.entities.user.User;
-import com.lms.entities.authority.UserCoursePrivilege;
 import com.lms.properties.Privileges;
-import com.lms.repositories.authority.AccessPrivilegeRepository;
-import com.lms.repositories.authority.UserCoursePrivilegeRepository;
-import com.lms.repositories.course.CourseRepository;
-import com.lms.repositories.authority.PrivilegeRepository;
+import com.lms.repositories.AccessPrivilegeRepository;
+import com.lms.repositories.CourseRepository;
+import com.lms.repositories.PrivilegeRepository;
+import com.lms.repositories.UserCoursePrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

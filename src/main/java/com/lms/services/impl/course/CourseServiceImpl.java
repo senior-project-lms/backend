@@ -1,6 +1,6 @@
 package com.lms.services.impl.course;
 
-import com.lms.repositories.course.CourseRepository;
+import com.lms.repositories.CourseRepository;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 

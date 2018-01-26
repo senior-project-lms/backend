@@ -1,7 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.entities.user.User;
-import com.lms.pojos.user.UserPojo;
+import com.lms.entities.User;
+import com.lms.pojos.UserPojo;
 
 import java.util.List;
 

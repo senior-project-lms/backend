@@ -1,7 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.entities.global.SystemAnnouncement;
-import com.lms.pojos.global.SystemAnnouncementPojo;
+import com.lms.entities.SystemAnnouncement;
+import com.lms.pojos.SystemAnnouncementPojo;
 
 import java.util.List;
 

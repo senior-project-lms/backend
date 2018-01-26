@@ -1,11 +1,8 @@
 package com.lms.services.custom;
 
-import java.util.UUID;
-
-import com.lms.entities.user.User;
-import com.lms.repositories.user.UserRepository;
 import com.lms.configurations.CustomUserDetails;
-
+import com.lms.entities.User;
+import com.lms.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service

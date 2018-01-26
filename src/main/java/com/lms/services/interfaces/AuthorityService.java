@@ -1,7 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.entities.authority.Authority;
-import com.lms.pojos.authority.AuthorityPojo;
+import com.lms.entities.Authority;
+import com.lms.pojos.AuthorityPojo;
 
 public interface AuthorityService {
 

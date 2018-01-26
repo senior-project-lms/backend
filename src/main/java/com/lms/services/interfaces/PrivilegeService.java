@@ -1,7 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.entities.authority.Privilege;
-import com.lms.pojos.authority.PrivilegePojo;
+import com.lms.entities.Privilege;
+import com.lms.pojos.PrivilegePojo;
 
 public interface PrivilegeService {
 

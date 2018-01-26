@@ -1,8 +1,7 @@
 package com.lms.controllers;
 
 
-import com.lms.entities.course.CourseResource;
-import com.lms.pojos.global.SystemResourcePojo;
+import com.lms.pojos.SystemResourcePojo;
 import com.lms.properties.custom.StorageProperties;
 import com.lms.services.interfaces.StorageService;
 import com.lms.services.interfaces.SystemResourceService;
@@ -34,7 +33,17 @@ public class StorageController {
     private SystemResourceService systemResourceService;
 
 
-    @RequestMapping(value = {"/admin/system-announcement/storage/image"}, method = RequestMethod.POST)
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Uploads image that is located in System Announcement text,
+     *
+     * @param file
+     * @return SystemResourcePojo
+     * @author umit.kas
+     */
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
+    @PostMapping(value = {"/admin/system-announcement/storage/image"})
     public SystemResourcePojo systemAnnouncementUploadImage(@RequestParam MultipartFile file){
 
         return  upload(properties.getSystemAnnouncementImagePath(), file);
@@ -42,7 +51,16 @@ public class StorageController {
     }
 
 
-    @RequestMapping(value = {"/system-announcement/storage/image/{filename:.+}"}, method = RequestMethod.GET)
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Serve image that is located in System Announcement text,
+     *
+     * @param file
+     * @return ResponseEntity<Resource>
+     * @author umit.kas
+     */
+    @GetMapping(value = {"/system-announcement/storage/image/{filename:.+}"})
     @ResponseBody
     public ResponseEntity<Resource> systemAnnouncementServeImage(@PathVariable String filename) {
 
@@ -51,7 +69,18 @@ public class StorageController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @RequestMapping(value = {"/admin/system-announcement/storage/image/{publicKey}"}, method = RequestMethod.DELETE)
+
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Delete image that is located in System Announcement text,
+     *
+     * @param publicKey
+     * @return
+     * @author umit.kas
+     */
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
+    @DeleteMapping(value = {"/admin/system-announcement/storage/image/{publicKey}"})
     public void systemAnnouncementDeleteImage(@PathVariable String publicKey){
         try {
 
@@ -66,16 +95,31 @@ public class StorageController {
         }
     }
 
-
+    /**
+     *
+     * Upload file that is added the of System Announcement,
+     *
+     * @param file
+     * @return SystemResourcePojo
+     * @author umit.kas
+     */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
-    @RequestMapping(value = {"/admin/system-announcement/storage/file"}, method = RequestMethod.POST)
+    @PostMapping(value = {"/admin/system-announcement/storage/file"})
     public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file){
 
         return  upload(properties.getSystemAnnouncementFilePath(), file);
     }
 
 
-    @RequestMapping(value = {"/system-announcement/storage/file/{filename:.+}"}, method = RequestMethod.GET)
+    /**
+     * Serve file that is added to the System Announcement,
+     * Finds the file by filename, that comes with request
+     *
+     * @param filename
+     * @return SystemResourcePojo
+     * @author umit.kas
+     */
+    @GetMapping(value = {"/system-announcement/storage/file/{filename:.+}"})
     @ResponseBody
     public ResponseEntity<Resource> systemAnnouncementServeFile(@PathVariable String filename) {
 
@@ -85,10 +129,17 @@ public class StorageController {
     }
 
 
-
-
+    /**
+     *
+     * Delete file that is added to the System Announcement,
+     * Delete the file by publicKey, that comes with request path
+     *
+     * @param publicKey
+     * @return SystemResourcePojo
+     * @author umit.kas
+     */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
-    @RequestMapping(value = {"/admin/system-announcement/storage/file/{publicKey}"}, method = RequestMethod.DELETE)
+    @DeleteMapping(value = {"/admin/system-announcement/storage/file/{publicKey}"})
     public boolean systemAnnouncementDeleteFile(@PathVariable String publicKey){
         try {
 
@@ -98,8 +149,7 @@ public class StorageController {
                 return true;
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
         return false;
@@ -107,7 +157,17 @@ public class StorageController {
     }
 
 
-
+    /**
+     *
+     * common funtion for uploading, save file to given path,
+     * before saving, get the extention type, generates unique name, than saves to file system
+     * after savege, insert to record to database
+     *
+     * @param path
+     * @param file
+     * @return SystemResourcePojo
+     * @author umit.kas
+     */
     private SystemResourcePojo upload(String path, MultipartFile file){
         try {
             if (file != null){
@@ -128,9 +188,9 @@ public class StorageController {
                     pojo.setName(f.getFileName().toString());
                     pojo.setOriginalFileName(file.getOriginalFilename());
                     pojo.setUrl(URL);
+                    pojo.setType(extension);
                     systemResourceService.save(pojo);
                     pojo = systemResourceService.getByName(pojo.getName());
-
 
 
                     return pojo;
@@ -138,8 +198,7 @@ public class StorageController {
             }
 
             return null;
-        }
-        catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
 

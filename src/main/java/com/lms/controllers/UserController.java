@@ -1,13 +1,9 @@
 package com.lms.controllers;
 
-import com.lms.pojos.user.UserPojo;
-import com.lms.services.impl.user.UserServiceImpl;
+import com.lms.pojos.UserPojo;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +16,7 @@ public class UserController {
     private UserService userService;
 
 
-    @RequestMapping(value = {"/me"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/me"})
     public UserPojo getMe() {
 
         try {
@@ -41,7 +37,7 @@ public class UserController {
      * @return boolean
      * @author atalay samet ergen
      */
-    @RequestMapping(value = {"/admin/user"}, method = RequestMethod.POST)
+    @PostMapping(value = {"/admin/user"})
     public boolean saveUser(@RequestBody UserPojo userPojo) {
         try {
             if (isValidUserPojo(userPojo)) {
@@ -65,7 +61,7 @@ public class UserController {
      * @return boolean
      * @author atalay samet ergen
      */
-    @RequestMapping(value = {"/admin/users"}, method = RequestMethod.POST)
+    @PostMapping(value = {"/admin/users"})
     public boolean saveUsers(@RequestBody List<UserPojo> userPojos) {
 
         try {

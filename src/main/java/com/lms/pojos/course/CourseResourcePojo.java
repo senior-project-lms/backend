@@ -1,8 +1,8 @@
 package com.lms.pojos.course;
 
 import com.lms.pojos.BasePojo;
-import com.lms.pojos.global.SystemAnnouncementPojo;
-import com.lms.pojos.user.UserPojo;
+import com.lms.pojos.SystemAnnouncementPojo;
+import com.lms.pojos.UserPojo;
 import lombok.Data;
 
 import java.util.Date;

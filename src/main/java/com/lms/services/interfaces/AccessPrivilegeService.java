@@ -1,7 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.entities.authority.AccessPrivilege;
-import com.lms.pojos.authority.AccessPrivilegePojo;
+import com.lms.entities.AccessPrivilege;
+import com.lms.pojos.AccessPrivilegePojo;
 
 import java.util.List;
 

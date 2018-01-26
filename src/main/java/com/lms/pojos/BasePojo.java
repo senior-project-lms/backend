@@ -1,6 +1,5 @@
 package com.lms.pojos;
 
-import com.lms.pojos.user.UserPojo;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.entities.user.User;
+import com.lms.entities.User;
 import lombok.Data;
 
 import javax.persistence.Entity;

@@ -3,7 +3,7 @@ package com.lms.configurations.security;
 
 import javax.sql.DataSource;
 
-import com.lms.properties.AccessLevel;
+import com.lms.enums.AccessLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -67,7 +67,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
         http
         .requestMatchers()
         .antMatchers(HttpMethod.OPTIONS, "/**" )

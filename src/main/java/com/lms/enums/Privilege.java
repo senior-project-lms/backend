@@ -1,9 +1,9 @@
-package com.lms.properties;
+package com.lms.enums;
 
 /**
  * Created by umit.kas on 28.11.2017.
  */
-public enum Privileges {
+public enum Privilege {
 
     // System Announcement
     SAVE_SYSTEM_ANNOUNCEMENT(10111001),
@@ -31,7 +31,7 @@ public enum Privileges {
 
     public long CODE;
 
-    Privileges(long CODE) {
+    Privilege(long CODE) {
         this.CODE = CODE;
     }
 

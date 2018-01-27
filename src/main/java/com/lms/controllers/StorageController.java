@@ -2,7 +2,7 @@ package com.lms.controllers;
 
 
 import com.lms.pojos.SystemResourcePojo;
-import com.lms.properties.custom.StorageProperties;
+import com.lms.properties.StorageProperties;
 import com.lms.services.interfaces.StorageService;
 import com.lms.services.interfaces.SystemResourceService;
 import org.apache.commons.io.FilenameUtils;
@@ -42,7 +42,7 @@ public class StorageController {
      * @return SystemResourcePojo
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
     @PostMapping(value = {"/admin/system-announcement/storage/image"})
     public SystemResourcePojo systemAnnouncementUploadImage(@RequestParam MultipartFile file){
 
@@ -79,7 +79,7 @@ public class StorageController {
      * @return
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
     @DeleteMapping(value = {"/admin/system-announcement/storage/image/{publicKey}"})
     public void systemAnnouncementDeleteImage(@PathVariable String publicKey){
         try {
@@ -103,7 +103,7 @@ public class StorageController {
      * @return SystemResourcePojo
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)")
     @PostMapping(value = {"/admin/system-announcement/storage/file"})
     public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file){
 
@@ -138,7 +138,7 @@ public class StorageController {
      * @return SystemResourcePojo
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT_FILE)")
     @DeleteMapping(value = {"/admin/system-announcement/storage/file/{publicKey}"})
     public boolean systemAnnouncementDeleteFile(@PathVariable String publicKey){
         try {

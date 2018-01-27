@@ -1,11 +1,10 @@
-package com.lms.configurations.security;
+package com.lms.components;
 
 import com.lms.entities.AccessPrivilege;
-import com.lms.entities.Privilege;
 import com.lms.entities.User;
 import com.lms.entities.UserCoursePrivilege;
 import com.lms.entities.course.Course;
-import com.lms.properties.Privileges;
+import com.lms.enums.Privilege;
 import com.lms.repositories.AccessPrivilegeRepository;
 import com.lms.repositories.CourseRepository;
 import com.lms.repositories.PrivilegeRepository;
@@ -49,7 +48,7 @@ public class MethodSecurity {
      * @return boolean
      *
      */
-    public boolean hasCoursePrivilege(String coursePublicKey, Privileges privelege){
+    public boolean hasCoursePrivilege(String coursePublicKey, Privilege privelege){
         try {
             User user = customUserDetailService.getAuthenticatedUser();
 
@@ -106,10 +105,10 @@ public class MethodSecurity {
      * @return boolean
      *
      */
-    public boolean hasAccessPrivilege(Privileges privilege){
+    public boolean hasAccessPrivilege(Privilege privilege){
         try {
                 User user = customUserDetailService.getAuthenticatedUser();
-                Privilege p = privilegeRepository.findByCode(privilege.CODE);
+                com.lms.entities.Privilege p = privilegeRepository.findByCode(privilege.CODE);
                 if (user != null && p != null){
                     AccessPrivilege accessPrivilege = accessPrivilegeRepository.findByUserAndPrivilegesIn(user, p);
                     if (accessPrivilege != null){

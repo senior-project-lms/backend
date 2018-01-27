@@ -1,4 +1,4 @@
-package com.lms.properties;
+package com.lms.enums;
 
 public enum AccessLevel {
 	

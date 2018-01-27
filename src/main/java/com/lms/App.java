@@ -3,11 +3,10 @@ package com.lms;
 
 import com.lms.entities.AccessPrivilege;
 import com.lms.entities.Authority;
-import com.lms.entities.Privilege;
 import com.lms.entities.User;
-import com.lms.properties.AccessLevel;
-import com.lms.properties.Privileges;
-import com.lms.properties.custom.StorageProperties;
+import com.lms.enums.AccessLevel;
+import com.lms.enums.Privilege;
+import com.lms.properties.StorageProperties;
 import com.lms.repositories.*;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.StorageService;
@@ -77,10 +76,10 @@ public class App {
 
 			AccessPrivilege accessPrivilege = new AccessPrivilege();
 
-			List<Privilege> privileges = new ArrayList<>();
+			List<com.lms.entities.Privilege> privileges = new ArrayList<>();
 
-			for(Privileges privilege : Privileges.values()){
-				Privilege privilege1 = new Privilege();
+			for(Privilege privilege : Privilege.values()){
+				com.lms.entities.Privilege privilege1 = new com.lms.entities.Privilege();
 				privilege1.generatePublicKey();
 				privilege1.setCode(privilege.CODE);
 				privilege1.setName(privilege.toString());

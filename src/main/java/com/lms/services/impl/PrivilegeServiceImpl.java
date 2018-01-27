@@ -23,13 +23,13 @@ public class PrivilegeServiceImpl implements PrivilegeService{
      * @return PrivilegePojo
      *
      */
-    public PrivilegePojo entityToPojo(Privilege entity, boolean userCoursePrivileges, boolean userTypeDefaultPrivileges, boolean accessPrivileges) throws Exception{
+    public PrivilegePojo entityToPojo(Privilege entity, boolean userCoursePrivileges, boolean userTypeDefaultPrivileges, boolean accessPrivileges){
         PrivilegePojo pojo = new PrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
         pojo.setCode(entity.getCode());
         if (userCoursePrivileges){
-            //
+
         }
         if (userTypeDefaultPrivileges){
 
@@ -42,7 +42,7 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 
 
     @Override
-    public Privilege pojoToEntity(PrivilegePojo pojo) throws Exception {
+    public Privilege pojoToEntity(PrivilegePojo pojo) {
         return null;
     }
 }

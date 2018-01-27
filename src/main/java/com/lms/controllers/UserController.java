@@ -1,8 +1,14 @@
 package com.lms.controllers;
 
+import com.lms.components.ExceptionConverter;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
+import com.lms.customExceptions.ExecutionFailException;
+import com.lms.customExceptions.ServiceException;
 import com.lms.pojos.UserPojo;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,20 +17,24 @@ import java.util.List;
 @RequestMapping(value = {"/api"})
 public class UserController {
 
+    @Autowired
+    private ExceptionConverter exceptionConverter;
 
     @Autowired
     private UserService userService;
 
 
     @GetMapping(value = {"/me"})
-    public UserPojo getMe() {
+    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException{
 
         try {
             return userService.getMe();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+        catch (ServiceException ex){
+            exceptionConverter.convert(ex);
+        }
+
+        throw new DataNotFoundException("No such user data is found");
     }
 
     /**
@@ -38,17 +48,17 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/user"})
-    public boolean saveUser(@RequestBody UserPojo userPojo) {
+    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
         try {
             if (isValidUserPojo(userPojo)) {
                 return userService.save(userPojo);
             }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return false;
+        catch (ServiceException ex){
+            exceptionConverter.convert(ex);
+        }
+
+        throw new ExecutionFailException("No such user is saved");
     }
 
     /**
@@ -62,7 +72,7 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/users"})
-    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) {
+    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException{
 
         try {
             if (userPojos == null || userPojos.size() == 0) {
@@ -76,37 +86,41 @@ public class UserController {
             }
             return userService.save(userPojos);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            exceptionConverter.convert(e);
 
         }
-        return false;
+        throw new ExecutionFailException("No such user is saved");
     }
 
-    private boolean isValidUserPojo(UserPojo userPojo) {
+    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException{
         if (userPojo != null) {
-            if (userPojo.getAuthority() == null || userPojo.getAuthority().getAccessLevel() == 0) {
-                return false;
-            }
             if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
-                return false;
+                throw new EmptyFieldException("Email field cannot be empty");
             }
-            if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
-                return false;
+
+            if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
+                throw new EmptyFieldException("Username field cannot be empty");
             }
             if (userPojo.getPassword() == null || userPojo.getPassword().isEmpty()) {
-                return false;
+                throw new EmptyFieldException("Password field cannot be empty");
+
             }
-            if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
-                return false;
+            if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
+                throw new EmptyFieldException("Name field cannot be empty");
             }
-            if (userPojo.getUsername() == null || userPojo.getSurname().isEmpty()) {
-                return false;
+
+            if (userPojo.getSurname() == null || userPojo.getSurname().isEmpty()) {
+                throw new EmptyFieldException("Surname field cannot be empty");
+            }
+            if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
+                throw new EmptyFieldException("Authority field cannot be empty");
             }
             return true;
 
 
         }
-        return false;
+
+        throw new EmptyFieldException("User object cannot be empty");
     }
 }

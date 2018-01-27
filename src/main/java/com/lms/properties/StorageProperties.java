@@ -1,4 +1,4 @@
-package com.lms.properties.custom;
+package com.lms.properties;
 
 
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,11 @@
 package com.lms.services.impl;
 
+import com.lms.customExceptions.EmptyFieldException;
+import com.lms.customExceptions.ServiceException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.entities.User;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.repositories.SystemResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Service
 public class SystemResourceServiceImpl implements SystemResourceService{
+
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -38,7 +42,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement) throws Exception{
+    public SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement){
 
         SystemResourcePojo pojo = new SystemResourcePojo();
 
@@ -65,7 +69,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResource
      */
     @Override
-    public SystemResource pojoToEntity(SystemResourcePojo pojo) throws Exception{
+    public SystemResource pojoToEntity(SystemResourcePojo pojo){
         SystemResource entity = new SystemResource();
 
         entity.setName(pojo.getName());
@@ -73,14 +77,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
         entity.setType(pojo.getType());
         entity.setOriginalFileName(pojo.getOriginalFileName());
         entity.setUrl(pojo.getUrl());
-        if (pojo.getPublicKey() != null){
-            entity.setPublicKey(pojo.getPublicKey());
-        }
-
-        if (pojo.getAnnouncment() != null){
-            entity.setSystemAnnouncement(systemAnnouncementService.pojoToEntity(pojo.getAnnouncment()));
-        }
-
+        entity.setPublicKey(pojo.getPublicKey());
         return  entity;
     }
 
@@ -93,7 +90,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return boolean
      */
     @Override
-    public boolean saveEntities(List<SystemResource> resources) throws Exception {
+    public boolean saveEntities(List<SystemResource> resources) {
         resources.stream().map(resource -> {
             resource.generatePublicKey();
             return resource;
@@ -111,13 +108,18 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @author umit.kas
      */
     @Override
-    public boolean save(SystemResourcePojo pojo) throws Exception {
+    public boolean save(SystemResourcePojo pojo) throws ServiceException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
         SystemResource entity = this.pojoToEntity(pojo);
         entity.generatePublicKey();
         entity.setCreatedBy(authenticatedUser);
-        return systemResourceRepository.save(entity).getId() > 0;
+        entity = systemResourceRepository.save(entity);
+        if (entity == null || entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a System resource is saved");
+        }
+
+        return true;
     }
 
     /**
@@ -131,18 +133,25 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return boolean
      */
     @Override
-    public boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws Exception{
+    public boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws ServiceException{
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
-        if (entity != null){
-            entity.setSystemAnnouncement(announcement);
-            return systemResourceRepository.save(entity).getId() > 0;
-        }
-        return false;
 
+        if (entity == null){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "System announcement cannot be empty, for to set system resource announcement");
+        }
+
+        entity.setSystemAnnouncement(announcement);
+        entity = systemResourceRepository.save(entity);
+
+        if (entity != null && entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a system announcement of System resource is saved");
+        }
+
+        return true;
     }
 
     @Override
-    public boolean save(List<SystemResourcePojo> pojos) throws Exception {
+    public boolean save(List<SystemResourcePojo> pojos) {
         return false;
     }
 
@@ -154,12 +163,13 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo getByName(String name) throws Exception {
+    public SystemResourcePojo getByName(String name)  throws ServiceException {
         SystemResource entity = systemResourceRepository.findByName(name);
-        if (entity != null){
-            return this.entityToPojo(entity, false);
+        if (entity == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by name");
         }
-        return null;
+
+        return this.entityToPojo(entity, false);
     }
 
 
@@ -171,12 +181,15 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo getByPublicKey(String publicKey) throws Exception {
+    public SystemResourcePojo getByPublicKey(String publicKey)  throws ServiceException {
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
-        if (entity != null){
-            return this.entityToPojo(entity, false);
+
+        if (entity == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by public key");
         }
-        return null;
+
+        return this.entityToPojo(entity, false);
+
     }
 
 
@@ -191,13 +204,19 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return boolean
      */
     @Override
-    public boolean delete(String publicKey) throws Exception{
+    public boolean delete(String publicKey) throws ServiceException {
 
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
 
-        if (entity != null){
-            return systemResourceRepository.save(entity).getId() > 0;
+        if (entity == null){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("No such a system resource is found publicKey: %s", publicKey));
         }
-        return false;
+        entity.setVisible(false);
+        entity = systemResourceRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("System resource is not deleted by publicKey: %s", publicKey));
+        }
+        return true;
     }
 }

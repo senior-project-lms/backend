@@ -1,6 +1,6 @@
 package com.lms.pojos;
 
-import com.lms.properties.PriorityColor;
+import com.lms.enums.PriorityColor;
 import lombok.Data;
 
 import java.util.List;

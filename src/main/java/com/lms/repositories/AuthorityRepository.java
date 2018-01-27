@@ -13,4 +13,5 @@ public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
     Authority findByAccessLevel(long accessLevel);
 
+    Authority findByPublicKey(String publicKey);
 }

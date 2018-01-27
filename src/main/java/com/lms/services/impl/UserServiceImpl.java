@@ -1,13 +1,16 @@
 package com.lms.services.impl;
 
+import com.lms.customExceptions.ServiceException;
 import com.lms.entities.Authority;
 import com.lms.entities.User;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.UserPojo;
 import com.lms.repositories.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.AccessPrivilegeService;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
+import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User pojoToEntity(UserPojo pojo) throws Exception {
+    public User pojoToEntity(UserPojo pojo) {
         User entity = new User();
 
         entity.setUsername(pojo.getUsername());
@@ -65,31 +68,29 @@ public class UserServiceImpl implements UserService {
      * @author umit.kas
      */
     @Override
-    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) throws Exception {
+    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) {
+
         UserPojo pojo = new UserPojo();
-        if (user != null) {
-            pojo.setUsername(user.getUsername());
-            pojo.setEmail(user.getEmail());
-            pojo.setName(user.getName());
-            pojo.setSurname(user.getSurname());
+        pojo.setUsername(user.getUsername());
+        pojo.setEmail(user.getEmail());
+        pojo.setName(user.getName());
+        pojo.setSurname(user.getSurname());
 
-            if (authority) {
-                pojo.setAuthority(authorityService.entityToPojo(user.getAuthority()));
-            }
+        if (authority) {
+            pojo.setAuthority(authorityService.entityToPojo(user.getAuthority()));
+        }
 
-            // fill the empty if blocks as directive of the backend document
-            if (ownedCourses) {
-
-            }
-            if (registeredCoursesAsStudent) {
-
-            }
-
-            return pojo;
+        // fill the empty if blocks as directive of the backend document
+        if (ownedCourses) {
 
         }
-        return null;
+        if (registeredCoursesAsStudent) {
+
+        }
+
+        return pojo;
     }
+
 
 
     /**
@@ -100,63 +101,74 @@ public class UserServiceImpl implements UserService {
      * @author umit.kas
      */
     @Override
-    public UserPojo getMe() throws Exception {
-        UserPojo pojo = new UserPojo();
+    public UserPojo getMe() throws ServiceException {
+        UserPojo pojo;
         User user = customUserDetailService.getAuthenticatedUser();
-        if (user != null) {
-            pojo = entityToPojo(user, true, false, false);
-            pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
+
+        if (user == null){
+           throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a user profile is found");
         }
 
+        pojo = entityToPojo(user, true, false, false);
+        pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
         return pojo;
     }
 
 
     @Override
-    public List<UserPojo> getAllByVisible(boolean visible) throws Exception {
+    public List<UserPojo> getAllByVisible(boolean visible) throws ServiceException {
+
         List<User> entities = userRepository.findAllByVisible(true);
+
+        if (entities == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a User collection is found");
+        }
 
         List<UserPojo> pojos = new ArrayList<>();
 
-        if (entities != null) {
+        for (User user : entities) {
+            pojos.add(entityToPojo(user, true, false, false));
 
-            for (User user : entities) {
-                pojos.add(entityToPojo(user, true, false, false));
-            }
         }
         return pojos;
     }
 
     @Override
-    public UserPojo getUser(String publicKey) throws Exception {
-        UserPojo pojo = new UserPojo();
+    public UserPojo getUser(String publicKey) throws ServiceException {
+        UserPojo pojo;
         User entity = userRepository.findByPublicKey(publicKey);
-        if (entity != null) {
-            pojo = entityToPojo(entity, true, false, false);
+
+        if (entity == null) {
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No such a user is found for publicKey: %s", publicKey));
         }
+        pojo = entityToPojo(entity, true, false, false);
         return pojo;
     }
 
     @Override
-    public boolean save(UserPojo pojo) throws Exception {
+    public boolean save(UserPojo pojo)  throws ServiceException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
-
         User entity = pojoToEntity(pojo);
         entity.generatePublicKey();
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        if (entity.getAuthority() != null) {
-            Authority authorityEntity = authorityService.getAuthorityByAccessLevel(entity.getAuthority().getAccessLevel());
-            entity.setAuthority(authorityEntity);
-            entity.setCreatedBy(authenticatedUser);
-            return userRepository.save(entity).getId() > 0;
+
+        Authority authorityEntity = authorityService.getAuthorityByPublicKey(pojo.getAuthority().getPublicKey());
 
 
+        entity.setAuthority(authorityEntity);
+        entity.setCreatedBy(authenticatedUser);
+
+        entity = userRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("No such user is saved by email: %s", pojo.getEmail()));
         }
-        return false;
+
+        return true;
     }
 
     @Override
-    public boolean save(List<UserPojo> pojos) throws Exception {
+    public boolean save(List<UserPojo> pojos) throws ServiceException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
         List<User> entities = new ArrayList<>();
@@ -168,7 +180,8 @@ public class UserServiceImpl implements UserService {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
             if (entity.getAuthority() != null) {
-                Authority authorityEntity = authorityService.getAuthorityByAccessLevel(entity.getAuthority().getAccessLevel());
+                Authority authorityEntity = authorityService.getAuthorityByPublicKey(pojo.getAuthority().getPublicKey());
+
                 entity.setAuthority(authorityEntity);
 
                 entity.setCreatedBy(authenticatedUser);
@@ -176,7 +189,10 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        userRepository.save(entities);
+        entities = userRepository.save(entities);
+        if (entities == null || entities.size() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a user collection is saved");
+        }
         return true;
 
     }

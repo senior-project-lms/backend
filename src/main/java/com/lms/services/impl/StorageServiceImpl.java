@@ -2,7 +2,7 @@ package com.lms.services.impl;
 
 import com.lms.customExceptions.StorageException;
 import com.lms.customExceptions.StorageFileNotFoundException;
-import com.lms.properties.custom.StorageProperties;
+import com.lms.properties.StorageProperties;
 import com.lms.services.interfaces.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

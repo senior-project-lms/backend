@@ -1,6 +1,8 @@
 package com.lms.services.impl;
 
+import com.lms.customExceptions.ServiceException;
 import com.lms.entities.Authority;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.AuthorityPojo;
 import com.lms.repositories.AuthorityRepository;
 import com.lms.services.interfaces.AuthorityService;
@@ -22,29 +24,26 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @author umit.kas
      */
     @Override
-    public AuthorityPojo entityToPojo(Authority entity) throws Exception {
+    public AuthorityPojo entityToPojo(Authority entity) {
         AuthorityPojo pojo = new AuthorityPojo();
-        if (entity != null) {
-            pojo.setAccessLevel(entity.getAccessLevel());
-            pojo.setName(entity.getName());
-            return pojo;
-        }
+        pojo.setAccessLevel(entity.getAccessLevel());
+        pojo.setName(entity.getName());
         return pojo;
     }
 
     @Override
-    public Authority getAuthorityByAccessLevel(long accessLevel) throws Exception {
-        Authority entity = authorityRepository.findByAccessLevel(accessLevel);
-
+    public Authority getAuthorityByPublicKey(String publicKey) throws ServiceException{
+        Authority entity = authorityRepository.findByPublicKey(publicKey);
+        if (entity == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("Authority is not found by accessLevel: %s", publicKey));
+        }
         return entity;
     }
 
     @Override
-    public Authority pojoToEntity(AuthorityPojo pojo) throws Exception {
+    public Authority pojoToEntity(AuthorityPojo pojo) {
         Authority entity = new Authority();
         entity.setPublicKey(pojo.getPublicKey());
-        entity.setName(pojo.getName());
-        entity.setAccessLevel(pojo.getAccessLevel());
         return entity;
     }
 }

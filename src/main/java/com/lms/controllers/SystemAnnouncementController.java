@@ -1,12 +1,16 @@
 package com.lms.controllers;
 
+import com.lms.components.ExceptionConverter;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
+import com.lms.customExceptions.ExecutionFailException;
+import com.lms.customExceptions.ServiceException;
 import com.lms.pojos.SystemAnnouncementPojo;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +22,7 @@ public class SystemAnnouncementController {
     @Autowired
     private SystemAnnouncementService systemAnnouncementService;
 
+    private ExceptionConverter exceptionConverter;
 
     /**
      * Checks the parameters that will be saved, is null or not, if there is any null returns error else
@@ -27,18 +32,31 @@ public class SystemAnnouncementController {
      * @return
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).SAVE_SYSTEM_ANNOUNCEMENT)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).SAVE_SYSTEM_ANNOUNCEMENT)")
     @PostMapping(value = {"/admin/system-announcement"})
-    public boolean save(@RequestBody SystemAnnouncementPojo pojo){
-        try{
-            if (pojo.getTitle() != null && !pojo.getTitle().isEmpty() && pojo.getContent() != null && !pojo.getContent().isEmpty()){
-                return systemAnnouncementService.save(pojo);
+    public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+
+            if (pojo == null){
+                throw new EmptyFieldException("System Announcement object cannot be empty");
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return true;
+            else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()){
+                throw new EmptyFieldException("Title field cannot be empty");
+            }
+            else if (pojo.getContent() == null || pojo.getContent().isEmpty()){
+                throw new EmptyFieldException("Content field cannot be empty");
+            }
+            else{
+                try {
+                    return systemAnnouncementService.save(pojo);
+                }
+                catch (ServiceException e){
+                    exceptionConverter.convert(e);
+                }
+
+
+            }
+            throw new ExecutionFailException("No system announcement is found");
+
     }
 
     /**
@@ -49,17 +67,22 @@ public class SystemAnnouncementController {
      * @return
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.properties.Privileges).DELETE_SYSTEM_ANNOUNCEMENT)")
+    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT)")
     @DeleteMapping(value = {"/admin/system-announcement/{publicKey}"})
-    public boolean delete(@PathVariable String publicKey){
-        if (publicKey != null){
-            try {
-                return systemAnnouncementService.delete(publicKey);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+    public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+
+        if (publicKey == null || publicKey.isEmpty()){
+            throw new EmptyFieldException("publicKey field cannot be empty");
         }
-        return false;
+        try {
+            return systemAnnouncementService.delete(publicKey);
+        }
+        catch (ServiceException ex){
+            exceptionConverter.convert(ex);
+        }
+
+        throw new ExecutionFailException("No such system announcement is deleted");
+
     }
 
     /**
@@ -72,13 +95,20 @@ public class SystemAnnouncementController {
      */
 
     @GetMapping({"/system-announcements/{page}"})
-    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page){
+    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+
+        if (page < 0){
+            throw new EmptyFieldException("Page number cannot be negative");
+        }
         try {
             return systemAnnouncementService.getAnnouncements(page);
-        } catch (Exception e){
-            e.printStackTrace();
         }
-        return new ArrayList<>();
+        catch (ServiceException ex){
+            exceptionConverter.convert(ex);
+        }
+        throw new ExecutionFailException("");
+
+
     }
 
 }

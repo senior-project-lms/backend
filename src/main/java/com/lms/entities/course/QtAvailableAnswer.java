@@ -1,7 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.properties.AnswerChoice;
+import com.lms.enums.AnswerChoice;
 import lombok.Data;
 
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.properties.PriorityColor;
+import com.lms.enums.PriorityColor;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package com.lms.pojos.course;
 
-import com.lms.properties.AnswerChoice;
+import com.lms.enums.AnswerChoice;
 import lombok.Data;
 
 @Data

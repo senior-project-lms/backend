@@ -1,8 +1,10 @@
 package com.lms.services.impl;
 
+import com.lms.customExceptions.ServiceException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.entities.User;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.MailPojo;
 import com.lms.pojos.SystemAnnouncementPojo;
 import com.lms.pojos.SystemResourcePojo;
@@ -52,7 +54,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return SystemAnnouncementPojo
      */
     @Override
-    public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource) throws Exception{
+    public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource){
         SystemAnnouncementPojo pojo = new SystemAnnouncementPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
@@ -82,27 +84,18 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return SystemAnnouncement
      */
     @Override
-    public SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo) throws Exception{
+    public SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo){
         SystemAnnouncement entity = new SystemAnnouncement();
-
-        if (pojo.getPublicKey() != null){
-            entity.setPublicKey(pojo.getPublicKey());
-        }
-
-        if (pojo.getTitle() != null){
-            entity.setTitle(pojo.getTitle());
-        }
-
-        if (pojo.getContent() != null){
-            entity.setContent(pojo.getContent());
-        }
+        entity.setPublicKey(pojo.getPublicKey());
+        entity.setTitle(pojo.getTitle());
+        entity.setContent(pojo.getContent());
 
         if (pojo.getResources() != null){
-            List<SystemResource> resourceEntites = new ArrayList<>();
+            List<SystemResource> resourceEntities = new ArrayList<>();
             for(SystemResourcePojo resourcePojo : pojo.getResources()){
-                resourceEntites.add(systemResourceService.pojoToEntity(resourcePojo));
+                resourceEntities.add(systemResourceService.pojoToEntity(resourcePojo));
             }
-            entity.setResources(resourceEntites);
+            entity.setResources(resourceEntities);
         }
 
         return entity;
@@ -119,13 +112,19 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return  List<SystemAnnouncementPojo>
      */
     @Override
-    public List<SystemAnnouncementPojo> getAnnouncements(int page) throws Exception{
-        List<SystemAnnouncementPojo> announcementPojos = new ArrayList<>();
+    public List<SystemAnnouncementPojo> getAnnouncements(int page) throws ServiceException{
+        List<SystemAnnouncementPojo> pojos = new ArrayList<>();
 
-        for (SystemAnnouncement announcement : systemAnnouncementRepository.findAllByVisibleOrderByUpdatedAtDesc(true, new PageRequest(page, 5))){
-            announcementPojos.add(this.entityToPojo(announcement, true));
+        List<SystemAnnouncement> entities = systemAnnouncementRepository.findAllByVisibleOrderByUpdatedAtDesc(true, new PageRequest(page, 5));
+
+        if (entities == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a system announcement is found");
         }
-        return announcementPojos;
+
+        for (SystemAnnouncement announcement : entities){
+            pojos.add(this.entityToPojo(announcement, true));
+        }
+        return pojos;
     }
 
 
@@ -148,7 +147,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return boolean
      */
     @Override
-    public boolean save(SystemAnnouncementPojo pojo) throws Exception{
+    public boolean save(SystemAnnouncementPojo pojo) throws ServiceException{
 
         List<String> resourceKeys = pojo.getResourceKeys();
 
@@ -161,31 +160,31 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
         entity.setResources(null);
         entity = systemAnnouncementRepository.save(entity);
 
-
-        if (entity.getId() > 0 && resourceKeys != null){
-
-            for (String key: resourceKeys) {
-                systemResourceService.setResourceAnnouncement(key, entity);
-            }
-            // mail stuff
-
-            // get mail addresses of all visible users
-            List<String> emailAddresses = userService.getAllByVisible(true).stream().map(user -> user.getEmail()).collect(Collectors.toList());
-
-            MailPojo mailPojo = new MailPojo();
-            mailPojo.setTo(emailAddresses);
-            mailPojo.setSubject(String.format("%s", "System Announcement"));
-            String mailText = String.format("%s", pojo.getContent());
-            mailPojo.setText(mailText);
-
-            // open later, tested, but mail informations will not shared on github
-            //mailService.send(mailPojo);
-
-            return true;
+        if (entity == null || entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "System announcement is not saved");
         }
 
-        return false;
 
+
+
+        for (String key: resourceKeys) {
+            systemResourceService.setResourceAnnouncement(key, entity);
+        }
+        // mail stuff
+
+        // get mail addresses of all visible users
+        List<String> emailAddresses = userService.getAllByVisible(true).stream().map(user -> user.getEmail()).collect(Collectors.toList());
+
+        MailPojo mailPojo = new MailPojo();
+        mailPojo.setTo(emailAddresses);
+        mailPojo.setSubject(String.format("%s", "System Announcement"));
+        String mailText = String.format("%s", pojo.getContent());
+        mailPojo.setText(mailText);
+
+        // open later, tested, but mail informations will not shared on github
+        //mailService.send(mailPojo);
+
+        return true;
     }
 
 
@@ -203,17 +202,26 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return boolean
      */
     @Override
-    public boolean delete(String publicKey) throws Exception{
+    public boolean delete(String publicKey) throws ServiceException{
 
         User deletedBy = customUserDetailService.getAuthenticatedUser();
 
-        SystemAnnouncement entity = systemAnnouncementRepository.findByPublicKey(publicKey);
-        if (entity != null){
-            entity.setUpdatedBy(deletedBy);
-            return systemAnnouncementRepository.save(entity).getId() > 0;
-
+        if (deletedBy == null){
+            throw new SecurityException("Authenticated User is not found");
         }
-        return false;
+
+        SystemAnnouncement entity = systemAnnouncementRepository.findByPublicKey(publicKey);
+        if (entity == null){
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No system announcement is found by publicKey: %s", publicKey));
+        }
+        entity.setUpdatedBy(deletedBy);
+        entity.setVisible(false);
+        entity = systemAnnouncementRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "Delete system authentication process is not executed successfully");
+        }
+        return true;
     }
 
 

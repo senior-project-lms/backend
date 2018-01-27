@@ -17,7 +17,7 @@ public class PrivilegeController {
     private AccessPrivilegeService accessPrivilegeService;
 
 
-    @GetMapping("/me/privieleges")
+    @GetMapping("/me/privileges")
     public List<Long> getAdminPrivileges(){
         try {
             return accessPrivilegeService.getAuthenticatedUserAccessPrivileges();

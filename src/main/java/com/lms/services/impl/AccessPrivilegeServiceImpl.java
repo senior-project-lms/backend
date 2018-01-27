@@ -1,9 +1,11 @@
 package com.lms.services.impl;
 
 
+import com.lms.customExceptions.ServiceException;
 import com.lms.entities.AccessPrivilege;
 import com.lms.entities.Privilege;
 import com.lms.entities.User;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.AccessPrivilegePojo;
 import com.lms.pojos.PrivilegePojo;
 import com.lms.repositories.AccessPrivilegeRepository;
@@ -37,7 +39,7 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
 
 
     @Override
-    public AccessPrivilege pojoToEntity(AccessPrivilegePojo pojo) throws Exception {
+    public AccessPrivilege pojoToEntity(AccessPrivilegePojo pojo) {
         return null;
     }
 
@@ -52,7 +54,8 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
      */
 
     @Override
-    public AccessPrivilegePojo entityToPojo(AccessPrivilege entity) throws Exception{
+    public AccessPrivilegePojo entityToPojo(AccessPrivilege entity){
+
         AccessPrivilegePojo pojo = new AccessPrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setUser(userService.entityToPojo(entity.getUser(),false, false,false));
@@ -80,16 +83,22 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
      *
      */
     @Override
-    public List<Long> getAuthenticatedUserAccessPrivileges() throws Exception{
-        List<Long> privileges = new ArrayList<>();
+    public List<Long> getAuthenticatedUserAccessPrivileges() throws ServiceException{
+        List<Long> privileges;
         User user = customUserDetailService.getAuthenticatedUser();
-        if (user != null){
-            AccessPrivilege entity = accessPrivilegeRepository.findByUser(user);
-            if (entity != null){
-                privileges = entity.getPrivileges().stream().map(privilege -> privilege.getCode())
-                .collect(Collectors.toList());
-            }
+        if (user == null){
+            throw new SecurityException("No authenticated user is found");
         }
+
+        AccessPrivilege entity = accessPrivilegeRepository.findByUser(user);
+
+        if (entity == null){
+           throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a access privilege is found");
+        }
+
+        privileges = entity.getPrivileges().stream().map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
         return privileges;
     }
 

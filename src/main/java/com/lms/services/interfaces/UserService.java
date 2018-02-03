@@ -9,15 +9,17 @@ import java.util.List;
 public interface UserService {
 
 
-    UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent);
+    UserPojo entityToPojo(User user);
 
     User pojoToEntity(UserPojo pojo);
 
     UserPojo getMe() throws ServiceException;
 
+    User findByEmail(String email) throws ServiceException;
+
     List<UserPojo> getAllByVisible(boolean visible) throws ServiceException;
 
-    UserPojo getUser(String publicKey) throws ServiceException;
+    UserPojo getByPublicKey(String publicKey) throws ServiceException;
 
     boolean save(UserPojo pojo) throws ServiceException;
 

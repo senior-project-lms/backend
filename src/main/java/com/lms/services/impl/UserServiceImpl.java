@@ -68,25 +68,14 @@ public class UserServiceImpl implements UserService {
      * @author umit.kas
      */
     @Override
-    public UserPojo entityToPojo(User user, boolean authority, boolean ownedCourses, boolean registeredCoursesAsStudent) {
+    public UserPojo entityToPojo(User user) {
 
         UserPojo pojo = new UserPojo();
+        pojo.setPublicKey(user.getPublicKey());
         pojo.setUsername(user.getUsername());
         pojo.setEmail(user.getEmail());
         pojo.setName(user.getName());
         pojo.setSurname(user.getSurname());
-
-        if (authority) {
-            pojo.setAuthority(authorityService.entityToPojo(user.getAuthority()));
-        }
-
-        // fill the empty if blocks as directive of the backend document
-        if (ownedCourses) {
-
-        }
-        if (registeredCoursesAsStudent) {
-
-        }
 
         return pojo;
     }
@@ -109,7 +98,7 @@ public class UserServiceImpl implements UserService {
            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a user profile is found");
         }
 
-        pojo = entityToPojo(user, true, false, false);
+        pojo = entityToPojo(user);
         pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
         return pojo;
     }
@@ -126,22 +115,24 @@ public class UserServiceImpl implements UserService {
 
         List<UserPojo> pojos = new ArrayList<>();
 
+        UserPojo pojo;
         for (User user : entities) {
-            pojos.add(entityToPojo(user, true, false, false));
+            pojo = entityToPojo(user);
+            pojos.add(pojo);
 
         }
         return pojos;
     }
 
     @Override
-    public UserPojo getUser(String publicKey) throws ServiceException {
+    public UserPojo getByPublicKey(String publicKey) throws ServiceException {
         UserPojo pojo;
         User entity = userRepository.findByPublicKey(publicKey);
 
         if (entity == null) {
             throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No such a user is found for publicKey: %s", publicKey));
         }
-        pojo = entityToPojo(entity, true, false, false);
+        pojo = entityToPojo(entity);
         return pojo;
     }
 
@@ -197,5 +188,14 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public User findByEmail(String email) throws ServiceException {
+        User entity = userRepository.findByEmail(email);
 
+        if (entity == null) {
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No such a user found by email: %s", email));
+        }
+
+        return entity;
+    }
 }

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface SystemAnnouncementService {
 
-    SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource);
+    SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity);
 
     SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo);
 
-    List<SystemAnnouncementPojo> getAnnouncements(int page) throws ServiceException;
+    List<SystemAnnouncementPojo> getAllByPage(int page) throws ServiceException;
 
     boolean save(SystemAnnouncementPojo pojo) throws ServiceException;
 

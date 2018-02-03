@@ -75,12 +75,10 @@ public class UserController {
     public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException{
 
         try {
-            if (userPojos == null || userPojos.size() == 0) {
-                return false;
-            }
             for (UserPojo pojo : userPojos) {
                 if (!isValidUserPojo(pojo)) {
-                    return false;
+                    throw new ExecutionFailException("No such user is saved");
+
                 }
 
             }

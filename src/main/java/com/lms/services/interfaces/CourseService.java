@@ -1,30 +1,32 @@
 package com.lms.services.interfaces;
 
+import com.lms.customExceptions.ServiceException;
+import com.lms.entities.course.Course;
+import com.lms.pojos.course.CoursePojo;
+
+import java.util.List;
+import java.util.Map;
+
 public interface CourseService {
 
+    CoursePojo entityToPojo(Course entity);
 
+    Course pojoToEntity(CoursePojo pojo);
 
+    List<CoursePojo> getAllByVisible(boolean visible) throws ServiceException;
+
+    CoursePojo getByPublicKey(String publicKey) throws ServiceException;
+
+    boolean save(CoursePojo pojo) throws ServiceException;
+
+    boolean save(List<CoursePojo> pojos) throws ServiceException;
+
+    Map<String, Integer> getCourseStatus() throws ServiceException;
 }
 
 
 
 /*
----------------------------------------------------------------------------------------------------------------------------
-Interface: ​CourseService
----------------------------------------------------------------------------------------------------------------------------
-function: ​entityToPojo
-parameters: ​Course, registeredUser: boolean, userCoursePrivileges: boolean,
-gradeTypes: boolean assignments: boolean, announcements: boolean, qaQuestions:
-boolean, quizTests: boolean, owner: boolean
-returns: ​CoursePojo
----------------------------------------------------------------------------------------------------------------------------
-function: ​pojoToEntity
-parameters: ​CoursePojo
-returns: ​Course
----------------------------------------------------------------------------------------------------------------------------
-function: ​getCoursesWithOwner
-parameters: ​visible: boolean
-returns: ​List<CoursePojo>
 ---------------------------------------------------------------------------------------------------------------------------
 function: ​getCourseForAdmin
 parameters: ​publicKey: String

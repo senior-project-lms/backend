@@ -2,6 +2,7 @@ package com.lms.entities;
 
 import com.lms.entities.course.Course;
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,7 +20,7 @@ public class User extends BaseEntity {
     private String name;
 
     private String surname;
-
+    @JsonIgnore
     private String password;
 
 

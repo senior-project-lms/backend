@@ -29,6 +29,8 @@ public enum Privilege {
 
 
 
+
+
     public long CODE;
 
     Privilege(long CODE) {

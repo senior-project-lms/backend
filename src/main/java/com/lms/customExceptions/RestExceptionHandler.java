@@ -23,15 +23,15 @@ public class RestExceptionHandler{
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ApiError handleDataNotFoundException(DataNotFoundException ex){
-        return new ApiError(HttpStatus.NOT_IMPLEMENTED  , ex.getMessage());
+        return new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
 
     @ExceptionHandler(value = {ExecutionFailException.class})
-    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
+    @ResponseStatus(HttpStatus.GONE)
     @ResponseBody
     public ApiError handleNoSuchProcessExecutedException(ExecutionFailException ex){
-        return new ApiError(HttpStatus.NOT_IMPLEMENTED  , ex.getMessage());
+        return new ApiError(HttpStatus.GONE, ex.getMessage());
     }
 
 

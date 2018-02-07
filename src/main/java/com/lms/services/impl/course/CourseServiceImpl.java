@@ -135,7 +135,7 @@ public class CourseServiceImpl implements CourseService{
         int invisbleCourses = courseRepository.findAllByVisible(false).size();
 
         statuses.put("visibleCourses", visibleCourses);
-        statuses.put("invisibleCourses", visibleCourses);
+        statuses.put("invisibleCourses", invisbleCourses);
 
         return statuses;
     }

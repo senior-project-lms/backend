@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = {"/api"})
@@ -24,7 +25,7 @@ public class CourseController {
     private ExceptionConverter exceptionConverter;
 
 
-    @GetMapping(value = {"/admin/courses/active"})
+    @GetMapping(value = {"/courses/active"})
     public List<CoursePojo> getAllCourses() throws ExecutionFailException, DataNotFoundException {
 
         try {
@@ -36,6 +37,21 @@ public class CourseController {
 
         throw new DataNotFoundException("No such a course collection found.");
     }
+
+    @GetMapping(value = {"/courses/deactivated"})
+    public List<CoursePojo> getAllDeactivatedCourses() throws ExecutionFailException, DataNotFoundException {
+
+        try {
+            List<CoursePojo> pojos = courseService.getAllByVisible(false);
+            return pojos;
+        } catch (ServiceException e) {
+            exceptionConverter.convert(e);
+        }
+
+        throw new DataNotFoundException("No such a course collection found.");
+    }
+
+
 
     @PostMapping(value = {"/admin/course"})
     public boolean saveCourse(@RequestBody CoursePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
@@ -69,6 +85,20 @@ public class CourseController {
 
         throw new ExecutionFailException("No such course collection is saved");
     }
+
+
+    @GetMapping("/admin/courses/statuses")
+    public Map<String, Integer> getCoursesStatueses() throws ExecutionFailException, DataNotFoundException {
+        try {
+            return courseService.getCourseStatus();
+        } catch (ServiceException e) {
+            exceptionConverter.convert(e);
+        }
+
+        throw new ExecutionFailException("No such course status is selected");
+
+    }
+
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException {

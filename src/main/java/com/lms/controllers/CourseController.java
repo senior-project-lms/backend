@@ -85,7 +85,7 @@ public class CourseController {
 
 
     @GetMapping("/admin/courses/statuses")
-    public Map<String, Integer> getCoursesStatueses() throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+    public Map<String, Integer> getCoursesStatuses() throws ExecutionFailException, DataNotFoundException, ExistRecordException {
         try {
             return courseService.getCourseStatus();
         } catch (ServiceException e) {
@@ -93,8 +93,36 @@ public class CourseController {
         }
 
         throw new ExecutionFailException("No such course status is selected");
+    }
+
+
+    @PutMapping("/admin/course/{publicKey}/visible")
+    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            try {
+                return courseService.updateVisibility(publicKey, true);
+            } catch (ServiceException e) {
+                exceptionConverter.convert(e);
+            }
+
+        }
+        throw new EmptyFieldException("PublicKey is empty");
+    }
+
+    @PutMapping("/admin/course/{publicKey}/invisible")
+    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            try {
+                return courseService.updateVisibility(publicKey, false);
+            } catch (ServiceException e) {
+                exceptionConverter.convert(e);
+            }
+
+        }
+        throw new EmptyFieldException("PublicKey is empty");
 
     }
+
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {

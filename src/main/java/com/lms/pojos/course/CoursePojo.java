@@ -28,7 +28,7 @@ public class CoursePojo extends BasePojo {
 
     private List<QuizTestPojo> quizTests;
 
-
     private UserPojo owner;
+
 
 }

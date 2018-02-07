@@ -21,5 +21,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     boolean existsByCode(String code);
 
+    int countByVisible(boolean visible);
 
 }

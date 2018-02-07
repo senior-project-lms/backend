@@ -25,4 +25,6 @@ public interface CourseService {
 
     boolean codeAlreadyExist(String code);
 
+    boolean updateVisibility(String publicKey, boolean visible) throws ServiceException;
+
 }

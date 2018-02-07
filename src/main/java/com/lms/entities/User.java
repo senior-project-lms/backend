@@ -13,8 +13,10 @@ import java.util.List;
 @Data
 public class User extends BaseEntity {
 
+    //@Column(unique = true)
     private String username;
 
+    //@Column(unique = true)
     private String email;
 
     private String name;

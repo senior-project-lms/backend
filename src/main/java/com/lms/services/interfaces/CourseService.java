@@ -22,26 +22,7 @@ public interface CourseService {
     boolean save(List<CoursePojo> pojos) throws ServiceException;
 
     Map<String, Integer> getCourseStatus() throws ServiceException;
+
+    boolean codeAlreadyExist(String code);
+
 }
-
-
-
-/*
----------------------------------------------------------------------------------------------------------------------------
-function: ​getCourseForAdmin
-parameters: ​publicKey: String
-returns: ​List<CoursePojo>
----------------------------------------------------------------------------------------------------------------------------
-function: ​save
-parameters: ​CoursePojo
-returns: ​boolean
----------------------------------------------------------------------------------------------------------------------------
-function: ​save
-parameters: ​List<CoursePojo>
-returns: ​boolean
----------------------------------------------------------------------------------------------------------------------------
-function: ​getCourseStatusCounts
-parameters:
-returns: ​HashMap<String, Integer>
-------------------------------------------------------------------------------------------------------------------------*
-* */

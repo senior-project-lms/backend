@@ -139,4 +139,12 @@ public class CourseServiceImpl implements CourseService{
 
         return statuses;
     }
+
+    @Override
+    public boolean codeAlreadyExist(String code) {
+
+        return courseRepository.existsByCode(code);
+
+
+    }
 }

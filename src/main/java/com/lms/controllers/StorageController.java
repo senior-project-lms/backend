@@ -56,7 +56,7 @@ public class StorageController {
      * <p>
      * Serve image that is located in System Announcement text,
      *
-     * @param file
+     * @param
      * @return ResponseEntity<Resource>
      * @author umit.kas
      */

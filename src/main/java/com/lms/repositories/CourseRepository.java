@@ -19,5 +19,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findAllByVisible(boolean visible);
 
+    boolean existsByCode(String code);
+
 
 }

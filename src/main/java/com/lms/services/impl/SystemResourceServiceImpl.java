@@ -38,11 +38,10 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      *
      * @author umit.kas
      * @param entity
-     * @param systemAnnouncement
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement){
+    public SystemResourcePojo entityToPojo(SystemResource entity) {
 
         SystemResourcePojo pojo = new SystemResourcePojo();
 
@@ -51,12 +50,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
         //pojo.setPath(entity.getPath());
         pojo.setUrl(entity.getUrl());
         pojo.setType(entity.getType());
-
-
         pojo.setOriginalFileName(entity.getOriginalFileName());
-        if (systemAnnouncement){
-            pojo.setAnnouncment(systemAnnouncementService.entityToPojo(entity.getSystemAnnouncement(), false));
-        }
         return pojo;
     }
 
@@ -169,7 +163,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
             throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by name");
         }
 
-        return this.entityToPojo(entity, false);
+        return this.entityToPojo(entity);
     }
 
 
@@ -188,7 +182,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
             throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by public key");
         }
 
-        return this.entityToPojo(entity, false);
+        return this.entityToPojo(entity);
 
     }
 

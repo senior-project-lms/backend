@@ -101,7 +101,7 @@ public class SystemAnnouncementController {
             throw new EmptyFieldException("Page number cannot be negative");
         }
         try {
-            return systemAnnouncementService.getAnnouncements(page);
+            return systemAnnouncementService.getAllByPage(page);
         }
         catch (ServiceException ex){
             exceptionConverter.convert(ex);

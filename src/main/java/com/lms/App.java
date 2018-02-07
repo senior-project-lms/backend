@@ -10,6 +10,7 @@ import com.lms.properties.StorageProperties;
 import com.lms.repositories.*;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.StorageService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,6 +34,10 @@ public class App {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	ModelMapper getModelMapper() {
+		return new ModelMapper();
+	}
 
 	// run the app
 	public static void main(String[] args) {
@@ -102,6 +107,32 @@ public class App {
 			user.setEmail("umit.kas@outlook.com");
 			user.setName("mock");
 			user.setSurname("admin");
+			user.setPassword("test.password");
+			user.setAuthority(role);
+			user.setBlocked(false);
+			user.setEnabled(true);
+			user.setVisible(true);
+			user = customUserDetailService.save(user);
+
+			user = new User();
+			user.generatePublicKey();
+			user.setUsername("mock.lecturer");
+			user.setEmail("mock.lecturer@lms.com");
+			user.setName("mock");
+			user.setSurname("lecturer");
+			user.setPassword("test.password");
+			user.setAuthority(role);
+			user.setBlocked(false);
+			user.setEnabled(true);
+			user.setVisible(true);
+			user = customUserDetailService.save(user);
+
+			user = new User();
+			user.generatePublicKey();
+			user.setUsername("mock.student");
+			user.setEmail("mock.student@lms.com");
+			user.setName("mock");
+			user.setSurname("student");
 			user.setPassword("test.password");
 			user.setAuthority(role);
 			user.setBlocked(false);

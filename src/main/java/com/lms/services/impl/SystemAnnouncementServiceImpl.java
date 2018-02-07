@@ -14,10 +14,10 @@ import com.lms.services.interfaces.MailService;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import com.lms.services.interfaces.SystemResourceService;
 import com.lms.services.interfaces.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,8 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
     @Autowired
     private MailService mailService;
 
-
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Converts SystemAnnouncement entity to SystemAnnouncement pojo according to boolean variables,
@@ -50,11 +51,10 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      *
      * @author umit.kas
      * @param entity
-     * @param systemResource
      * @return SystemAnnouncementPojo
      */
     @Override
-    public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity, boolean systemResource){
+    public SystemAnnouncementPojo entityToPojo(SystemAnnouncement entity) {
         SystemAnnouncementPojo pojo = new SystemAnnouncementPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
@@ -62,15 +62,13 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
         pojo.setTitle(entity.getTitle());
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setUpdatedAt(entity.getUpdatedAt());
-        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy(), false, false, false));
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
 
-        if (systemResource) {
-            List<SystemResourcePojo> resourcePojos = new ArrayList<>();
-            for (SystemResource resourceEntity : entity.getResources()) {
-                resourcePojos.add(systemResourceService.entityToPojo(resourceEntity, false));
-            }
-            pojo.setResources(resourcePojos);
+        List<SystemResourcePojo> resourcePojos = new ArrayList<>();
+        for (SystemResource resourceEntity : entity.getResources()) {
+            resourcePojos.add(systemResourceService.entityToPojo(resourceEntity));
         }
+        pojo.setResources(resourcePojos);
 
         return pojo;
     }
@@ -112,7 +110,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return  List<SystemAnnouncementPojo>
      */
     @Override
-    public List<SystemAnnouncementPojo> getAnnouncements(int page) throws ServiceException{
+    public List<SystemAnnouncementPojo> getAllByPage(int page) throws ServiceException {
         List<SystemAnnouncementPojo> pojos = new ArrayList<>();
 
         List<SystemAnnouncement> entities = systemAnnouncementRepository.findAllByVisibleOrderByUpdatedAtDesc(true, new PageRequest(page, 5));
@@ -122,7 +120,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
         }
 
         for (SystemAnnouncement announcement : entities){
-            pojos.add(this.entityToPojo(announcement, true));
+            pojos.add(this.entityToPojo(announcement));
         }
         return pojos;
     }

@@ -58,7 +58,7 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
 
         AccessPrivilegePojo pojo = new AccessPrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
-        pojo.setUser(userService.entityToPojo(entity.getUser(),false, false,false));
+        pojo.setUser(userService.entityToPojo(entity.getUser()));
 
         List<PrivilegePojo> privilegePojos = new ArrayList<>();
 

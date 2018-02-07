@@ -10,7 +10,7 @@ import java.util.List;
 public interface SystemResourceService {
 
 
-    SystemResourcePojo entityToPojo(SystemResource entity, boolean systemAnnouncement);
+    SystemResourcePojo entityToPojo(SystemResource entity);
 
     SystemResource pojoToEntity(SystemResourcePojo pojo);
 

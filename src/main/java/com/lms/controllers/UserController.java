@@ -5,12 +5,19 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.customExceptions.ServiceException;
+import com.lms.entities.Authority;
+import com.lms.entities.User;
+import com.lms.pojos.AuthorityPojo;
 import com.lms.pojos.UserPojo;
+import com.lms.services.impl.AuthorityServiceImpl;
+import com.lms.services.impl.UserServiceImpl;
+import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 @RestController
@@ -23,14 +30,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthorityService authorityService;
+
 
     @GetMapping(value = {"/me"})
-    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException{
+    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException {
 
         try {
             return userService.getMe();
-        }
-        catch (ServiceException ex){
+        } catch (ServiceException ex) {
             exceptionConverter.convert(ex);
         }
 
@@ -48,13 +57,12 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/user"})
-    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         try {
             if (isValidUserPojo(userPojo)) {
                 return userService.save(userPojo);
             }
-        }
-        catch (ServiceException ex){
+        } catch (ServiceException ex) {
             exceptionConverter.convert(ex);
         }
 
@@ -72,7 +80,7 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/users"})
-    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException{
+    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
 
         try {
             if (userPojos == null || userPojos.size() == 0) {
@@ -93,7 +101,7 @@ public class UserController {
         throw new ExecutionFailException("No such user is saved");
     }
 
-    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException{
+    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException {
         if (userPojo != null) {
             if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
                 throw new EmptyFieldException("Email field cannot be empty");
@@ -122,5 +130,59 @@ public class UserController {
         }
 
         throw new EmptyFieldException("User object cannot be empty");
+    }
+
+    /**
+     * Gets the all the users ,
+     * return 5 of System Announcement, for each page, for each request
+     *
+     * @param
+     * @return List<UserPojo>
+     * @author atalay
+     *
+     */
+    @GetMapping(value = {"/admin/users"})
+    public List<UserPojo> getUsers() throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+        try {
+
+            return userService.getAllByVisible(true);
+
+
+        } catch (ServiceException e) {
+            exceptionConverter.convert(e);
+
+        }
+        throw new ExecutionFailException("Failed");
+
+    }
+
+
+    /**
+     * Get the public key and
+     * returns the user according to the public key
+     *
+     * @param publickey
+     * @return UserPojo
+     * @author atalay
+     */
+    @GetMapping(value = {"/admin/user/{publickey}"})
+    public UserPojo getUser(@PathVariable String publickey) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+        try {
+            if (publickey == null) {
+                throw new DataNotFoundException("Public key not found.");
+            }
+            UserPojo pojo = userService.getUser(publickey);
+            if (pojo != null) {
+                return pojo;
+            }
+
+        } catch (ServiceException e) {
+            exceptionConverter.convert(e);
+
+        }
+
+        throw new ExecutionFailException("Failed");
+
+
     }
 }

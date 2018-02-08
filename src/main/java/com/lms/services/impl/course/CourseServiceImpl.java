@@ -64,6 +64,13 @@ public class CourseServiceImpl implements CourseService{
 
         pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
+
+        pojos.stream().forEach(pojo -> pojo.setVisible(visible));
+
+
+
+
+
         return pojos;
     }
 
@@ -131,12 +138,45 @@ public class CourseServiceImpl implements CourseService{
 
         HashMap<String, Integer> statuses = new HashMap<>();
 
-        int visibleCourses = courseRepository.findAllByVisible(true).size();
-        int invisbleCourses = courseRepository.findAllByVisible(false).size();
+        int visibleCourses = courseRepository.countByVisible(true);
+        int invisibleCourses = courseRepository.countByVisible(false);
 
         statuses.put("visibleCourses", visibleCourses);
-        statuses.put("invisibleCourses", invisbleCourses);
+        statuses.put("invisibleCourses", invisibleCourses);
 
         return statuses;
+    }
+
+    @Override
+    public boolean codeAlreadyExist(String code) {
+        return courseRepository.existsByCode(code);
+    }
+
+    @Override
+    public boolean updateVisibility(String publicKey, boolean visible) throws ServiceException {
+
+        User updatedBy = userDetailsService.getAuthenticatedUser();
+
+        if (updatedBy == null) {
+            throw new SecurityException("Authenticated User is not found");
+        }
+
+        Course entity = courseRepository.findByPublicKey(publicKey);
+
+        if (entity == null) {
+            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No course is found by publicKey: %s", publicKey));
+        }
+
+        entity.setUpdatedBy(updatedBy);
+
+        entity.setVisible(visible);
+
+        entity = courseRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "Setting course visibility is not executed successfully");
+        }
+
+        return true;
     }
 }

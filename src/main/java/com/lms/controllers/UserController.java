@@ -1,13 +1,7 @@
 package com.lms.controllers;
 
 import com.lms.components.ExceptionConverter;
-import com.lms.customExceptions.DataNotFoundException;
-import com.lms.customExceptions.EmptyFieldException;
-import com.lms.customExceptions.ExecutionFailException;
-import com.lms.customExceptions.ServiceException;
-import com.lms.entities.Authority;
-import com.lms.entities.User;
-import com.lms.pojos.AuthorityPojo;
+import com.lms.customExceptions.*;
 import com.lms.pojos.UserPojo;
 import com.lms.services.impl.AuthorityServiceImpl;
 import com.lms.services.impl.UserServiceImpl;
@@ -35,7 +29,7 @@ public class UserController {
 
 
     @GetMapping(value = {"/me"})
-    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException {
+    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         try {
             return userService.getMe();
@@ -57,7 +51,7 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/user"})
-    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
         try {
             if (isValidUserPojo(userPojo)) {
                 return userService.save(userPojo);
@@ -80,7 +74,7 @@ public class UserController {
      * @author atalay samet ergen
      */
     @PostMapping(value = {"/admin/users"})
-    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         try {
             for (UserPojo pojo : userPojos) {

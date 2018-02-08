@@ -1,10 +1,7 @@
 package com.lms.controllers;
 
 import com.lms.components.ExceptionConverter;
-import com.lms.customExceptions.DataNotFoundException;
-import com.lms.customExceptions.EmptyFieldException;
-import com.lms.customExceptions.ExecutionFailException;
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.*;
 import com.lms.pojos.SystemAnnouncementPojo;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,7 @@ public class SystemAnnouncementController {
      */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).SAVE_SYSTEM_ANNOUNCEMENT)")
     @PostMapping(value = {"/admin/system-announcement"})
-    public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+    public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
 
             if (pojo == null){
                 throw new EmptyFieldException("System Announcement object cannot be empty");
@@ -69,7 +66,7 @@ public class SystemAnnouncementController {
      */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT)")
     @DeleteMapping(value = {"/admin/system-announcement/{publicKey}"})
-    public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+    public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
 
         if (publicKey == null || publicKey.isEmpty()){
             throw new EmptyFieldException("publicKey field cannot be empty");
@@ -95,7 +92,7 @@ public class SystemAnnouncementController {
      */
 
     @GetMapping({"/system-announcements/{page}"})
-    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
 
         if (page < 0){
             throw new EmptyFieldException("Page number cannot be negative");

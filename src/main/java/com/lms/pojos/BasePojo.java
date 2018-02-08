@@ -15,8 +15,9 @@ public class BasePojo implements Serializable {
 
     private UserPojo createdBy;
 
-
     private Date updatedAt;
 
     private UserPojo updatedBy;
+
+    private boolean visible;
 }

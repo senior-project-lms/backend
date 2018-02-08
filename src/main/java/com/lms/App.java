@@ -4,6 +4,7 @@ package com.lms;
 import com.lms.entities.AccessPrivilege;
 import com.lms.entities.Authority;
 import com.lms.entities.User;
+import com.lms.entities.course.Course;
 import com.lms.enums.AccessLevel;
 import com.lms.enums.Privilege;
 import com.lms.properties.StorageProperties;
@@ -21,6 +22,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -53,6 +55,10 @@ public class App {
     public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepository courseRepository, final PrivilegeRepository privilegeRepository
             , final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService, final AccessPrivilegeRepository accessPrivilegeRepository) throws Exception {
         if (userRepository.count() == 0) {
+
+			Course course = new Course();
+			course.setName("test-course-01");
+			course.setCode("tst-01");
 
 
             for (AccessLevel accessLevel : AccessLevel.values()) {
@@ -113,32 +119,26 @@ public class App {
             user.setVisible(true);
             user = customUserDetailService.save(user);
 
-            user = new User();
-            user.generatePublicKey();
-            user.setUsername("mock.lecturer");
-            user.setEmail("mock.lecturer@lms.com");
-            user.setName("mock");
-            user.setSurname("lecturer");
-            user.setPassword("test.password");
-            user.setAuthority(role);
-            user.setBlocked(false);
-            user.setEnabled(true);
-            user.setVisible(true);
-            user = customUserDetailService.save(user);
+			course.setOwner(user);
 
-            user = new User();
-            user.generatePublicKey();
-            user.setUsername("mock.student");
-            user.setEmail("mock.student@lms.com");
-            user.setName("mock");
-            user.setSurname("student");
-            user.setPassword("test.password");
-            user.setAuthority(role);
-            user.setBlocked(false);
-            user.setEnabled(true);
-            user.setVisible(true);
-            user = customUserDetailService.save(user);
+			user = new User();
+			user.generatePublicKey();
+			user.setUsername("mock.student");
+			user.setEmail("mock.student@lms.com");
+			user.setName("mock");
+			user.setSurname("student");
+			user.setPassword("test.password");
+			user.setAuthority(role);
+			user.setBlocked(false);
+			user.setEnabled(true);
+			user.setVisible(true);
+			user = customUserDetailService.save(user);
 
+			course.setRegisteredUsers(Arrays.asList(user));
+			course.generatePublicKey();
+			courseRepository.save(course);
+		}
+	}
 
         }
     }

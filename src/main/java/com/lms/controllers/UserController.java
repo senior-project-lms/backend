@@ -134,7 +134,7 @@ public class UserController {
      *
      */
     @GetMapping(value = {"/admin/users"})
-    public List<UserPojo> getUsers() throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+    public List<UserPojo> getUsers() throws EmptyFieldException, DataNotFoundException, ExecutionFailException, ExistRecordException {
         try {
 
             return userService.getAllByVisible(true);
@@ -158,7 +158,7 @@ public class UserController {
      * @author atalay
      */
     @GetMapping(value = {"/admin/user/{publickey}"})
-    public UserPojo getUser(@PathVariable String publickey) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+    public UserPojo getUser(@PathVariable String publickey) throws EmptyFieldException, DataNotFoundException, ExecutionFailException, ExistRecordException {
         try {
             if (publickey == null) {
                 throw new DataNotFoundException("Public key not found.");

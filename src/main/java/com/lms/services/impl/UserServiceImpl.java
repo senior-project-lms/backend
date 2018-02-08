@@ -50,9 +50,7 @@ public class UserServiceImpl implements UserService {
         entity.setSurname(pojo.getSurname());
         entity.setName(pojo.getName());
         entity.setPublicKey(pojo.getPublicKey());
-        if (pojo.getAuthority() != null) {
-            entity.setAuthority(authorityService.pojoToEntity(pojo.getAuthority()));
-        }
+
         //do not forget to convert other entities to pojos
 
         return entity;

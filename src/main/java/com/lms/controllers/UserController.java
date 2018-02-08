@@ -169,7 +169,7 @@ public class UserController {
             if (publickey == null) {
                 throw new DataNotFoundException("Public key not found.");
             }
-            UserPojo pojo = userService.getUser(publickey);
+            UserPojo pojo = userService.getByPublicKey(publickey);
             if (pojo != null) {
                 return pojo;
             }

@@ -9,6 +9,9 @@ import com.lms.services.interfaces.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
@@ -28,13 +31,14 @@ public class AuthorityServiceImpl implements AuthorityService {
         AuthorityPojo pojo = new AuthorityPojo();
         pojo.setAccessLevel(entity.getAccessLevel());
         pojo.setName(entity.getName());
+        pojo.setPublicKey(entity.getPublicKey());
         return pojo;
     }
 
     @Override
-    public Authority getAuthorityByPublicKey(String publicKey) throws ServiceException{
+    public Authority getAuthorityByPublicKey(String publicKey) throws ServiceException {
         Authority entity = authorityRepository.findByPublicKey(publicKey);
-        if (entity == null){
+        if (entity == null) {
             throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("Authority is not found by accessLevel: %s", publicKey));
         }
         return entity;
@@ -45,5 +49,14 @@ public class AuthorityServiceImpl implements AuthorityService {
         Authority entity = new Authority();
         entity.setPublicKey(pojo.getPublicKey());
         return entity;
+    }
+
+    @Override
+    public List<AuthorityPojo> getAuthorities() throws ServiceException {
+        List<AuthorityPojo> pojos = new ArrayList<>();
+        for (Authority entity : authorityRepository.findAllByVisible(true)) {
+            pojos.add(entityToPojo(entity));
+        }
+        return pojos;
     }
 }

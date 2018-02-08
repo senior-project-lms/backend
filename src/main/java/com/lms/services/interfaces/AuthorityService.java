@@ -4,6 +4,8 @@ import com.lms.customExceptions.ServiceException;
 import com.lms.entities.Authority;
 import com.lms.pojos.AuthorityPojo;
 
+import java.util.List;
+
 public interface AuthorityService {
 
     AuthorityPojo entityToPojo(Authority entity);
@@ -12,4 +14,5 @@ public interface AuthorityService {
 
     Authority pojoToEntity(AuthorityPojo pojo);
 
+    List<AuthorityPojo> getAuthorities() throws ServiceException;
 }

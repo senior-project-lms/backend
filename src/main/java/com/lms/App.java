@@ -121,7 +121,21 @@ public class App {
 
 			course.setOwner(user);
 
-			user = new User();
+            user = new User();
+            user.generatePublicKey();
+            user.setUsername("mock.lecturer");
+            user.setEmail("mock.lecturer@lms.com");
+            user.setName("mock");
+            user.setSurname("lecturer");
+            user.setPassword("test.password");
+            user.setAuthority(role);
+            user.setBlocked(false);
+            user.setEnabled(true);
+            user.setVisible(true);
+            user = customUserDetailService.save(user);
+
+
+            user = new User();
 			user.generatePublicKey();
 			user.setUsername("mock.student");
 			user.setEmail("mock.student@lms.com");
@@ -140,7 +154,5 @@ public class App {
 		}
 	}
 
-        }
-    }
 
 }

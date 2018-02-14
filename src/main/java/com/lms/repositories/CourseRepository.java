@@ -23,5 +23,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     int countByVisible(boolean visible);
 
+    List<Course> findAllByRegisteredUsersNotInAndVisible(User user, boolean visible);
 
 }

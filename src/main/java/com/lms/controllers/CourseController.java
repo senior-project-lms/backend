@@ -1,6 +1,5 @@
 package com.lms.controllers;
 
-import com.lms.components.ExceptionConverter;
 import com.lms.customExceptions.*;
 
 import com.lms.pojos.course.CoursePojo;
@@ -18,111 +17,72 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @Autowired
-    private ExceptionConverter exceptionConverter;
-
 
     @GetMapping(value = {"/courses/active"})
-    public List<CoursePojo> getAllCourses() throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+    public List<CoursePojo> getAllCourses() throws DataNotFoundException {
 
-        try {
-            List<CoursePojo> pojos = courseService.getAllByVisible(true);
-            return pojos;
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-        }
-
-        throw new DataNotFoundException("No such a course collection found.");
+        return courseService.getAllByVisible(true);
     }
 
     @GetMapping(value = {"/courses/deactivated"})
-    public List<CoursePojo> getAllDeactivatedCourses() throws ExecutionFailException, DataNotFoundException, ExistRecordException {
-
-        try {
-            List<CoursePojo> pojos = courseService.getAllByVisible(false);
-            return pojos;
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-        }
-
-        throw new DataNotFoundException("No such a course collection found.");
+    public List<CoursePojo> getAllDeactivatedCourses() throws DataNotFoundException {
+        return courseService.getAllByVisible(false);
     }
-
 
 
     @PostMapping(value = {"/admin/course"})
     public boolean saveCourse(@RequestBody CoursePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
         if (isValidPojo(pojo)) {
-            try {
-                return courseService.save(pojo);
-
-            } catch (ServiceException e) {
-                exceptionConverter.convert(e);
-            }
+            return courseService.save(pojo);
         }
-        throw new ExecutionFailException("No such course is saved");
+        return false;
     }
 
     @PostMapping(value = {"/admin/courses"})
     public boolean saveCourses(@RequestBody List<CoursePojo> pojos) throws ExecutionFailException, EmptyFieldException, DataNotFoundException, ExistRecordException {
 
-        try {
-            for (CoursePojo pojo : pojos) {
-                if (!isValidPojo(pojo)) {
-                    throw new ExecutionFailException("No such user is saved");
-
-                }
+        for (CoursePojo pojo : pojos) {
+            if (!isValidPojo(pojo)) {
+                throw new ExecutionFailException("No such user is saved");
             }
-            return courseService.save(pojos);
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-
         }
+        return courseService.save(pojos);
 
-
-        throw new ExecutionFailException("No such course collection is saved");
     }
 
 
     @GetMapping("/admin/courses/statuses")
-    public Map<String, Integer> getCoursesStatuses() throws ExecutionFailException, DataNotFoundException, ExistRecordException {
-        try {
-            return courseService.getCourseStatus();
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-        }
+    public Map<String, Integer> getCoursesStatuses() {
+        return courseService.getCourseStatus();
 
-        throw new ExecutionFailException("No such course status is selected");
     }
 
 
     @PutMapping("/admin/course/{publicKey}/visible")
-    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException, EmptyFieldException {
+    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {
-            try {
-                return courseService.updateVisibility(publicKey, true);
-            } catch (ServiceException e) {
-                exceptionConverter.convert(e);
-            }
+            return courseService.updateVisibility(publicKey, true);
 
         }
         throw new EmptyFieldException("PublicKey is empty");
     }
 
     @PutMapping("/admin/course/{publicKey}/invisible")
-    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException, EmptyFieldException {
+    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {
-            try {
-                return courseService.updateVisibility(publicKey, false);
-            } catch (ServiceException e) {
-                exceptionConverter.convert(e);
-            }
-
+            return courseService.updateVisibility(publicKey, false);
         }
         throw new EmptyFieldException("PublicKey is empty");
 
     }
 
+
+    @GetMapping("/courses/not-registered")
+    public List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException {
+
+        return courseService.getNotRegisteredCourses();
+
+    }
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {

@@ -1,6 +1,7 @@
 package com.lms.services.impl;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.Authority;
 import com.lms.entities.User;
 import com.lms.enums.ExceptionType;
@@ -10,7 +11,6 @@ import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.AccessPrivilegeService;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
-import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -88,12 +88,12 @@ public class UserServiceImpl implements UserService {
      * @author umit.kas
      */
     @Override
-    public UserPojo getMe() throws ServiceException {
+    public UserPojo getMe() throws DataNotFoundException {
         UserPojo pojo;
         User user = customUserDetailService.getAuthenticatedUser();
 
         if (user == null){
-           throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a user profile is found");
+            throw new DataNotFoundException("No such a user profile is found");
         }
 
         pojo = entityToPojo(user);
@@ -103,12 +103,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserPojo> getAllByVisible(boolean visible) throws ServiceException {
+    public List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException {
 
         List<User> entities = userRepository.findAllByVisible(true);
 
         if (entities == null){
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a User collection is found");
+            throw new DataNotFoundException("No such a User collection is found");
         }
 
         List<UserPojo> pojos = new ArrayList<>();
@@ -123,25 +123,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPojo getByPublicKey(String publicKey) throws ServiceException {
+    public UserPojo getByPublicKey(String publicKey) throws DataNotFoundException {
         UserPojo pojo;
         User entity = userRepository.findByPublicKey(publicKey);
 
         if (entity == null) {
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No such a user is found for publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No such a user is found for publicKey: %s", publicKey));
         }
         pojo = entityToPojo(entity);
         return pojo;
     }
 
     @Override
-    public boolean save(UserPojo pojo)  throws ServiceException {
+    public boolean save(UserPojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
         User entity = pojoToEntity(pojo);
         entity.generatePublicKey();
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
-        Authority authorityEntity = authorityService.getAuthorityByPublicKey(pojo.getAuthority().getPublicKey());
+        Authority authorityEntity = authorityService.findByPublicKey(pojo.getAuthority().getPublicKey());
 
 
         entity.setAuthority(authorityEntity);
@@ -150,14 +150,14 @@ public class UserServiceImpl implements UserService {
         entity = userRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("No such user is saved by email: %s", pojo.getEmail()));
+            throw new ExecutionFailException(String.format("No such user is saved by email: %s", pojo.getEmail()));
         }
 
         return true;
     }
 
     @Override
-    public boolean save(List<UserPojo> pojos) throws ServiceException {
+    public boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
         List<User> entities = new ArrayList<>();
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
             if (entity.getAuthority() != null) {
-                Authority authorityEntity = authorityService.getAuthorityByPublicKey(pojo.getAuthority().getPublicKey());
+                Authority authorityEntity = authorityService.findByPublicKey(pojo.getAuthority().getPublicKey());
 
                 entity.setAuthority(authorityEntity);
 
@@ -180,18 +180,18 @@ public class UserServiceImpl implements UserService {
 
         entities = userRepository.save(entities);
         if (entities == null || entities.size() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a user collection is saved");
+            throw new ExecutionFailException("No such a user collection is saved");
         }
         return true;
 
     }
 
     @Override
-    public User findByEmail(String email) throws ServiceException {
+    public User findByEmail(String email) throws DataNotFoundException {
         User entity = userRepository.findByEmail(email);
 
         if (entity == null) {
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No such a user found by email: %s", email));
+            throw new DataNotFoundException(String.format("No such a user found by email: %s", email));
         }
 
         return entity;

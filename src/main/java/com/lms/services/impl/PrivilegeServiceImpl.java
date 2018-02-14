@@ -1,14 +1,22 @@
 package com.lms.services.impl;
 
 
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.Privilege;
+import com.lms.enums.ExceptionType;
 import com.lms.pojos.PrivilegePojo;
+import com.lms.repositories.PrivilegeRepository;
 import com.lms.services.interfaces.PrivilegeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PrivilegeServiceImpl implements PrivilegeService{
 
+    @Autowired
+    private PrivilegeRepository privilegeRepository;
 
 
     /**
@@ -17,32 +25,37 @@ public class PrivilegeServiceImpl implements PrivilegeService{
      *
      * @author umit.kas
      * @param entity
-     * @param userCoursePrivileges
-     * @param userTypeDefaultPrivileges
-     * @param accessPrivileges
      * @return PrivilegePojo
      *
      */
-    public PrivilegePojo entityToPojo(Privilege entity, boolean userCoursePrivileges, boolean userTypeDefaultPrivileges, boolean accessPrivileges){
+    public PrivilegePojo entityToPojo(Privilege entity) {
         PrivilegePojo pojo = new PrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
         pojo.setCode(entity.getCode());
-        if (userCoursePrivileges){
-
-        }
-        if (userTypeDefaultPrivileges){
-
-        }
-        if(accessPrivileges){
-
-        }
         return pojo;
     }
 
 
     @Override
     public Privilege pojoToEntity(PrivilegePojo pojo) {
-        return null;
+        Privilege entity = new Privilege();
+        entity.setPublicKey(pojo.getPublicKey());
+        entity.setCode(pojo.getCode());
+        entity.setName(pojo.getName());
+        return entity;
+    }
+
+    @Override
+    public List<Privilege> findAllByPublicKeys(List<String> publicKeys) throws DataNotFoundException {
+
+        List<Privilege> privileges = privilegeRepository.findAllByPublicKeyIn(publicKeys);
+
+        if (privileges == null) {
+            throw new DataNotFoundException("No such privilege collection is found");
+        }
+
+        return privileges;
+
     }
 }

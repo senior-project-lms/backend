@@ -1,6 +1,6 @@
 package com.lms.services.impl;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.Authority;
 import com.lms.enums.ExceptionType;
 import com.lms.pojos.AuthorityPojo;
@@ -36,10 +36,10 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Authority getAuthorityByPublicKey(String publicKey) throws ServiceException {
+    public Authority findByPublicKey(String publicKey) throws DataNotFoundException {
         Authority entity = authorityRepository.findByPublicKey(publicKey);
         if (entity == null) {
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("Authority is not found by accessLevel: %s", publicKey));
+            throw new DataNotFoundException(String.format("Authority is not found by accessLevel: %s", publicKey));
         }
         return entity;
     }
@@ -48,15 +48,19 @@ public class AuthorityServiceImpl implements AuthorityService {
     public Authority pojoToEntity(AuthorityPojo pojo) {
         Authority entity = new Authority();
         entity.setPublicKey(pojo.getPublicKey());
+        entity.setAccessLevel(pojo.getAccessLevel());
+        entity.setName(pojo.getName());
         return entity;
     }
 
     @Override
-    public List<AuthorityPojo> getAuthorities() throws ServiceException {
+    public List<AuthorityPojo> getAuthorities() {
         List<AuthorityPojo> pojos = new ArrayList<>();
         for (Authority entity : authorityRepository.findAllByVisible(true)) {
             pojos.add(entityToPojo(entity));
         }
         return pojos;
     }
+
+
 }

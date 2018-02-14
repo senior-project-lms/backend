@@ -1,6 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.pojos.UserPojo;
 
@@ -13,17 +14,17 @@ public interface UserService {
 
     User pojoToEntity(UserPojo pojo);
 
-    UserPojo getMe() throws ServiceException;
+    UserPojo getMe() throws DataNotFoundException;
 
-    User findByEmail(String email) throws ServiceException;
+    User findByEmail(String email) throws DataNotFoundException;
 
-    List<UserPojo> getAllByVisible(boolean visible) throws ServiceException;
+    List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException;
 
-    UserPojo getByPublicKey(String publicKey) throws ServiceException;
+    UserPojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean save(UserPojo pojo) throws ServiceException;
+    boolean save(UserPojo pojo) throws DataNotFoundException, ExecutionFailException;
 
-    boolean save(List<UserPojo> pojos) throws ServiceException;
+    boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException;
 
 
 }

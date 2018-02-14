@@ -1,6 +1,6 @@
 package com.lms.services.interfaces;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.AccessPrivilege;
 import com.lms.pojos.AccessPrivilegePojo;
 
@@ -12,5 +12,5 @@ public interface AccessPrivilegeService {
 
     AccessPrivilege pojoToEntity(AccessPrivilegePojo pojo);
 
-    List<Long> getAuthenticatedUserAccessPrivileges() throws ServiceException;
+    List<Long> getAuthenticatedUserAccessPrivileges() throws DataNotFoundException;
 }

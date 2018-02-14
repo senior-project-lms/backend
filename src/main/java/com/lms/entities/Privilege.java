@@ -33,4 +33,8 @@ public class Privilege extends BaseEntity {
     @ManyToMany(mappedBy = "privileges")
     private List<AccessPrivilege> accessPrivileges;
 
+    @ManyToOne
+    private DefaultAuthorityPrivilege defaultAuthorityPrivilege;
+
+
 }

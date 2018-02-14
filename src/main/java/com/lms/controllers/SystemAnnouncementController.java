@@ -1,6 +1,5 @@
 package com.lms.controllers;
 
-import com.lms.components.ExceptionConverter;
 import com.lms.customExceptions.*;
 import com.lms.pojos.SystemAnnouncementPojo;
 import com.lms.services.interfaces.SystemAnnouncementService;
@@ -19,7 +18,6 @@ public class SystemAnnouncementController {
     @Autowired
     private SystemAnnouncementService systemAnnouncementService;
 
-    private ExceptionConverter exceptionConverter;
 
     /**
      * Checks the parameters that will be saved, is null or not, if there is any null returns error else
@@ -31,28 +29,19 @@ public class SystemAnnouncementController {
      */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).SAVE_SYSTEM_ANNOUNCEMENT)")
     @PostMapping(value = {"/admin/system-announcement"})
-    public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
+    public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
-            if (pojo == null){
-                throw new EmptyFieldException("System Announcement object cannot be empty");
-            }
-            else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()){
-                throw new EmptyFieldException("Title field cannot be empty");
-            }
-            else if (pojo.getContent() == null || pojo.getContent().isEmpty()){
-                throw new EmptyFieldException("Content field cannot be empty");
-            }
-            else{
-                try {
-                    return systemAnnouncementService.save(pojo);
-                }
-                catch (ServiceException e){
-                    exceptionConverter.convert(e);
-                }
+        if (pojo == null) {
+            throw new EmptyFieldException("System Announcement object cannot be empty");
+        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
+            throw new EmptyFieldException("Title field cannot be empty");
+        } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
+            throw new EmptyFieldException("Content field cannot be empty");
+        } else {
+            return systemAnnouncementService.save(pojo);
 
 
-            }
-            throw new ExecutionFailException("No system announcement is found");
+        }
 
     }
 
@@ -66,19 +55,13 @@ public class SystemAnnouncementController {
      */
     @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT)")
     @DeleteMapping(value = {"/admin/system-announcement/{publicKey}"})
-    public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
+    public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
-        if (publicKey == null || publicKey.isEmpty()){
+        if (publicKey == null || publicKey.isEmpty()) {
             throw new EmptyFieldException("publicKey field cannot be empty");
         }
-        try {
-            return systemAnnouncementService.delete(publicKey);
-        }
-        catch (ServiceException ex){
-            exceptionConverter.convert(ex);
-        }
+        return systemAnnouncementService.delete(publicKey);
 
-        throw new ExecutionFailException("No such system announcement is deleted");
 
     }
 
@@ -92,18 +75,12 @@ public class SystemAnnouncementController {
      */
 
     @GetMapping({"/system-announcements/{page}"})
-    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
+    public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, DataNotFoundException {
 
-        if (page < 0){
+        if (page < 0) {
             throw new EmptyFieldException("Page number cannot be negative");
         }
-        try {
-            return systemAnnouncementService.getAllByPage(page);
-        }
-        catch (ServiceException ex){
-            exceptionConverter.convert(ex);
-        }
-        throw new ExecutionFailException("");
+        return systemAnnouncementService.getAllByPage(page);
 
 
     }

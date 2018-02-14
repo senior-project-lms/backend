@@ -1,7 +1,7 @@
 package com.lms.services.impl;
 
-import com.lms.customExceptions.EmptyFieldException;
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.entities.User;
@@ -102,7 +102,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @author umit.kas
      */
     @Override
-    public boolean save(SystemResourcePojo pojo) throws ServiceException {
+    public boolean save(SystemResourcePojo pojo) throws ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
         SystemResource entity = this.pojoToEntity(pojo);
@@ -110,7 +110,7 @@ public class SystemResourceServiceImpl implements SystemResourceService{
         entity.setCreatedBy(authenticatedUser);
         entity = systemResourceRepository.save(entity);
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a System resource is saved");
+            throw new ExecutionFailException("No such a System resource is saved");
         }
 
         return true;
@@ -127,18 +127,18 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return boolean
      */
     @Override
-    public boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws ServiceException{
+    public boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws ExecutionFailException, DataNotFoundException {
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
 
         if (entity == null){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "System announcement cannot be empty, for to set system resource announcement");
+            throw new DataNotFoundException(String.format("System resource is not added to for Announcement publicKey: %s", publicKey));
         }
 
         entity.setSystemAnnouncement(announcement);
         entity = systemResourceRepository.save(entity);
 
         if (entity != null && entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "No such a system announcement of System resource is saved");
+            throw new ExecutionFailException("No such a system announcement of System resource is saved");
         }
 
         return true;
@@ -157,10 +157,10 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo getByName(String name)  throws ServiceException {
+    public SystemResourcePojo getByName(String name) throws DataNotFoundException {
         SystemResource entity = systemResourceRepository.findByName(name);
         if (entity == null){
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by name");
+            throw new DataNotFoundException("System resource is not found by name");
         }
 
         return this.entityToPojo(entity);
@@ -175,11 +175,11 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return SystemResourcePojo
      */
     @Override
-    public SystemResourcePojo getByPublicKey(String publicKey)  throws ServiceException {
+    public SystemResourcePojo getByPublicKey(String publicKey) throws DataNotFoundException {
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
 
         if (entity == null){
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "System resource is not found by public key");
+            throw new DataNotFoundException("System resource is not found by public key");
         }
 
         return this.entityToPojo(entity);
@@ -198,18 +198,18 @@ public class SystemResourceServiceImpl implements SystemResourceService{
      * @return boolean
      */
     @Override
-    public boolean delete(String publicKey) throws ServiceException {
+    public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
 
         SystemResource entity = systemResourceRepository.findByPublicKey(publicKey);
 
         if (entity == null){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("No such a system resource is found publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No such a system resource is found publicKey: %s", publicKey));
         }
         entity.setVisible(false);
         entity = systemResourceRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, String.format("System resource is not deleted by publicKey: %s", publicKey));
+            throw new ExecutionFailException(String.format("System resource is not deleted by publicKey: %s", publicKey));
         }
         return true;
     }

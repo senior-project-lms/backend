@@ -1,7 +1,7 @@
 package com.lms.services.impl;
 
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.AccessPrivilege;
 import com.lms.entities.Privilege;
 import com.lms.entities.User;
@@ -63,7 +63,7 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
         List<PrivilegePojo> privilegePojos = new ArrayList<>();
 
         for (Privilege privilege : entity.getPrivileges()){
-            privilegePojos.add(privilegeService.entityToPojo(privilege,false,false, false));
+            privilegePojos.add(privilegeService.entityToPojo(privilege));
         }
         pojo.setPrivileges(privilegePojos);
 
@@ -83,7 +83,7 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
      *
      */
     @Override
-    public List<Long> getAuthenticatedUserAccessPrivileges() throws ServiceException{
+    public List<Long> getAuthenticatedUserAccessPrivileges() throws DataNotFoundException {
         List<Long> privileges;
         User user = customUserDetailService.getAuthenticatedUser();
         if (user == null){
@@ -93,7 +93,7 @@ public class AccessPrivilegeServiceImpl implements AccessPrivilegeService{
         AccessPrivilege entity = accessPrivilegeRepository.findByUser(user);
 
         if (entity == null){
-           throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a access privilege is found");
+            throw new DataNotFoundException("No such a access privilege is found");
         }
 
         privileges = entity.getPrivileges().stream().map(privilege -> privilege.getCode())

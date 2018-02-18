@@ -15,4 +15,9 @@ public interface AuthorityService {
     List<AuthorityPojo> getAuthorities();
 
     Authority findByPublicKey(String publicKey) throws DataNotFoundException;
+
+    Authority findByCode(long code) throws DataNotFoundException;
+
+
+    void initialize();
 }

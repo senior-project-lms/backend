@@ -1,16 +1,15 @@
 package com.lms;
 
 
-import com.lms.entities.AccessPrivilege;
 import com.lms.entities.Authority;
+import com.lms.entities.DefaultAuthorityPrivilege;
 import com.lms.entities.User;
-import com.lms.entities.course.Course;
 import com.lms.enums.AccessLevel;
-import com.lms.enums.Privilege;
+import com.lms.enums.EPrivilege;
 import com.lms.properties.StorageProperties;
 import com.lms.repositories.*;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.StorageService;
+import com.lms.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +21,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -52,106 +50,111 @@ public class App {
 
     // initially insert the db
     @Autowired
-    public void authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder, final UserRepository userRepository, final AuthorityRepository authorityRepository, final CourseRepository courseRepository, final PrivilegeRepository privilegeRepository
-            , final UserCoursePrivilegeRepository userCoursePrivilegeRepository, CustomUserDetailService customUserDetailService, final AccessPrivilegeRepository accessPrivilegeRepository) throws Exception {
-        if (userRepository.count() == 0) {
+    public void authenticationManager(final AuthorityService authorityService, final PrivilegeService privilegeService, final DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService, UserService userService) throws Exception {
 
-			Course course = new Course();
-			course.setName("test-course-01");
-			course.setCode("tst-01");
+        authorityService.initialize();
+        privilegeService.initialize();
+        defaultAuthorityPrivilegeService.initialize();
+        userService.initialize();
+
+//
+//
+//            for (AccessLevel accessLevel : AccessLevel.values()) {
+//                Authority role = new Authority();
+//                role.generatePublicKey();
+//                role.setAccessLevel(accessLevel.CODE);
+//                role.setName(accessLevel.toString());
+//                authorityRepository.save(role);
+//            }
+//
+//
+//            Authority role = authorityRepository.findByAccessLevel(AccessLevel.SUPER_ADMIN.CODE);
+//            User user = new User();
+//            user.generatePublicKey();
+//            user.setUsername("application");
+//            user.setEmail("application.com");
+//            user.setName("application");
+//            user.setSurname("");
+//            user.setPassword("test.password");
+//            user.setAuthority(role);
+//            user.setBlocked(false);
+//            user.setEnabled(true);
+//            user.setVisible(true);
+//            user = customUserDetailService.save(user);
+//
+//
+//            List<com.lms.entities.Privilege> privileges = new ArrayList<>();
+//
+//            for (EPrivilege EPrivilege : EPrivilege.values()) {
+//                com.lms.entities.Privilege privilege1 = new com.lms.entities.Privilege();
+//                privilege1.generatePublicKey();
+//                privilege1.setCode(EPrivilege.CODE);
+//                privilege1.setName(EPrivilege.toString());
+//                privilege1.setCreatedBy(user);
+//                privilege1 = privilegeRepository.save(privilege1);
+//                privileges.add(privilege1);
+//            }
+//
+//
+//            role = authorityRepository.findByAccessLevel(AccessLevel.SUPER_ADMIN.CODE);
+//            user = new User();
+//            user.generatePublicKey();
+//            user.setUsername("super.admin");
+//            user.setEmail("umit.kas@std.antalya.edu.tr");
+//            user.setName("super");
+//            user.setSurname("admin");
+//            user.setPassword("test.password");
+//            user.setAuthority(role);
+//            user.setBlocked(false);
+//            user.setEnabled(true);
+//            user.setVisible(true);
+//            user.setAccessPrivileges(privileges);
+//            user = customUserDetailService.save(user);
+//
+//
+//            user = new User();
+//            user.generatePublicKey();
+//            user.setUsername("mock.admin");
+//            user.setEmail("umit.kas@outlook.com");
+//            user.setName("mock");
+//            user.setSurname("admin");
+//            user.setPassword("test.password");
+//            user.setAuthority(role);
+//            user.setBlocked(false);
+//            user.setEnabled(true);
+//            user.setVisible(true);
+//            user = customUserDetailService.save(user);
+//
+//
+//            user = new User();
+//            user.generatePublicKey();
+//            user.setUsername("mock.lecturer");
+//            user.setEmail("mock.lecturer@lms.com");
+//            user.setName("mock");
+//            user.setSurname("lecturer");
+//            user.setPassword("test.password");
+//            user.setAuthority(role);
+//            user.setBlocked(false);
+//            user.setEnabled(true);
+//            user.setVisible(true);
+//            user = customUserDetailService.save(user);
+//
+//
+//            user = new User();
+//            user.generatePublicKey();
+//            user.setUsername("mock.student");
+//            user.setEmail("mock.student@lms.com");
+//            user.setName("mock");
+//            user.setSurname("student");
+//            user.setPassword("test.password");
+//            user.setAuthority(role);
+//            user.setBlocked(false);
+//            user.setEnabled(true);
+//            user.setVisible(true);
+//            user = customUserDetailService.save(user);
 
 
-            for (AccessLevel accessLevel : AccessLevel.values()) {
-                Authority role = new Authority();
-                role.generatePublicKey();
-                role.setAccessLevel(accessLevel.CODE);
-                role.setName(accessLevel.toString());
-                authorityRepository.save(role);
-            }
 
-            Authority role = authorityRepository.findByAccessLevel(AccessLevel.SUPER_ADMIN.CODE);
-            User user = new User();
-            user.generatePublicKey();
-            user.setUsername("super.admin");
-            user.setEmail("umit.kas@std.antalya.edu.tr");
-            user.setName("super");
-            user.setSurname("admin");
-            user.setPassword("test.password");
-            user.setAuthority(role);
-            user.setBlocked(false);
-            user.setEnabled(true);
-            user.setVisible(true);
-            user = customUserDetailService.save(user);
-            //
-
-            AccessPrivilege accessPrivilege = new AccessPrivilege();
-
-            List<com.lms.entities.Privilege> privileges = new ArrayList<>();
-
-            for (Privilege privilege : Privilege.values()) {
-                com.lms.entities.Privilege privilege1 = new com.lms.entities.Privilege();
-                privilege1.generatePublicKey();
-                privilege1.setCode(privilege.CODE);
-                privilege1.setName(privilege.toString());
-                privilege1.setCreatedBy(user);
-                privilege1 = privilegeRepository.save(privilege1);
-                privileges.add(privilege1);
-            }
-
-            accessPrivilege.setPrivileges(privileges);
-            accessPrivilege.generatePublicKey();
-            accessPrivilege.setVisible(true);
-            accessPrivilege.setCreatedBy(user);
-            accessPrivilege.setUser(user);
-            accessPrivilege = accessPrivilegeRepository.save(accessPrivilege);
-
-
-            user = new User();
-            user.generatePublicKey();
-            user.setUsername("mock.admin");
-            user.setEmail("umit.kas@outlook.com");
-            user.setName("mock");
-            user.setSurname("admin");
-            user.setPassword("test.password");
-            user.setAuthority(role);
-            user.setBlocked(false);
-            user.setEnabled(true);
-            user.setVisible(true);
-            user = customUserDetailService.save(user);
-
-			course.setOwner(user);
-
-            user = new User();
-            user.generatePublicKey();
-            user.setUsername("mock.lecturer");
-            user.setEmail("mock.lecturer@lms.com");
-            user.setName("mock");
-            user.setSurname("lecturer");
-            user.setPassword("test.password");
-            user.setAuthority(role);
-            user.setBlocked(false);
-            user.setEnabled(true);
-            user.setVisible(true);
-            user = customUserDetailService.save(user);
-
-
-            user = new User();
-			user.generatePublicKey();
-			user.setUsername("mock.student");
-			user.setEmail("mock.student@lms.com");
-			user.setName("mock");
-			user.setSurname("student");
-			user.setPassword("test.password");
-			user.setAuthority(role);
-			user.setBlocked(false);
-			user.setEnabled(true);
-			user.setVisible(true);
-			user = customUserDetailService.save(user);
-
-			course.setRegisteredUsers(Arrays.asList(user));
-			course.generatePublicKey();
-			courseRepository.save(course);
-		}
 	}
 
 

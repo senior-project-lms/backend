@@ -14,5 +14,9 @@ public interface PrivilegeService {
 
     List<Privilege> findAllByPublicKeys(List<String> publicKeys) throws DataNotFoundException;
 
+    List<Privilege> findAllByCode(List<Long> codes) throws DataNotFoundException;
+
+    void initialize();
+
 }
 

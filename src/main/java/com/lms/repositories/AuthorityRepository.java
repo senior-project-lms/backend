@@ -12,9 +12,11 @@ import java.util.List;
 @Transactional
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
-    Authority findByAccessLevel(long accessLevel);
 
     Authority findByPublicKey(String publicKey);
 
     List<Authority> findAllByVisible(boolean visible);
+
+    Authority findByCode(long code);
+
 }

@@ -27,4 +27,6 @@ public interface UserService {
     boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException;
 
 
+    void initialize() throws DataNotFoundException;
+
 }

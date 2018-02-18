@@ -1,7 +1,7 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.enums.AnswerChoice;
+import com.lms.enums.EAnswerChoice;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ public class QtAvailableAnswer extends BaseEntity {
 
     private String text;
 
-    private AnswerChoice type;
+    private EAnswerChoice type;
 
     private boolean correct;
 

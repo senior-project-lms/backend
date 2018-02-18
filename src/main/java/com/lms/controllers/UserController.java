@@ -8,6 +8,7 @@ import org.aspectj.apache.bcel.generic.RET;
 import org.hibernate.engine.spi.ExceptionConverter;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthorityService authorityService;
 
 
     @GetMapping(value = {"/me"})
@@ -42,7 +41,8 @@ public class UserController {
      * @return boolean
      * @author atalay samet ergen
      */
-    @PostMapping(value = {"/admin/user"})
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_USER.CODE)")
+    @PostMapping(value = {"/user"})
     public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
 
@@ -64,7 +64,8 @@ public class UserController {
      * @return boolean
      * @author atalay samet ergen
      */
-    @PostMapping(value = {"/admin/users"})
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_USER.CODE)")
+    @PostMapping(value = {"/users"})
     public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
 
         for (UserPojo pojo : userPojos) {
@@ -76,6 +77,44 @@ public class UserController {
         }
         return userService.save(userPojos);
 
+
+    }
+
+    /**
+     * Gets the all the users ,
+     * return 5 of System Announcement, for each page, for each request
+     *
+     * @param
+     * @return List<UserPojo>
+     * @author atalay
+     */
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_ALL_USERS.CODE)")
+    @GetMapping(value = {"/users"})
+    public List<UserPojo> getUsers() throws DataNotFoundException {
+
+        return userService.getAllByVisible(true);
+    }
+
+
+    /**
+     * Get the public key and
+     * returns the user according to the public key
+     *
+     * @param publicKey
+     * @return UserPojo
+     * @author atalay
+     */
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
+    @GetMapping(value = {"/user/{publicKey}"})
+    public UserPojo getUser(@PathVariable String publicKey) throws DataNotFoundException {
+
+        if (publicKey == null) {
+            throw new DataNotFoundException("Public key not found.");
+        }
+
+        UserPojo pojo = userService.getByPublicKey(publicKey);
+        return pojo;
 
     }
 
@@ -108,41 +147,6 @@ public class UserController {
         }
 
         throw new EmptyFieldException("User object cannot be empty");
-    }
-
-    /**
-     * Gets the all the users ,
-     * return 5 of System Announcement, for each page, for each request
-     *
-     * @param
-     * @return List<UserPojo>
-     * @author atalay
-     */
-    @GetMapping(value = {"/admin/users"})
-    public List<UserPojo> getUsers() throws DataNotFoundException {
-
-        return userService.getAllByVisible(true);
-    }
-
-
-    /**
-     * Get the public key and
-     * returns the user according to the public key
-     *
-     * @param publickey
-     * @return UserPojo
-     * @author atalay
-     */
-    @GetMapping(value = {"/admin/user/{publickey}"})
-    public UserPojo getUser(@PathVariable String publickey) throws DataNotFoundException {
-
-        if (publickey == null) {
-            throw new DataNotFoundException("Public key not found.");
-        }
-
-        UserPojo pojo = userService.getByPublicKey(publickey);
-        return pojo;
-
     }
 
 

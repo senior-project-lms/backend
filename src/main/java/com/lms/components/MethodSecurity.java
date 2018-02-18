@@ -1,11 +1,9 @@
 package com.lms.components;
 
-import com.lms.entities.AccessPrivilege;
 import com.lms.entities.User;
 import com.lms.entities.UserCoursePrivilege;
 import com.lms.entities.course.Course;
-import com.lms.enums.Privilege;
-import com.lms.repositories.AccessPrivilegeRepository;
+import com.lms.enums.EPrivilege;
 import com.lms.repositories.CourseRepository;
 import com.lms.repositories.PrivilegeRepository;
 import com.lms.repositories.UserCoursePrivilegeRepository;
@@ -27,9 +25,6 @@ public class MethodSecurity {
     private CourseRepository courseRepository;
 
     @Autowired
-    private AccessPrivilegeRepository accessPrivilegeRepository;
-
-    @Autowired
     private PrivilegeRepository privilegeRepository;
 
     @Autowired
@@ -40,15 +35,15 @@ public class MethodSecurity {
      *
      * finds authenticated user, and finds course by publicKey
      * finds the UserCoursePrivilege entity by user and course
-     * then checks the parameter privilege is in the UserCoursePrivilege.
-     * which means has course privilege or not
+     * then checks the parameter EPrivilege is in the UserCoursePrivilege.
+     * which means has course EPrivilege or not
      *
      * @author umit.kas
-     * @param coursePublicKey, privelege
+     * @param coursePublicKey, EPrivilege
      * @return boolean
      *
      */
-    public boolean hasCoursePrivilege(String coursePublicKey, Privilege privelege){
+    public boolean hasCoursePrivilege(String coursePublicKey, EPrivilege EPrivilege) {
         try {
             User user = customUserDetailService.getAuthenticatedUser();
 
@@ -65,62 +60,11 @@ public class MethodSecurity {
             if (userCoursePrivilege == null){
                 return false;
             }
-            return userCoursePrivilege.getPrivileges().parallelStream().filter(p -> p.getCode() == privelege.CODE).findAny().isPresent();
-
-
-//            for (UserCoursePrivilege userCoursePrivilege: course.getUserCoursePrivileges()) {
-//
-//                if (userCoursePrivilege.getUser().equals(user)){
-//                    return userCoursePrivilege.getPrivileges().parallelStream().filter(p -> p.getCode() == privelege.CODE).findAny().isPresent();
-////                    for (Privilege privilege : userCoursePrivilege.getPrivileges()){
-////                        if (privilege.getName().toString().matches(priveleges.toString())){
-////                            return true;
-////                        }
-////                    }
-//
-////                    return  false;
-//                }
-//            }
-//            return false;
-
+            return userCoursePrivilege.getPrivileges().parallelStream().filter(p -> p.getCode() == EPrivilege.CODE).findAny().isPresent();
         }
         catch (Exception e){
             e.printStackTrace();
             return false;
         }
-
-
-
-    }
-
-
-
-    /**
-     *
-     * finds authenticated user entity, and finds privilege entity by parameter privilege
-     * then finds AccessPrivilege entity by user and privilege entity
-     * if the AccessPrivilege there is a not null entity which means has permission
-     * @author umit.kas
-     * @param privilege
-     * @return boolean
-     *
-     */
-    public boolean hasAccessPrivilege(Privilege privilege){
-        try {
-                User user = customUserDetailService.getAuthenticatedUser();
-                com.lms.entities.Privilege p = privilegeRepository.findByCode(privilege.CODE);
-                if (user != null && p != null){
-                    AccessPrivilege accessPrivilege = accessPrivilegeRepository.findByUserAndPrivilegesIn(user, p);
-                    if (accessPrivilege != null){
-                        return true;
-                    }
-                }
-                return false;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-
-        }
-        return false;
     }
 }

@@ -19,7 +19,7 @@ public interface DefaultAuthorityPrivilegeService {
     DefaultAuthorityPrivilege pojoToEntity(DefaultAuthorityPrivilegePojo pojo);
 
 
-    boolean save(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException;
+    boolean save(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException;
 
     boolean update(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException;
 

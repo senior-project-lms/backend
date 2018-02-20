@@ -29,7 +29,6 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public AuthorityPojo entityToPojo(Authority entity) {
         AuthorityPojo pojo = new AuthorityPojo();
-        pojo.setCode(entity.getCode());
         pojo.setName(entity.getName());
         pojo.setPublicKey(entity.getPublicKey());
         return pojo;
@@ -48,7 +47,6 @@ public class AuthorityServiceImpl implements AuthorityService {
     public Authority pojoToEntity(AuthorityPojo pojo) {
         Authority entity = new Authority();
         entity.setPublicKey(pojo.getPublicKey());
-        entity.setCode(pojo.getCode());
         entity.setName(pojo.getName());
         return entity;
     }
@@ -81,7 +79,9 @@ public class AuthorityServiceImpl implements AuthorityService {
             Authority authority = new Authority();
             authority.generatePublicKey();
             authority.setCode(accessLevel.CODE);
-            authority.setName(accessLevel.toString());
+            String name = accessLevel.toString();
+            name = name.replaceAll("_", " ");
+            authority.setName(name);
             authorities.add(authority);
         }
 

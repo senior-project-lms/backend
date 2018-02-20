@@ -3,6 +3,8 @@ package com.lms.entities;
 import com.lms.entities.course.Course;
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -40,7 +42,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "owner")
 	private List<Course> ownedCourses;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
     @JoinTable(
             name = "user_access_privileges",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

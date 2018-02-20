@@ -45,9 +45,14 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setAuthority(authorityService.entityToPojo(entity.getAuthority()));
 
-        List<PrivilegePojo> privileges = entity.getPrivileges()
+//        List<PrivilegePojo> privileges = entity.getPrivileges()
+//                .stream()
+//                .map(privilege -> privilegeService.entityToPojo(privilege))
+//                .collect(Collectors.toList());
+
+        List<String> privileges = entity.getPrivileges()
                 .stream()
-                .map(privilege -> privilegeService.entityToPojo(privilege))
+                .map(privilege -> privilege.getPublicKey())
                 .collect(Collectors.toList());
 
         pojo.setPrivileges(privileges);
@@ -63,23 +68,25 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         entity.setAuthority(authorityService.pojoToEntity(pojo.getAuthority()));
 
-        List<Privilege> privileges = pojo.getPrivileges()
-                .stream()
-                .map(privilege -> privilegeService.pojoToEntity(privilege))
-                .collect(Collectors.toList());
-
-        entity.setPrivileges(privileges);
+//        List<Privilege> privileges = pojo.getPrivileges()
+//                .stream()
+//                .map(privilege -> privilegeService.pojoToEntity(privilege))
+//                .collect(Collectors.toList());
+//
+//        entity.setPrivileges(privileges);
 
         return entity;
     }
 
     @Override
-    public boolean save(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException {
+    public boolean save(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException {
 
         DefaultAuthorityPrivilege entity = pojoToEntity(pojo);
 
         entity.generatePublicKey();
         entity.setCreatedBy(userDetailService.getAuthenticatedUser());
+        List<Privilege> privileges = privilegeService.findAllByPublicKeys(pojo.getPrivileges());
+        entity.setPrivileges(privileges);
         entity = defaultAuthorityPrivilegeRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
@@ -124,7 +131,6 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         }
 
         List<DefaultAuthorityPrivilegePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
-
         return pojos;
     }
 
@@ -156,6 +162,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         defaultAuthorityPrivilege.setAuthority(studentAuthority);
         defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
@@ -169,6 +176,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         defaultAuthorityPrivilege.setAuthority(studentAuthority);
         defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
@@ -182,6 +190,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         defaultAuthorityPrivilege.setAuthority(studentAuthority);
         defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
@@ -195,6 +204,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         defaultAuthorityPrivilege.setAuthority(studentAuthority);
         defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
@@ -241,9 +251,10 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // ENROLMENT
                 EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE
+                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
 
-//                EPrivilege.UPDATE_COURSE.CODE,
+                // PRIVILEGE
+                EPrivilege.READ_ALL_PRIVILEGES.CODE
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,

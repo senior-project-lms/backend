@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PrivilegeServiceImpl implements PrivilegeService{
@@ -33,7 +34,6 @@ public class PrivilegeServiceImpl implements PrivilegeService{
         PrivilegePojo pojo = new PrivilegePojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
-        pojo.setCode(entity.getCode());
         return pojo;
     }
 
@@ -50,27 +50,44 @@ public class PrivilegeServiceImpl implements PrivilegeService{
     @Override
     public List<Privilege> findAllByPublicKeys(List<String> publicKeys) throws DataNotFoundException {
 
-        List<Privilege> privileges = privilegeRepository.findAllByPublicKeyIn(publicKeys);
+        List<Privilege> entities = privilegeRepository.findAllByPublicKeyIn(publicKeys);
 
-        if (privileges == null) {
+        if (entities == null) {
             throw new DataNotFoundException("No such privilege collection is found");
         }
 
-        return privileges;
+        return entities;
 
     }
 
 
     @Override
     public List<Privilege> findAllByCode(List<Long> codes) throws DataNotFoundException {
-        List<Privilege> privileges = privilegeRepository.findAllByCodeIn(codes);
+        List<Privilege> entities = privilegeRepository.findAllByCodeIn(codes);
 
-        if (privileges == null) {
+        if (entities == null) {
             throw new DataNotFoundException("No such privilege collection is found");
         }
 
-        return privileges;
+        return entities;
 
+    }
+
+
+    @Override
+    public List<PrivilegePojo> getAllPrivileges() throws DataNotFoundException {
+
+        List<Privilege> entities = privilegeRepository.findAllByVisible(true);
+        if (entities == null) {
+            throw new DataNotFoundException("No such privilege collection is found");
+        }
+
+        List<PrivilegePojo> pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
     }
 
     @Override
@@ -84,7 +101,9 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 
             privilege1.generatePublicKey();
             privilege1.setCode(EPrivilege.CODE);
-            privilege1.setName(EPrivilege.toString());
+            String name = EPrivilege.toString();
+            name = name.replaceAll("_", " ");
+            privilege1.setName(name);
             privileges.add(privilege1);
         }
 

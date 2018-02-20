@@ -4,6 +4,7 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.Authority;
 import com.lms.entities.DefaultAuthorityPrivilege;
+import com.lms.entities.Privilege;
 import com.lms.entities.User;
 import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
@@ -220,6 +221,12 @@ public class UserServiceImpl implements UserService {
 
         Authority authority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+        List<Long> privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        List<Privilege> privileges = privilegeService.findAllByCode(privilegeCodes);
 
         User user = new User();
         user.generatePublicKey();
@@ -232,7 +239,7 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(false);
         user.setEnabled(true);
         user.setVisible(true);
-        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        user.setAccessPrivileges(privileges);
         userRepository.save(user);
     }
 
@@ -240,6 +247,14 @@ public class UserServiceImpl implements UserService {
 
         Authority authority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        List<Long> privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        List<Privilege> privileges = privilegeService.findAllByCode(privilegeCodes);
+
         User user = new User();
         user.generatePublicKey();
         user.setUsername("mock.admin");
@@ -251,12 +266,18 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(false);
         user.setEnabled(true);
         user.setVisible(true);
-        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        user.setAccessPrivileges(privileges);
         userRepository.save(user);
 
 
         authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
         defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+        privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        privileges = privilegeService.findAllByCode(privilegeCodes);
 
         user = new User();
         user.generatePublicKey();
@@ -269,12 +290,20 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(false);
         user.setEnabled(true);
         user.setVisible(true);
-        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        user.setAccessPrivileges(privileges);
         userRepository.save(user);
 
 
         authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
         defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        privileges = privilegeService.findAllByCode(privilegeCodes);
+
 
         user = new User();
         user.generatePublicKey();
@@ -287,7 +316,7 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(false);
         user.setEnabled(true);
         user.setVisible(true);
-        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        user.setAccessPrivileges(privileges);
         userRepository.save(user);
 
 

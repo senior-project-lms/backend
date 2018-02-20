@@ -15,10 +15,13 @@ import com.lms.services.interfaces.DefaultAuthorityPrivilegeService;
 import com.lms.services.interfaces.PrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +49,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService;
 
+
+    @Override
+    public boolean userAlreadyExist(String user) {
+        return false;
+    }
 
     @Override
     public User pojoToEntity(UserPojo pojo) {
@@ -90,7 +98,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Returns authenticated user informations with the access privileges
      *
-     * @param
+     *
      * @return UserPojo
      * @author umit.kas
      */
@@ -117,21 +125,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException {
+        List<UserPojo> pojos;
 
-        List<User> entities = userRepository.findAllByVisible(true);
+        List<User> entities = userRepository.findAllByVisible(visible);
 
         if (entities == null){
             throw new DataNotFoundException("No such a User collection is found");
         }
 
-        List<UserPojo> pojos = new ArrayList<>();
+        pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
-        UserPojo pojo;
-        for (User user : entities) {
-            pojo = entityToPojo(user);
-            pojos.add(pojo);
 
-        }
+        pojos.stream().forEach(pojo -> pojo.setVisible(visible));
+
+
         return pojos;
     }
 

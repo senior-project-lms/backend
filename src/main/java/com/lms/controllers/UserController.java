@@ -4,14 +4,12 @@ import com.lms.customExceptions.*;
 import com.lms.pojos.UserPojo;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
-import org.aspectj.apache.bcel.generic.RET;
-import org.hibernate.engine.spi.ExceptionConverter;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = {"/api"})
@@ -21,6 +19,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+
+    @GetMapping(value = {"/users/active"})
+    public List<UserPojo> getAllUsers() throws DataNotFoundException {
+        return userService.getAllByVisible(true);
+    }
+
+    @GetMapping(value = {"users/deactivated"})
+    public List<UserPojo> getAllDeactivatedUsers() throws DataNotFoundException {
+        return userService.getAllByVisible(false);
+    }
 
 
     @GetMapping(value = {"/me"})
@@ -120,33 +129,26 @@ public class UserController {
 
     private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException {
         if (userPojo != null) {
-            if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
-                throw new EmptyFieldException("Email field cannot be empty");
-            }
+            throw new EmptyFieldException("Object cannot be null.");
+        } else if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
+            throw new EmptyFieldException("Email field cannot be empty");
+        } else if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
+            throw new EmptyFieldException("Username field cannot be empty");
+        } else if (userPojo.getPassword() == null || userPojo.getPassword().isEmpty()) {
+            throw new EmptyFieldException("Password field cannot be empty");
 
-            if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
-                throw new EmptyFieldException("Username field cannot be empty");
-            }
-            if (userPojo.getPassword() == null || userPojo.getPassword().isEmpty()) {
-                throw new EmptyFieldException("Password field cannot be empty");
-
-            }
-            if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
-                throw new EmptyFieldException("Name field cannot be empty");
-            }
-
-            if (userPojo.getSurname() == null || userPojo.getSurname().isEmpty()) {
-                throw new EmptyFieldException("Surname field cannot be empty");
-            }
-            if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
-                throw new EmptyFieldException("Authority field cannot be empty");
-            }
-            return true;
-
-
+        } else if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
+            throw new EmptyFieldException("Name field cannot be empty");
+        } else if (userPojo.getSurname() == null || userPojo.getSurname().isEmpty()) {
+            throw new EmptyFieldException("Surname field cannot be empty");
+        } else if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
+            throw new EmptyFieldException("Authority field cannot be empty");
+        } else if (userService.userAlreadyExist(userPojo.getEmail())) {
+            throw new ExistRecordException(String.format("%s email is already exist", userPojo.getEmail()));
         }
+        return true;
 
-        throw new EmptyFieldException("User object cannot be empty");
+
     }
 
 

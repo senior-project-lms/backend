@@ -18,6 +18,7 @@ public interface AuthorityService {
 
     Authority findByCode(long code) throws DataNotFoundException;
 
+    List<Authority> findAllByPublicKey(List<String> publicKeys) throws DataNotFoundException;
 
     void initialize();
 }

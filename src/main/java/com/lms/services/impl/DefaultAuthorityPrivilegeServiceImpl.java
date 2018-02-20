@@ -78,6 +78,14 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         return entity;
     }
 
+
+    /**
+     * save privileges for new authority type, default authorities has their own privileges initially
+     *
+     * @param pojo
+     * @return boolean
+     * @author umit.kas
+     */
     @Override
     public boolean save(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException {
 
@@ -96,6 +104,14 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         return true;
     }
 
+
+    /**
+     * update privileges of authority type
+     *
+     * @param pojo
+     * @return boolean
+     * @author umit.kas
+     */
     @Override
     public boolean update(DefaultAuthorityPrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException {
 
@@ -121,6 +137,14 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         return true;
     }
 
+
+    /**
+     * returns DefaultAuthorityPrivilege pojos for all authorities, objects contains authority and its privileges
+     *
+     * @param
+     * @return List<DefaultAuthorityPrivilegePojo>
+     * @author umit.kas
+     */
     @Override
     public List<DefaultAuthorityPrivilegePojo> getDefaultAuthorityPrivileges() throws DataNotFoundException {
 
@@ -135,6 +159,13 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     }
 
 
+    /**
+     * returns DefaultAuthorityPrivilege entity by authority
+     *
+     * @param authority
+     * @return DefaultAuthorityPrivilege
+     * @author umit.kas
+     */
     @Override
     public DefaultAuthorityPrivilege findByAuthority(Authority authority) throws DataNotFoundException {
         DefaultAuthorityPrivilege entity = defaultAuthorityPrivilegeRepository.findByAuthority(authority);
@@ -144,6 +175,12 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         return entity;
     }
 
+
+    /**
+     * initialize privileges for default authorities
+     *
+     * @author umit.kas
+     */
     @Override
     public void initialize() throws DataNotFoundException {
         initializeSuperAdmin();
@@ -153,7 +190,12 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
     }
 
-
+    /**
+     * initialize privileges for super admin authority
+     *
+     *
+     * @author umit.kas
+     */
     private void initializeSuperAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
@@ -167,7 +209,12 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
 
-
+    /**
+     * initialize privileges for  admin authority
+     *
+     *
+     * @author umit.kas
+     */
     private void initializeAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
@@ -182,6 +229,12 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     }
 
 
+    /**
+     * initialize privileges for lecturer authority
+     *
+     *
+     * @author umit.kas
+     */
     private void initializeLecturer() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
@@ -195,7 +248,12 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
 
-
+    /**
+     * initialize privileges for student authority
+     *
+     *
+     * @author umit.kas
+     */
     private void initializeStudent() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
@@ -209,6 +267,8 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
     }
 
+
+    // default authorities
 
     private List<Long> getDefaultSuperAdminPrivileges() {
         return Arrays.asList(
@@ -316,7 +376,6 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         );
     }
-
 
     private List<Long> getDefaultLecturerPrivileges() {
         return Arrays.asList(

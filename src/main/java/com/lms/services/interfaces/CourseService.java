@@ -36,4 +36,7 @@ public interface CourseService {
 
     List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException;
 
+    List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException;
+
+
 }

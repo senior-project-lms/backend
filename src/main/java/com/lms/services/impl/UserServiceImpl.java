@@ -7,6 +7,7 @@ import com.lms.entities.DefaultAuthorityPrivilege;
 import com.lms.entities.Privilege;
 import com.lms.entities.User;
 import com.lms.enums.AccessLevel;
+import com.lms.pojos.AuthorityPojo;
 import com.lms.pojos.UserPojo;
 import com.lms.repositories.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -15,14 +16,10 @@ import com.lms.services.interfaces.DefaultAuthorityPrivilegeService;
 import com.lms.services.interfaces.PrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +29,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private CustomUserDetailService customUserDetailService;
+    private CustomUserDetailService userDetailService;
 
     @Autowired
     private AuthorityService authorityService;
@@ -50,10 +47,6 @@ public class UserServiceImpl implements UserService {
     private DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService;
 
 
-    @Override
-    public boolean userAlreadyExist(String user) {
-        return false;
-    }
 
     @Override
     public User pojoToEntity(UserPojo pojo) {
@@ -65,7 +58,7 @@ public class UserServiceImpl implements UserService {
         entity.setSurname(pojo.getSurname());
         entity.setName(pojo.getName());
         entity.setPublicKey(pojo.getPublicKey());
-
+        entity.setAuthority(authorityService.pojoToEntity(pojo.getAuthority()));
         //do not forget to convert other entities to pojos
 
         return entity;
@@ -76,28 +69,27 @@ public class UserServiceImpl implements UserService {
      * Converts User entity to user pojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
      *
-     * @param user, authority, ownedCourses, registeredCoursesAsStudent
+     * @param entity
      * @return UserPojo
      * @author umit.kas
      */
     @Override
-    public UserPojo entityToPojo(User user) {
+    public UserPojo entityToPojo(User entity) {
 
         UserPojo pojo = new UserPojo();
-        pojo.setPublicKey(user.getPublicKey());
-        pojo.setUsername(user.getUsername());
-        pojo.setEmail(user.getEmail());
-        pojo.setName(user.getName());
-        pojo.setSurname(user.getSurname());
-
+        pojo.setPublicKey(entity.getPublicKey());
+        pojo.setUsername(entity.getUsername());
+        pojo.setEmail(entity.getEmail());
+        pojo.setName(entity.getName());
+        pojo.setSurname(entity.getSurname());
+        AuthorityPojo authority = authorityService.entityToPojo(entity.getAuthority());
+        pojo.setAuthority(authority);
         return pojo;
     }
 
 
-
     /**
      * Returns authenticated user informations with the access privileges
-     *
      *
      * @return UserPojo
      * @author umit.kas
@@ -105,9 +97,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserPojo getMe() throws DataNotFoundException {
         UserPojo pojo;
-        User user = customUserDetailService.getAuthenticatedUser();
+        User user = userDetailService.getAuthenticatedUser();
 
-        if (user == null){
+        if (user == null) {
             throw new DataNotFoundException("No such a user profile is found");
         }
 
@@ -123,13 +115,20 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     * returns users and authenticcation informations by visibility
+     *
+     * @param visible
+     * @return UserPojo
+     * @author atalay.ergen
+     */
     @Override
     public List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException {
         List<UserPojo> pojos;
 
         List<User> entities = userRepository.findAllByVisible(visible);
 
-        if (entities == null){
+        if (entities == null) {
             throw new DataNotFoundException("No such a User collection is found");
         }
 
@@ -142,6 +141,13 @@ public class UserServiceImpl implements UserService {
         return pojos;
     }
 
+    /**
+     * returns user by publicKey
+     *
+     * @param publicKey
+     * @return UserPojo
+     * @author atalay.ergen
+     */
     @Override
     public UserPojo getByPublicKey(String publicKey) throws DataNotFoundException {
         UserPojo pojo;
@@ -154,33 +160,57 @@ public class UserServiceImpl implements UserService {
         return pojo;
     }
 
-    @Override
-    public boolean save(UserPojo pojo) throws DataNotFoundException, ExecutionFailException {
-        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
-        User entity = pojoToEntity(pojo);
-        entity.generatePublicKey();
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
-        Authority authorityEntity = authorityService.findByPublicKey(pojo.getAuthority().getPublicKey());
-
-
-        entity.setAuthority(authorityEntity);
-        entity.setCreatedBy(authenticatedUser);
-
-        entity = userRepository.save(entity);
-
-        if (entity == null || entity.getId() == 0){
-            throw new ExecutionFailException(String.format("No such user is saved by email: %s", pojo.getEmail()));
-        }
-
-        return true;
-    }
-
+    /**
+     * Saves user collection
+     * in begining of function, finds authorities by publicKeys
+     * then finds default privileges for authorities and store in hashset
+     * then iterates pojo list, and add related items then add the entity of user in a list
+     * save the list of users
+     *
+     * @param pojos
+     * @return boolean
+     * @author atalay.ergen
+     * @author umit.kas
+     */
     @Override
     public boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException {
-        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+        User authenticatedUser = userDetailService.getAuthenticatedUser();
 
         List<User> entities = new ArrayList<>();
+
+        // stores all authority keys with duplicate
+        List<String> authorityKeys = pojos
+                .stream()
+                .map(pojo -> pojo.getAuthority().getPublicKey())
+                .collect(Collectors.toList());
+        // get rid of duplicates
+        authorityKeys = new ArrayList<>(new HashSet<>(authorityKeys));
+
+        // find authority entities by key list
+        List<Authority> authorities = authorityService.findAllByPublicKey(authorityKeys);
+
+
+        // store privileges of authority in hash set by key of authority
+        HashMap<String, List<Privilege>> hmapAuth = new HashMap<>();
+
+
+        for (Authority authority : authorities) {
+            // find defaultAuthorityPrivilege entity by authority
+            DefaultAuthorityPrivilege defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+            // contains list of privilege entity, but if it is directly saved, then removes data,
+            // there for get privilege publicKeys
+            List<Long> privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                    .stream()
+                    .map(privilege -> privilege.getCode())
+                    .collect(Collectors.toList());
+            // fetch privileges by publicKeys
+            List<Privilege> privileges = privilegeService.findAllByCode(privilegeCodes);
+            // add to hash map
+            hmapAuth.put(authority.getPublicKey(), privileges);
+        }
+
 
         for (UserPojo pojo : pojos) {
 
@@ -188,24 +218,110 @@ public class UserServiceImpl implements UserService {
             entity.generatePublicKey();
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
-            if (entity.getAuthority() != null) {
-                Authority authorityEntity = authorityService.findByPublicKey(pojo.getAuthority().getPublicKey());
+            // find authority
+            Authority authority = authorities
+                    .stream()
+                    .filter(auth -> auth.getPublicKey().equals(pojo.getAuthority().getPublicKey()))
+                    .collect(Collectors.toList()).get(0);
 
-                entity.setAuthority(authorityEntity);
+            // get access privileges from hashmap
+            List<Privilege> accessPrivileges = hmapAuth.get(pojo.getAuthority().getPublicKey());
+
+            entity.setAccessPrivileges(accessPrivileges);
+
+            if (entity.getAuthority() != null) {
+
+                entity.setAuthority(authority);
 
                 entity.setCreatedBy(authenticatedUser);
                 entities.add(entity);
             }
         }
-
+        // save
         entities = userRepository.save(entities);
-        if (entities == null || entities.size() == 0){
+
+        if (entities == null || entities.size() == 0) {
             throw new ExecutionFailException("No such a user collection is saved");
         }
         return true;
 
     }
 
+    /**
+     * checks that user exist or not
+     *
+     * @param username
+     * @param email
+     * @return boolean
+     * @author umit.kas
+     */
+
+    @Override
+    public boolean userAlreadyExist(String username, String email) {
+        return userRepository.existsByUsernameOrEmail(username, email);
+    }
+
+    /**
+     * updates user visibility
+     *
+     * @param publicKey
+     * @param visible
+     * @return boolean
+     * @author atalay.ergen
+     */
+    @Override
+    public boolean updateVisibility(String publicKey, boolean visible) throws DataNotFoundException {
+
+        User updatedBy = userDetailService.getAuthenticatedUser();
+
+        if (updatedBy == null) {
+            throw new SecurityException("Authenticated User is not found");
+        }
+        ;
+        User entity = userRepository.findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("There is no user by publicKey: %s", publicKey));
+
+        }
+        entity.setUpdatedBy(updatedBy);
+
+        entity.setVisible(visible);
+        entity = userRepository.save(entity);
+        if (entity == null || entity.getId() == 0) {
+            throw new DataNotFoundException("Setting user visibility is not executed successfully");
+        }
+
+        return true;
+    }
+
+
+    /**
+     * return user counts by visibility of users
+     *
+     * @return Map<String ,   Integer>
+     * @author atalay.ergen
+     */
+    @Override
+    public Map<String, Integer> getUserStatus() {
+        HashMap<String, Integer> status = new HashMap<>();
+        int visibleUsers = userRepository.countByVisible(true);
+        int invisibleUsers = userRepository.countByVisible(false);
+
+        status.put("visibleUsers", visibleUsers);
+        status.put("invisibleUsers", invisibleUsers);
+
+        return status;
+
+    }
+
+
+    /**
+     * return user entity by email
+     *
+     * @param email
+     * @return User
+     * @author umit.kas
+     */
     @Override
     public User findByEmail(String email) throws DataNotFoundException {
         User entity = userRepository.findByEmail(email);
@@ -217,12 +333,41 @@ public class UserServiceImpl implements UserService {
         return entity;
     }
 
+    /**
+     * return user entity by publicKey
+     *
+     * @param publicKey
+     * @return User
+     * @author umit.kas
+     */
+    @Override
+    public User findByPublicKey(String publicKey) throws DataNotFoundException {
+        User entity = userRepository.findByPublicKey(publicKey);
+
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("No such a user found by publicKey: %s", publicKey));
+        }
+
+        return entity;
+    }
+
+
+    /// code before here
+
+    /**
+     * initialize default users
+     *
+     * @return Map<String ,   Integer>
+     * @author umit.kas
+     */
     @Override
     public void initialize() throws DataNotFoundException {
         initializeSuperAdmin();
         initializeMockUsers();
 
     }
+
+
 
     void initializeSuperAdmin() throws DataNotFoundException {
 
@@ -328,7 +473,6 @@ public class UserServiceImpl implements UserService {
 
 
     }
-
 
 
 }

@@ -52,11 +52,14 @@ public class App {
     @Autowired
     public void authenticationManager(final AuthorityService authorityService, final PrivilegeService privilegeService, final DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService, UserService userService) throws Exception {
 
-        authorityService.initialize();
-        privilegeService.initialize();
-        defaultAuthorityPrivilegeService.initialize();
-        userService.initialize();
+        try {
+            authorityService.initialize();
+            privilegeService.initialize();
+            defaultAuthorityPrivilegeService.initialize();
+            userService.initialize();
+        } catch (Exception e) {
 
+        }
 
 
 	}

@@ -35,6 +35,15 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    public Authority pojoToEntity(AuthorityPojo pojo) {
+        Authority entity = new Authority();
+        entity.setPublicKey(pojo.getPublicKey());
+        entity.setName(pojo.getName());
+        return entity;
+    }
+
+
+    @Override
     public Authority findByPublicKey(String publicKey) throws DataNotFoundException {
         Authority entity = authorityRepository.findByPublicKey(publicKey);
         if (entity == null) {
@@ -44,11 +53,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Authority pojoToEntity(AuthorityPojo pojo) {
-        Authority entity = new Authority();
-        entity.setPublicKey(pojo.getPublicKey());
-        entity.setName(pojo.getName());
-        return entity;
+    public List<Authority> findAllByPublicKey(List<String> publicKeys) throws DataNotFoundException {
+        List<Authority> entities = authorityRepository.findAllByPublicKeyIn(publicKeys);
+        if (entities == null) {
+            throw new DataNotFoundException("No such a Authority collection is found ");
+        }
+        return entities;
     }
 
     @Override

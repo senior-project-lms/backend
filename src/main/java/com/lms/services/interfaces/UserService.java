@@ -17,25 +17,23 @@ public interface UserService {
 
     UserPojo getMe() throws DataNotFoundException;
 
-    User findByEmail(String email) throws DataNotFoundException;
 
     List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException;
 
     UserPojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean save(UserPojo pojo) throws DataNotFoundException, ExecutionFailException;
-
     boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException;
 
     boolean updateVisibility(String publicKey, boolean visible)throws ExecutionFailException, DataNotFoundException;
 
-    boolean userAlreadyExist(String user);
+    boolean userAlreadyExist(String user, String email);
 
 
     Map<String, Integer> getUserStatus();
 
+    User findByEmail(String email) throws DataNotFoundException;
 
-
+    User findByPublicKey(String publicKey) throws DataNotFoundException;
 
     void initialize() throws DataNotFoundException;
 

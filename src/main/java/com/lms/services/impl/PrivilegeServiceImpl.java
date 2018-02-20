@@ -47,6 +47,14 @@ public class PrivilegeServiceImpl implements PrivilegeService{
         return entity;
     }
 
+
+    /**
+     * returns privilege entities by publicKey collection
+     *
+     * @param
+     * @return List<Privilege>
+     * @author umit.kas
+     */
     @Override
     public List<Privilege> findAllByPublicKeys(List<String> publicKeys) throws DataNotFoundException {
 
@@ -60,7 +68,13 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 
     }
 
-
+    /**
+     * returns privilege entities by code collection
+     *
+     * @param
+     * @return List<Privilege>
+     * @author umit.kas
+     */
     @Override
     public List<Privilege> findAllByCode(List<Long> codes) throws DataNotFoundException {
         List<Privilege> entities = privilegeRepository.findAllByCodeIn(codes);
@@ -73,7 +87,13 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 
     }
 
-
+    /**
+     * returns all visible privileges
+     *
+     * @param
+     * @return List<PrivilegePojo>
+     * @author umit.kas
+     */
     @Override
     public List<PrivilegePojo> getAllPrivileges() throws DataNotFoundException {
 
@@ -90,6 +110,12 @@ public class PrivilegeServiceImpl implements PrivilegeService{
         return pojos;
     }
 
+
+    /**
+     * initialize privileges, saves to db
+     *
+     * @author umit.kas
+     */
     @Override
     public void initialize() {
 

@@ -20,5 +20,11 @@ public interface EnrolmentRequestService {
 
     boolean approveEnrolmentRequest(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException;
 
+    List<EnrolmentRequest> findEnrollmentRequests(boolean visible) throws DataNotFoundException;
 
+    List<EnrolmentRequest> findEnrollmentRequests(String userPublicKey, boolean visible) throws DataNotFoundException;
+
+    List<EnrolmentRequestPojo> getEnrollmentRequest(boolean visible) throws DataNotFoundException;
+
+    List<EnrolmentRequestPojo> getEnrollmentRequest(String userPublicKey, boolean visible) throws DataNotFoundException;
 }

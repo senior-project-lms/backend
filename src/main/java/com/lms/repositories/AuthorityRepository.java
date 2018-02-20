@@ -17,6 +17,8 @@ public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
     List<Authority> findAllByVisible(boolean visible);
 
+    List<Authority> findAllByPublicKeyIn(List<String> publicKeys);
+
     Authority findByCode(long code);
 
 }

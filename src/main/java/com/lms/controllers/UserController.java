@@ -20,7 +20,6 @@ public class UserController {
     private UserService userService;
 
 
-
     @GetMapping(value = {"/users/active"})
     public List<UserPojo> getAllUsers() throws DataNotFoundException {
         return userService.getAllByVisible(true);
@@ -40,28 +39,6 @@ public class UserController {
 
     }
 
-    /**
-     * the pojo object that comes from API goes to save method of the Service
-     * check userPojo is whether null or not
-     * check the pojo which includes email, name, password, username and authority if one of them is null or empty
-     * return false, else return result of the save method of the service
-     *
-     * @param userPojo
-     * @return boolean
-     * @author atalay samet ergen
-     */
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_USER.CODE)")
-    @PostMapping(value = {"/user"})
-    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
-
-
-        if (isValidUserPojo(userPojo)) {
-            return userService.save(userPojo);
-        }
-
-        return false;
-
-    }
 
     /**
      * the pojo object list that comes from API goes to save method of the Service
@@ -75,7 +52,7 @@ public class UserController {
      */
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_USER.CODE)")
     @PostMapping(value = {"/users"})
-    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         for (UserPojo pojo : userPojos) {
             if (!isValidUserPojo(pojo)) {
@@ -127,10 +104,9 @@ public class UserController {
 
     }
 
-    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException {
-        if (userPojo != null) {
-            throw new EmptyFieldException("Object cannot be null.");
-        } else if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
+    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException, ExistRecordException {
+
+        if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
             throw new EmptyFieldException("Email field cannot be empty");
         } else if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
             throw new EmptyFieldException("Username field cannot be empty");
@@ -143,11 +119,33 @@ public class UserController {
             throw new EmptyFieldException("Surname field cannot be empty");
         } else if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
             throw new EmptyFieldException("Authority field cannot be empty");
-        } else if (userService.userAlreadyExist(userPojo.getEmail())) {
-            throw new ExistRecordException(String.format("%s email is already exist", userPojo.getEmail()));
+        } else if (userService.userAlreadyExist(userPojo.getUsername(), userPojo.getEmail())) {
+            throw new ExistRecordException(String.format("For record %s, email or username already exist", userPojo.getUsername()));
         }
         return true;
 
+    }
+
+    @GetMapping("/users/status")
+    public Map<String, Integer> getUsersStatus() {
+        return userService.getUserStatus();
+    }
+
+    @PutMapping("/user/{publicKey}/visible")
+    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return userService.updateVisibility(publicKey, true);
+
+        }
+        throw new EmptyFieldException("PublicKey is empty");
+    }
+
+    @PutMapping("/user/{publicKey}/invisible")
+    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return userService.updateVisibility(publicKey, false);
+        }
+        throw new EmptyFieldException("PublicKey is empty");
 
     }
 

@@ -21,5 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     int countByVisible(boolean visible);
 
+    boolean existsByUsernameOrEmail(String username, String email);
+
 }
 

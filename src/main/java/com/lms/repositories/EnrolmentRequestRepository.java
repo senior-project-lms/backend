@@ -1,5 +1,6 @@
 package com.lms.repositories;
 
+import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.EnrolmentRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface EnrolmentRequestRepository extends JpaRepository<EnrolmentReque
     List<EnrolmentRequest> findAllByCourseAndVisible(Course course, boolean visible);
 
     EnrolmentRequest findByPublicKey(String publicKey);
+
+    List<EnrolmentRequest> findAllByUserAndVisible(User user, boolean visible);
 }

@@ -4,10 +4,12 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
+import com.lms.entities.course.EnrolmentRequest;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.repositories.CourseRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.EnrolmentRequestService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired
     private CustomUserDetailService userDetailsService;
+
+    @Autowired
+    private EnrolmentRequestService enrolmentRequestService;
 
     @Override
     public CoursePojo entityToPojo(Course entity) {
@@ -51,6 +56,14 @@ public class CourseServiceImpl implements CourseService{
         return entity;
     }
 
+
+    /**
+     * return courses by visibility
+     *
+     * @param visible
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
     @Override
     public List<CoursePojo> getAllByVisible(boolean visible) throws DataNotFoundException {
         List<CoursePojo> pojos;
@@ -67,12 +80,16 @@ public class CourseServiceImpl implements CourseService{
         pojos.stream().forEach(pojo -> pojo.setVisible(visible));
 
 
-
-
-
         return pojos;
     }
 
+    /**
+     * return course pojo by publicKey
+     *
+     * @param publicKey
+     * @return CoursePojo
+     * @author umit.kas
+     */
     @Override
     public CoursePojo getByPublicKey(String publicKey) throws DataNotFoundException {
 
@@ -82,6 +99,15 @@ public class CourseServiceImpl implements CourseService{
 
         return pojo;
     }
+
+
+    /**
+     * save course
+     *
+     * @param pojo
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
 
     @Override
     public boolean save(CoursePojo pojo) throws DataNotFoundException, ExecutionFailException {
@@ -102,6 +128,15 @@ public class CourseServiceImpl implements CourseService{
 
         return true;
     }
+
+
+    /**
+     * save course collections
+     *
+     * @param pojos
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
 
     @Override
     public boolean save(List<CoursePojo> pojos) throws DataNotFoundException, ExecutionFailException {
@@ -129,6 +164,15 @@ public class CourseServiceImpl implements CourseService{
         return true;
     }
 
+
+    /**
+     * return course counts by visibility
+     *
+     * @param
+     * @return Map<String ,   Integer>
+     * @author umit.kas
+     */
+
     @Override
     public Map<String, Integer> getCourseStatus() {
 
@@ -143,11 +187,27 @@ public class CourseServiceImpl implements CourseService{
         return statuses;
     }
 
+    /**
+     * checks course code is already exist or not
+     *
+     * @param code
+     * @return boolean
+     * @author umit.kas
+     */
     @Override
     public boolean codeAlreadyExist(String code) {
         return courseRepository.existsByCode(code);
     }
 
+
+    /**
+     * update the visibility of course by publicKey
+     *
+     * @param publicKey
+     * @param visible
+     * @return boolean
+     * @author umit.kas
+     */
     @Override
     public boolean updateVisibility(String publicKey, boolean visible) throws ExecutionFailException, DataNotFoundException {
 
@@ -168,6 +228,13 @@ public class CourseServiceImpl implements CourseService{
         return true;
     }
 
+    /**
+     * return course entity by publicKey
+     *
+     * @param publicKey
+     * @return Course
+     * @author umit.kas
+     */
     @Override
     public Course findByPublicKey(String publicKey) throws DataNotFoundException {
 
@@ -178,6 +245,15 @@ public class CourseServiceImpl implements CourseService{
         return course;
     }
 
+
+    /**
+     * adds the users to course registered user collection
+     *
+     * @param course
+     * @param user
+     * @return boolean
+     * @author umit.kas
+     */
     @Override
     public boolean registerUserToCourse(Course course, User user) throws ExecutionFailException {
 
@@ -194,7 +270,12 @@ public class CourseServiceImpl implements CourseService{
         return true;
     }
 
-
+    /**
+     * returns not registered courses by authenticated user
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
     @Override
     public List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException {
         User authUser = userDetailsService.getAuthenticatedUser();
@@ -206,6 +287,55 @@ public class CourseServiceImpl implements CourseService{
         }
 
         List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
+
+        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
+
+        List<String> coursePublicKeys = enrolmentRequests
+                .stream()
+                .map(req -> req.getCourse().getPublicKey())
+                .collect(Collectors.toList());
+
+
+        for (CoursePojo pojo : pojos) {
+            if (coursePublicKeys.contains(pojo.getPublicKey())) {
+                pojo.setHasEnrollmentRequest(true);
+            }
+        }
+
+        return pojos;
+    }
+
+    /**
+     * returns not registered courses by authenticated user
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException {
+        User authUser = userService.findByPublicKey(userPublicKey);
+
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotInAndVisible(authUser, true);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+        }
+
+        List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
+
+        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(userPublicKey, true);
+
+        List<String> coursePublicKeys = enrolmentRequests
+                .stream()
+                .map(req -> req.getCourse().getPublicKey())
+                .collect(Collectors.toList());
+
+
+        for (CoursePojo pojo : pojos) {
+            if (coursePublicKeys.contains(pojo.getPublicKey())) {
+                pojo.setHasEnrollmentRequest(true);
+            }
+        }
 
         return pojos;
     }

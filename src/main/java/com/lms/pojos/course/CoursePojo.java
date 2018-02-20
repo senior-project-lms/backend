@@ -32,5 +32,7 @@ public class CoursePojo extends BasePojo {
 
     private UserPojo owner;
 
+    private boolean hasEnrollmentRequest;
+
 
 }

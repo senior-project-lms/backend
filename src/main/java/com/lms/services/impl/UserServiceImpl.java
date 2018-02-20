@@ -12,11 +12,16 @@ import com.lms.services.interfaces.AccessPrivilegeService;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by umit.kas on 11.01.2018.
@@ -39,6 +44,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AccessPrivilegeService accessPrivilegeService;
 
+    @Autowired
+    private CustomUserDetailService userDetailsService;
+
+
+    @Override
+    public boolean userAlreadyExist(String user) {
+        return false;
+    }
 
     @Override
     public User pojoToEntity(UserPojo pojo) {
@@ -83,7 +96,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Returns authenticated user informations with the access privileges
      *
-     * @param
+     *
      * @return UserPojo
      * @author umit.kas
      */
@@ -104,21 +117,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserPojo> getAllByVisible(boolean visible) throws DataNotFoundException {
+        List<UserPojo> pojos;
 
-        List<User> entities = userRepository.findAllByVisible(true);
+        List<User> entities = userRepository.findAllByVisible(visible);
 
         if (entities == null){
             throw new DataNotFoundException("No such a User collection is found");
         }
 
-        List<UserPojo> pojos = new ArrayList<>();
+        pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
-        UserPojo pojo;
-        for (User user : entities) {
-            pojo = entityToPojo(user);
-            pojos.add(pojo);
 
-        }
+        pojos.stream().forEach(pojo -> pojo.setVisible(visible));
+
+
         return pojos;
     }
 
@@ -196,4 +208,41 @@ public class UserServiceImpl implements UserService {
 
         return entity;
     }
+
+    @Override
+    public boolean updateVisibility(String publicKey, boolean visible) throws DataNotFoundException {
+        User updatedBy = userDetailsService.getAuthenticatedUser();
+
+        if (updatedBy == null) {
+            throw new SecurityException("Authenticated User is not found");
+        };
+        User entity=userRepository.findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("There is no user by publicKey: %s", publicKey));
+
+        }
+        entity.setUpdatedBy(updatedBy);
+
+        entity.setVisible(visible);
+        entity=userRepository.save(entity);
+        if (entity == null || entity.getId() == 0) {
+            throw new DataNotFoundException("Setting user visibility is not executed successfully");
+        }
+
+        return true;
+    }
+
+    @Override
+    public Map<String, Integer> getUserStatus() {
+        HashMap <String, Integer> status=new HashMap<>();
+        int visibleUsers=userRepository.countByVisible(true);
+        int invisibleUsers=userRepository.countByVisible(false);
+
+        status.put("visibleUsers",visibleUsers);
+        status.put("invisibleUsers",invisibleUsers);
+
+        return status;
+
+    }
+
 }

@@ -19,4 +19,7 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, Long> {
 
     List<Privilege> findAllByPublicKeyIn(List<String> publicKeys);
 
+
+    List<Privilege> findAllByCodeIn(List<Long> codes);
+
 }

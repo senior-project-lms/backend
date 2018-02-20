@@ -6,14 +6,12 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.EnrolmentRequest;
-import com.lms.enums.ExceptionType;
 import com.lms.pojos.course.EnrolmentRequestPojo;
 import com.lms.repositories.EnrolmentRequestRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
 import com.lms.services.interfaces.EnrolmentRequestService;
 import com.lms.services.interfaces.UserService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

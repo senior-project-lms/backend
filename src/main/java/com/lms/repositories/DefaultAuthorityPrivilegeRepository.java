@@ -1,5 +1,6 @@
 package com.lms.repositories;
 
+import com.lms.entities.Authority;
 import com.lms.entities.DefaultAuthorityPrivilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,5 +11,6 @@ public interface DefaultAuthorityPrivilegeRepository extends JpaRepository<Defau
 
     List<DefaultAuthorityPrivilege> findAllByVisible(boolean visible);
 
+    DefaultAuthorityPrivilege findByAuthority(Authority authority);
 
 }

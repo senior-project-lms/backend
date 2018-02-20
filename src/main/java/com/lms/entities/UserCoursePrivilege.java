@@ -10,7 +10,7 @@ import java.util.List;
  * Created by umit.kas on 28.11.2017.
  */
 @Entity
-@Table(name = "user_course_root_privalage")
+@Table(name = "user_course_privileges")
 @Data
 public class UserCoursePrivilege extends BaseEntity {
 

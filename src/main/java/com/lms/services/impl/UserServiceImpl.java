@@ -3,13 +3,15 @@ package com.lms.services.impl;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.Authority;
+import com.lms.entities.DefaultAuthorityPrivilege;
 import com.lms.entities.User;
-import com.lms.enums.ExceptionType;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
 import com.lms.repositories.UserRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.AccessPrivilegeService;
 import com.lms.services.interfaces.AuthorityService;
+import com.lms.services.interfaces.DefaultAuthorityPrivilegeService;
+import com.lms.services.interfaces.PrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +22,6 @@ import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,10 +43,10 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private AccessPrivilegeService accessPrivilegeService;
+    private PrivilegeService privilegeService;
 
     @Autowired
-    private CustomUserDetailService userDetailsService;
+    private DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService;
 
 
     @Override
@@ -110,7 +111,13 @@ public class UserServiceImpl implements UserService {
         }
 
         pojo = entityToPojo(user);
-        pojo.setAccessPrivileges(accessPrivilegeService.getAuthenticatedUserAccessPrivileges());
+
+        List<Long> privilegeCodes = user.getAccessPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+        pojo.setAccessPrivileges(privilegeCodes);
+
         return pojo;
     }
 
@@ -210,39 +217,89 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateVisibility(String publicKey, boolean visible) throws DataNotFoundException {
-        User updatedBy = userDetailsService.getAuthenticatedUser();
-
-        if (updatedBy == null) {
-            throw new SecurityException("Authenticated User is not found");
-        };
-        User entity=userRepository.findByPublicKey(publicKey);
-        if (entity == null) {
-            throw new DataNotFoundException(String.format("There is no user by publicKey: %s", publicKey));
-
-        }
-        entity.setUpdatedBy(updatedBy);
-
-        entity.setVisible(visible);
-        entity=userRepository.save(entity);
-        if (entity == null || entity.getId() == 0) {
-            throw new DataNotFoundException("Setting user visibility is not executed successfully");
-        }
-
-        return true;
-    }
-
-    @Override
-    public Map<String, Integer> getUserStatus() {
-        HashMap <String, Integer> status=new HashMap<>();
-        int visibleUsers=userRepository.countByVisible(true);
-        int invisibleUsers=userRepository.countByVisible(false);
-
-        status.put("visibleUsers",visibleUsers);
-        status.put("invisibleUsers",invisibleUsers);
-
-        return status;
+    public void initialize() throws DataNotFoundException {
+        initializeSuperAdmin();
+        initializeMockUsers();
 
     }
+
+    void initializeSuperAdmin() throws DataNotFoundException {
+
+        Authority authority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
+        DefaultAuthorityPrivilege defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        User user = new User();
+        user.generatePublicKey();
+        user.setUsername("super.admin");
+        user.setEmail("super.admin@lms.com");
+        user.setName("super");
+        user.setSurname("admin");
+        user.setPassword(passwordEncoder.encode("test.password"));
+        user.setAuthority(authority);
+        user.setBlocked(false);
+        user.setEnabled(true);
+        user.setVisible(true);
+        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        userRepository.save(user);
+    }
+
+    private void initializeMockUsers() throws DataNotFoundException {
+
+        Authority authority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
+        DefaultAuthorityPrivilege defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+        User user = new User();
+        user.generatePublicKey();
+        user.setUsername("mock.admin");
+        user.setEmail("umit.kas@outlook.com");
+        user.setName("mock");
+        user.setSurname("admin");
+        user.setPassword(passwordEncoder.encode("test.password"));
+        user.setAuthority(authority);
+        user.setBlocked(false);
+        user.setEnabled(true);
+        user.setVisible(true);
+        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        userRepository.save(user);
+
+
+        authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
+        defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        user = new User();
+        user.generatePublicKey();
+        user.setUsername("mock.lecturer");
+        user.setEmail("mock.lecturer@lms.com");
+        user.setName("mock");
+        user.setSurname("lecturer");
+        user.setPassword(passwordEncoder.encode("test.password"));
+        user.setAuthority(authority);
+        user.setBlocked(false);
+        user.setEnabled(true);
+        user.setVisible(true);
+        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        userRepository.save(user);
+
+
+        authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+        defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        user = new User();
+        user.generatePublicKey();
+        user.setUsername("mock.student");
+        user.setEmail("mock.student@lms.com");
+        user.setName("mock");
+        user.setSurname("student");
+        user.setPassword(passwordEncoder.encode("test.password"));
+        user.setAuthority(authority);
+        user.setBlocked(false);
+        user.setEnabled(true);
+        user.setVisible(true);
+        user.setAccessPrivileges(defaultAuthorityPrivilege.getPrivileges());
+        userRepository.save(user);
+
+
+    }
+
+
 
 }

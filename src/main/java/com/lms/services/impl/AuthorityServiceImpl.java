@@ -2,7 +2,7 @@ package com.lms.services.impl;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.Authority;
-import com.lms.enums.ExceptionType;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.AuthorityPojo;
 import com.lms.repositories.AuthorityRepository;
 import com.lms.services.interfaces.AuthorityService;
@@ -29,7 +29,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public AuthorityPojo entityToPojo(Authority entity) {
         AuthorityPojo pojo = new AuthorityPojo();
-        pojo.setAccessLevel(entity.getAccessLevel());
+        pojo.setCode(entity.getCode());
         pojo.setName(entity.getName());
         pojo.setPublicKey(entity.getPublicKey());
         return pojo;
@@ -48,7 +48,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     public Authority pojoToEntity(AuthorityPojo pojo) {
         Authority entity = new Authority();
         entity.setPublicKey(pojo.getPublicKey());
-        entity.setAccessLevel(pojo.getAccessLevel());
+        entity.setCode(pojo.getCode());
         entity.setName(pojo.getName());
         return entity;
     }
@@ -62,5 +62,31 @@ public class AuthorityServiceImpl implements AuthorityService {
         return pojos;
     }
 
+    @Override
+    public Authority findByCode(long code) throws DataNotFoundException {
 
+        Authority authority = authorityRepository.findByCode(code);
+
+        if (authority == null) {
+            throw new DataNotFoundException(String.format("No such a authority is found by code: %d", code));
+        }
+        return authority;
+    }
+
+    @Override
+    public void initialize() {
+
+        List<Authority> authorities = new ArrayList<>();
+        for (AccessLevel accessLevel : AccessLevel.values()) {
+            Authority authority = new Authority();
+            authority.generatePublicKey();
+            authority.setCode(accessLevel.CODE);
+            authority.setName(accessLevel.toString());
+            authorities.add(authority);
+        }
+
+        authorityRepository.save(authorities);
+
+
+    }
 }

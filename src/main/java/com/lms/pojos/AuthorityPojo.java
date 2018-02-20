@@ -8,6 +8,6 @@ public class AuthorityPojo extends BasePojo {
 
     private String name;
 
-    private Long accessLevel;
+    private Long code;
 
 }

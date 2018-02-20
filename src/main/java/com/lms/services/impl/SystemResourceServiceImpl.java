@@ -5,7 +5,6 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.entities.User;
-import com.lms.enums.ExceptionType;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.repositories.SystemResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;

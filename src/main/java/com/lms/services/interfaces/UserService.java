@@ -37,4 +37,6 @@ public interface UserService {
 
 
 
+    void initialize() throws DataNotFoundException;
+
 }

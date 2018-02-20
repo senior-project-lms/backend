@@ -13,10 +13,10 @@ import java.util.List;
 @Data
 public class User extends BaseEntity {
 
-    //@Column(unique = true)
+    @Column(unique = true)
     private String username;
 
-    //@Column(unique = true)
+    @Column(unique = true)
     private String email;
 
     private String name;
@@ -39,5 +39,15 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "owner")
 	private List<Course> ownedCourses;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_access_privileges",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id")
+    )
+    private List<Privilege> accessPrivileges;
+
+
 
 }

@@ -27,8 +27,8 @@ public class SystemAnnouncementController {
      * @return
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).SAVE_SYSTEM_ANNOUNCEMENT)")
-    @PostMapping(value = {"/admin/system-announcement"})
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_SYSTEM_ANNOUNCEMENT.CODE)")
+    @PostMapping(value = {"/system-announcement"})
     public boolean save(@RequestBody SystemAnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo == null) {
@@ -53,8 +53,8 @@ public class SystemAnnouncementController {
      * @return
      * @author umit.kas
      */
-    @PreAuthorize("@methodSecurity.hasAccessPrivilege(T(com.lms.enums.Privilege).DELETE_SYSTEM_ANNOUNCEMENT)")
-    @DeleteMapping(value = {"/admin/system-announcement/{publicKey}"})
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).DELETE_SYSTEM_ANNOUNCEMENT.CODE)")
+    @DeleteMapping(value = {"/system-announcement/{publicKey}"})
     public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (publicKey == null || publicKey.isEmpty()) {
@@ -74,6 +74,7 @@ public class SystemAnnouncementController {
      * @author umit.kas
      */
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_SYSTEM_ANNOUNCEMENT.CODE)")
     @GetMapping({"/system-announcements/{page}"})
     public List<SystemAnnouncementPojo> getAnnouncements(@PathVariable int page) throws EmptyFieldException, DataNotFoundException {
 

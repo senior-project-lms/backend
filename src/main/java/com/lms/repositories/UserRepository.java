@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByVisible(boolean visible);
 
-    List<User> findAllByEnabledAndAuthority(boolean enabled, Authority authority);
+    List<User> findAllByAuthorityAndVisible(Authority authority, boolean visible);
 
     User findByPublicKey(String publicKey);
 
@@ -23,5 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUsernameOrEmail(String username, String email);
 
+    List<User> findAllByEmailLikeOrNameLikeOrSurnameLikeAndAuthorityAndVisible(String email, String name, String surname, Authority authority, boolean visible);
 }
 

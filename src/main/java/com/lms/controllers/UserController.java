@@ -1,6 +1,7 @@
 package com.lms.controllers;
 
 import com.lms.customExceptions.*;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
@@ -60,6 +61,7 @@ public class UserController {
 
             }
 
+
         }
         return userService.save(userPojos);
 
@@ -103,6 +105,17 @@ public class UserController {
         return pojo;
 
     }
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
+    @GetMapping(value = {"/users/lecturer"})
+    public List<UserPojo> getUserBySearchParameter() throws DataNotFoundException {
+
+        return userService.getUsersByAuthority(AccessLevel.LECTURER);
+
+
+    }
+
+
 
     private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException, ExistRecordException {
 

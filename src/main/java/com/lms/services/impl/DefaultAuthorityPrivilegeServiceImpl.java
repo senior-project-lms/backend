@@ -187,6 +187,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
         initializeAdmin();
         initializeLecturer();
         initializeStudent();
+        initializeAssistant();
 
     }
 
@@ -240,6 +241,24 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
         Authority studentAuthority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
         List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultLecturerPrivileges());
+
+        defaultAuthorityPrivilege.setAuthority(studentAuthority);
+        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.generatePublicKey();
+
+        defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
+    }
+
+    /**
+     * initialize privileges for assistant authority
+     *
+     * @author umit.kas
+     */
+    private void initializeAssistant() throws DataNotFoundException {
+        DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
+
+        Authority studentAuthority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultAssistantPrivileges());
 
         defaultAuthorityPrivilege.setAuthority(studentAuthority);
         defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
@@ -314,8 +333,8 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
 
                 // PRIVILEGE
-                EPrivilege.READ_ALL_PRIVILEGES.CODE
-//                EPrivilege.UPDATE_COURSE.CODE,
+                EPrivilege.READ_ALL_PRIVILEGES.CODE,
+                EPrivilege.GLOBAL_ACCESS.CODE
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
@@ -365,7 +384,9 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // DEFAULT AUTHORITY
                 EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE
+                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
+
+                EPrivilege.GLOBAL_ACCESS.CODE
 
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
@@ -389,6 +410,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 EPrivilege.READ_REGISTERED_STUDENTS.CODE,
                 EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
+                EPrivilege.ACCESS_COURSES_PAGE.CODE,
 
                 // AUTHORITY
 
@@ -396,7 +418,9 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // ENROLMENT
                 EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE
+                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
+                EPrivilege.GLOBAL_ACCESS.CODE
+
         );
     }
 
@@ -411,16 +435,49 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // COURSE
                 EPrivilege.READ_NOT_REGISTERED_COURSES.CODE,
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
+                EPrivilege.READ_REGISTERED_COURSES.CODE,
                 EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
+                EPrivilege.ACCESS_COURSES_PAGE.CODE,
 
                 // AUTHORITY
 
                 // DEFAULT AUTHORITY
 
                 // ENROLMENT
-                EPrivilege.ENROLL_COURSE.CODE
+                EPrivilege.ENROLL_COURSE.CODE,
+
+                EPrivilege.GLOBAL_ACCESS.CODE
+
         );
     }
+
+    private List<Long> getDefaultAssistantPrivileges() {
+        return Arrays.asList(
+                // SYSTEM ANNOUNCEMENT
+                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+
+                // USER
+
+
+                // COURSE
+
+                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
+                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
+                EPrivilege.ACCESS_COURSES_PAGE.CODE,
+
+                // AUTHORITY
+
+                // DEFAULT AUTHORITY
+
+                // ENROLMENT
+                // ENROLMENT
+                EPrivilege.ENROLL_COURSE.CODE,
+
+                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
+                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
+                EPrivilege.GLOBAL_ACCESS.CODE
+        );
+    }
+
 
 }

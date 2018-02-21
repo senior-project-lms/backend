@@ -83,10 +83,10 @@ public class CourseController {
     }
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
-    @GetMapping("/courses/not-registered")
-    public List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException {
+    @GetMapping("/courses/not-registered/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCourses();
+        return courseService.getNotRegisteredCoursesBySearchParam(param);
 
     }
 

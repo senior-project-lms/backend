@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
         entity.setUsername(pojo.getUsername());
         entity.setEmail(pojo.getEmail());
         entity.setPassword(pojo.getPassword());
-        entity.setSurname(pojo.getSurname());
-        entity.setName(pojo.getName());
+        entity.setSurname(pojo.getSurname().toUpperCase());
+        entity.setName(pojo.getName().toUpperCase());
         entity.setPublicKey(pojo.getPublicKey());
         entity.setAuthority(authorityService.pojoToEntity(pojo.getAuthority()));
         //do not forget to convert other entities to pojos
@@ -168,10 +168,14 @@ public class UserServiceImpl implements UserService {
      * then iterates pojo list, and add related items then add the entity of user in a list
      * save the list of users
      *
+     * Update Notes:
+     *
+     * access privileges are added for user by default authority.
+     *
      * @param pojos
      * @return boolean
      * @author atalay.ergen
-     * @author umit.kas
+     * @author umit.kas (updater)
      */
     @Override
     public boolean save(List<UserPojo> pojos) throws ExecutionFailException, DataNotFoundException {
@@ -215,6 +219,8 @@ public class UserServiceImpl implements UserService {
         for (UserPojo pojo : pojos) {
 
             User entity = pojoToEntity(pojo);
+
+
             entity.generatePublicKey();
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
@@ -286,6 +292,7 @@ public class UserServiceImpl implements UserService {
         entity.setUpdatedBy(updatedBy);
 
         entity.setVisible(visible);
+        entity.setBlocked(!visible);
         entity = userRepository.save(entity);
         if (entity == null || entity.getId() == 0) {
             throw new DataNotFoundException("Setting user visibility is not executed successfully");
@@ -352,12 +359,48 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     * returns user objects by search parameters
+     *
+     * @return List<UserPojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException {
+        Authority authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
+        List<User> entities = userRepository.findAllByEmailLikeOrNameLikeOrSurnameLikeAndAuthorityAndVisible(parameter, parameter, parameter, authority, true);
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+        List<UserPojo> pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+    @Override
+    public List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException {
+        Authority authority = authorityService.findByCode(accessLevel.CODE);
+        List<User> entities = userRepository.findAllByAuthorityAndVisible(authority, true);
+
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+        List<UserPojo> pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
     /// code before here
 
     /**
      * initialize default users
      *
-     * @return Map<String ,   Integer>
      * @author umit.kas
      */
     @Override
@@ -366,7 +409,6 @@ public class UserServiceImpl implements UserService {
         initializeMockUsers();
 
     }
-
 
 
     void initializeSuperAdmin() throws DataNotFoundException {
@@ -384,8 +426,8 @@ public class UserServiceImpl implements UserService {
         user.generatePublicKey();
         user.setUsername("super.admin");
         user.setEmail("super.admin@lms.com");
-        user.setName("super");
-        user.setSurname("admin");
+        user.setName("super".toUpperCase());
+        user.setSurname("admin".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
         user.setAuthority(authority);
         user.setBlocked(false);
@@ -411,8 +453,8 @@ public class UserServiceImpl implements UserService {
         user.generatePublicKey();
         user.setUsername("mock.admin");
         user.setEmail("umit.kas@outlook.com");
-        user.setName("mock");
-        user.setSurname("admin");
+        user.setName("mock".toUpperCase());
+        user.setSurname("admin".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
         user.setAuthority(authority);
         user.setBlocked(false);
@@ -435,8 +477,8 @@ public class UserServiceImpl implements UserService {
         user.generatePublicKey();
         user.setUsername("mock.lecturer");
         user.setEmail("mock.lecturer@lms.com");
-        user.setName("mock");
-        user.setSurname("lecturer");
+        user.setName("mock".toUpperCase());
+        user.setSurname("lecturer".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
         user.setAuthority(authority);
         user.setBlocked(false);
@@ -444,6 +486,31 @@ public class UserServiceImpl implements UserService {
         user.setVisible(true);
         user.setAccessPrivileges(privileges);
         userRepository.save(user);
+
+
+        authority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+        privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        privileges = privilegeService.findAllByCode(privilegeCodes);
+
+        user = new User();
+        user.generatePublicKey();
+        user.setUsername("mock.assistant");
+        user.setEmail("mock.assistant@lms.com");
+        user.setName("mock".toUpperCase());
+        user.setSurname("assistant".toUpperCase());
+        user.setPassword(passwordEncoder.encode("test.password"));
+        user.setAuthority(authority);
+        user.setBlocked(false);
+        user.setEnabled(true);
+        user.setVisible(true);
+        user.setAccessPrivileges(privileges);
+        userRepository.save(user);
+
 
 
         authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
@@ -461,8 +528,8 @@ public class UserServiceImpl implements UserService {
         user.generatePublicKey();
         user.setUsername("mock.student");
         user.setEmail("mock.student@lms.com");
-        user.setName("mock");
-        user.setSurname("student");
+        user.setName("mock".toUpperCase());
+        user.setSurname("student".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
         user.setAuthority(authority);
         user.setBlocked(false);

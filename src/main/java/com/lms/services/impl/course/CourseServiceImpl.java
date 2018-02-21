@@ -51,8 +51,8 @@ public class CourseServiceImpl implements CourseService{
         Course entity = new Course();
 
         entity.setPublicKey(pojo.getPublicKey());
-        entity.setName(pojo.getName());
-        entity.setCode(pojo.getCode());
+        entity.setName(pojo.getName().toUpperCase());
+        entity.setCode(pojo.getCode().toUpperCase());
         return entity;
     }
 
@@ -280,13 +280,16 @@ public class CourseServiceImpl implements CourseService{
     public List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException {
         User authUser = userDetailsService.getAuthenticatedUser();
 
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotInAndVisible(authUser, true);
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
 
         if (entities == null) {
             throw new DataNotFoundException("No such a registered courses found for authenticated users");
         }
 
-        List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
+        List<CoursePojo> pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
 
         List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
 
@@ -306,7 +309,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
-     * returns not registered courses by authenticated user
+     * returns not registered courses by userPublicKey
      *
      * @return List<CoursePojo>
      * @author umit.kas
@@ -315,7 +318,7 @@ public class CourseServiceImpl implements CourseService{
     public List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException {
         User authUser = userService.findByPublicKey(userPublicKey);
 
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotInAndVisible(authUser, true);
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
 
         if (entities == null) {
             throw new DataNotFoundException("No such a registered courses found for authenticated users");
@@ -324,6 +327,46 @@ public class CourseServiceImpl implements CourseService{
         List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
         List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(userPublicKey, true);
+
+        List<String> coursePublicKeys = enrolmentRequests
+                .stream()
+                .map(req -> req.getCourse().getPublicKey())
+                .collect(Collectors.toList());
+
+
+        for (CoursePojo pojo : pojos) {
+            if (coursePublicKeys.contains(pojo.getPublicKey())) {
+                pojo.setHasEnrollmentRequest(true);
+            }
+        }
+
+        return pojos;
+    }
+
+    /**
+     * returns not registered courses by authenticated and search param
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(String param) throws DataNotFoundException {
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+        }
+
+        List<CoursePojo> pojos = entities
+                .stream()
+                .filter(entity -> entity.getCode().contains(param.toUpperCase()) || entity.getName().contains(param.toUpperCase()))
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
 
         List<String> coursePublicKeys = enrolmentRequests
                 .stream()

@@ -3,6 +3,7 @@ package com.lms.services.interfaces;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
 
 import java.util.List;
@@ -37,4 +38,7 @@ public interface UserService {
 
     void initialize() throws DataNotFoundException;
 
+    List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException;
+
+    List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException;
 }

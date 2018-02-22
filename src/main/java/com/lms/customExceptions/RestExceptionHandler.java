@@ -35,6 +35,13 @@ public class RestExceptionHandler{
     }
 
 
+    @ExceptionHandler(value = {ExistRecordException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handleNoSuchProcessExecutedException(ExistRecordException ex) {
+        return new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
 
 
 }

@@ -14,7 +14,7 @@ public class Authority extends BaseEntity {
 
     private String name;
 
-    private long accessLevel;
+    private long code;
 
 
 }

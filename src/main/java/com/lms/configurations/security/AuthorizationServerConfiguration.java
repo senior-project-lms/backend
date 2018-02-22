@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -25,7 +26,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
-@EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter{
 
     @Value("${security.jwt.client-id}")
@@ -46,9 +47,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Value("${security.jwt.resource-ids}")
     private String resourceIds;
 	
-    @Autowired
-    private DataSource dataSource;
-    
+
  
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -61,13 +60,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     
     
     @Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {	
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
-    	endpoints
-    		.tokenStore(this.tokenStore())
-            .accessTokenConverter(this.jwtTokenEnhancer())
-            .authenticationManager(this.authenticationManager)
-            .userDetailsService(this.userDetailsService);
+        endpoints
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService)
+                .tokenStore(tokenStore())
+                .accessTokenConverter(jwtTokenEnhancer());
+
+//    	endpoints
+//    		.tokenStore(this.tokenStore())
+//            .accessTokenConverter(this.jwtTokenEnhancer())
+//            .authenticationManager(this.authenticationManager)
+//            .userDetailsService(this.userDetailsService);
     		
     }
 
@@ -105,11 +110,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
        return converter;
    }
 
-   @Bean
-   protected AuthorizationCodeServices authorizationCodeServices() {
-       return new JdbcAuthorizationCodeServices(dataSource);
-   }
-	
+//   @Bean
+//   protected AuthorizationCodeServices authorizationCodeServices() {
+//       return new JdbcAuthorizationCodeServices(dataSource);
+//   }
+//
 	
 
 }

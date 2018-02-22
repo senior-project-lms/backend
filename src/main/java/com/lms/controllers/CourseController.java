@@ -1,14 +1,11 @@
 package com.lms.controllers;
 
-import com.lms.components.ExceptionConverter;
-import com.lms.customExceptions.DataNotFoundException;
-import com.lms.customExceptions.EmptyFieldException;
-import com.lms.customExceptions.ExecutionFailException;
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.*;
 
 import com.lms.pojos.course.CoursePojo;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,87 +18,81 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @Autowired
-    private ExceptionConverter exceptionConverter;
 
-
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_COURSES_BY_VISIBILITY.CODE)")
     @GetMapping(value = {"/courses/active"})
-    public List<CoursePojo> getAllCourses() throws ExecutionFailException, DataNotFoundException {
+    public List<CoursePojo> getAllCourses() throws DataNotFoundException {
 
-        try {
-            List<CoursePojo> pojos = courseService.getAllByVisible(true);
-            return pojos;
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-        }
-
-        throw new DataNotFoundException("No such a course collection found.");
+        return courseService.getAllByVisible(true);
     }
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_COURSES_BY_VISIBILITY.CODE)")
     @GetMapping(value = {"/courses/deactivated"})
-    public List<CoursePojo> getAllDeactivatedCourses() throws ExecutionFailException, DataNotFoundException {
-
-        try {
-            List<CoursePojo> pojos = courseService.getAllByVisible(false);
-            return pojos;
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-        }
-
-        throw new DataNotFoundException("No such a course collection found.");
+    public List<CoursePojo> getAllDeactivatedCourses() throws DataNotFoundException {
+        return courseService.getAllByVisible(false);
     }
 
 
-
-    @PostMapping(value = {"/admin/course"})
-    public boolean saveCourse(@RequestBody CoursePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_COURSE.CODE)")
+    @PostMapping(value = {"/course"})
+    public boolean saveCourse(@RequestBody CoursePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException, ExistRecordException {
         if (isValidPojo(pojo)) {
-            try {
-                return courseService.save(pojo);
+            return courseService.save(pojo);
+        }
+        return false;
+    }
 
-            } catch (ServiceException e) {
-                exceptionConverter.convert(e);
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_COURSE.CODE)")
+    @PostMapping(value = {"/courses"})
+    public boolean saveCourses(@RequestBody List<CoursePojo> pojos) throws ExecutionFailException, EmptyFieldException, DataNotFoundException, ExistRecordException {
+
+        for (CoursePojo pojo : pojos) {
+            if (!isValidPojo(pojo)) {
+                throw new ExecutionFailException("No such user is saved");
             }
         }
-        throw new ExecutionFailException("No such course is saved");
+        return courseService.save(pojos);
+
     }
 
-    @PostMapping(value = {"/admin/courses"})
-    public boolean saveCourses(@RequestBody List<CoursePojo> pojos) throws ExecutionFailException, EmptyFieldException, DataNotFoundException {
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_COURSE_STATUSES.CODE)")
+    @GetMapping("/courses/statuses")
+    public Map<String, Integer> getCoursesStatuses() {
+        return courseService.getCourseStatus();
 
-        try {
-            for (CoursePojo pojo : pojos) {
-                if (!isValidPojo(pojo)) {
-                    throw new ExecutionFailException("No such user is saved");
+    }
 
-                }
-            }
-            return courseService.save(pojos);
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_COURSE_VISIBILITY.CODE)")
+    @PutMapping("/course/{publicKey}/visible")
+    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return courseService.updateVisibility(publicKey, true);
 
         }
-
-
-        throw new ExecutionFailException("No such course collection is saved");
+        throw new EmptyFieldException("PublicKey is empty");
     }
 
-
-    @GetMapping("/admin/courses/statuses")
-    public Map<String, Integer> getCoursesStatueses() throws ExecutionFailException, DataNotFoundException {
-        try {
-            return courseService.getCourseStatus();
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_COURSE_VISIBILITY.CODE)")
+    @PutMapping("/course/{publicKey}/invisible")
+    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return courseService.updateVisibility(publicKey, false);
         }
+        throw new EmptyFieldException("PublicKey is empty");
 
-        throw new ExecutionFailException("No such course status is selected");
+    }
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(@PathVariable String param) throws DataNotFoundException {
+
+        return courseService.getNotRegisteredCoursesBySearchParam(param);
 
     }
 
 
+    private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {
 
-    private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException {
         if (pojo == null) {
             throw new EmptyFieldException("Object cannot be null.");
         } else if (pojo.getCode() == null || pojo.getCode().isEmpty()) {
@@ -110,7 +101,8 @@ public class CourseController {
             throw new EmptyFieldException("Course name field cannot be empty.");
         } else if (pojo.getOwner() == null || pojo.getOwner().getEmail().isEmpty()) {
             throw new EmptyFieldException("Course owner email field cannot be empty.");
-
+        } else if (courseService.codeAlreadyExist(pojo.getCode())) {
+            throw new ExistRecordException(String.format("%s course code is already exist", pojo.getCode()));
         }
         return true;
     }

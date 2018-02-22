@@ -1,6 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.pojos.SystemResourcePojo;
@@ -14,19 +15,19 @@ public interface SystemResourceService {
 
     SystemResource pojoToEntity(SystemResourcePojo pojo);
 
-    boolean saveEntities(List<SystemResource> resources) throws ServiceException;
+    boolean saveEntities(List<SystemResource> resources);
 
-    boolean save(SystemResourcePojo pojo) throws ServiceException;
+    boolean save(SystemResourcePojo pojo) throws ExecutionFailException;
 
-    boolean save(List<SystemResourcePojo> pojos) throws ServiceException;
+    boolean save(List<SystemResourcePojo> pojos);
 
-    boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws ServiceException;
+    boolean setResourceAnnouncement(String publicKey, SystemAnnouncement announcement) throws ExecutionFailException, DataNotFoundException;
 
-    SystemResourcePojo getByName(String name) throws ServiceException;
+    SystemResourcePojo getByName(String name) throws DataNotFoundException;
 
-    SystemResourcePojo getByPublicKey(String publicKey) throws ServiceException;
+    SystemResourcePojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean delete(String publicKey) throws ServiceException;
+    boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 
 
 }

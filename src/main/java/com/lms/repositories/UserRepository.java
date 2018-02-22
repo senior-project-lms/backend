@@ -9,12 +9,20 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findByUsername(String username);
-	List<User> findAllByVisible(boolean visible);
+    User findByUsername(String username);
 
-	List<User> findAllByEnabledAndAuthority(boolean enabled, Authority authority);
+    List<User> findAllByVisible(boolean visible);
 
-	User findByPublicKey(String publicKey);
+    List<User> findAllByAuthorityAndVisible(Authority authority, boolean visible);
+
+    User findByPublicKey(String publicKey);
 
     User findByEmail(String email);
+
+    int countByVisible(boolean visible);
+
+    boolean existsByUsernameOrEmail(String username, String email);
+
+    List<User> findAllByEmailLikeOrNameLikeOrSurnameLikeAndAuthorityAndVisible(String email, String name, String surname, Authority authority, boolean visible);
 }
+

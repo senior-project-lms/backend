@@ -1,6 +1,7 @@
 package com.lms.services.interfaces;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.pojos.SystemAnnouncementPojo;
 
@@ -12,11 +13,11 @@ public interface SystemAnnouncementService {
 
     SystemAnnouncement pojoToEntity(SystemAnnouncementPojo pojo);
 
-    List<SystemAnnouncementPojo> getAllByPage(int page) throws ServiceException;
+    List<SystemAnnouncementPojo> getAllByPage(int page) throws DataNotFoundException;
 
-    boolean save(SystemAnnouncementPojo pojo) throws ServiceException;
+    boolean save(SystemAnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException;
 
-    boolean delete(String publicKey) throws ServiceException;
+    boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 
 }
 

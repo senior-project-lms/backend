@@ -3,6 +3,7 @@ package com.lms.repositories;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +19,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findAllByRegisteredUsersIn(List<User> registeredUsers);
 
     List<Course> findAllByVisible(boolean visible);
+
+    boolean existsByCode(String code);
+
+    int countByVisible(boolean visible);
+
+    List<Course> findAllByRegisteredUsersNotContainsAndVisible(User user, boolean visible);
 
 
 }

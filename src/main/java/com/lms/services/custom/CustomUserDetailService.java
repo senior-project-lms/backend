@@ -49,11 +49,16 @@ public class CustomUserDetailService implements UserDetailsService {
 	public User getAuthenticatedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
-		return this.findByUsername(username);
+        User user = findByUsername(username);
+
+        if (user == null) {
+            throw new SecurityException("Authenticated User is not found");
+        }
+        return user;
 		
 	}
-	
-	public User findByUsername(String username) {
+
+	private User findByUsername(String username) {
 		return this.userRepository.findByUsername(username);
 	}
 

@@ -1,10 +1,10 @@
 package com.lms.services.impl;
 
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemAnnouncement;
 import com.lms.entities.SystemResource;
 import com.lms.entities.User;
-import com.lms.enums.ExceptionType;
 import com.lms.pojos.MailPojo;
 import com.lms.pojos.SystemAnnouncementPojo;
 import com.lms.pojos.SystemResourcePojo;
@@ -40,6 +40,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
 
     @Autowired
     private MailService mailService;
+
 
     /**
      * Converts SystemAnnouncement entity to SystemAnnouncement pojo according to boolean variables,
@@ -106,13 +107,13 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return  List<SystemAnnouncementPojo>
      */
     @Override
-    public List<SystemAnnouncementPojo> getAllByPage(int page) throws ServiceException {
+    public List<SystemAnnouncementPojo> getAllByPage(int page) throws DataNotFoundException {
         List<SystemAnnouncementPojo> pojos = new ArrayList<>();
 
         List<SystemAnnouncement> entities = systemAnnouncementRepository.findAllByVisibleOrderByUpdatedAtDesc(true, new PageRequest(page, 5));
 
         if (entities == null){
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, "No such a system announcement is found");
+            throw new DataNotFoundException("No such a system announcement is found");
         }
 
         for (SystemAnnouncement announcement : entities){
@@ -141,7 +142,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return boolean
      */
     @Override
-    public boolean save(SystemAnnouncementPojo pojo) throws ServiceException{
+    public boolean save(SystemAnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException {
 
         List<String> resourceKeys = pojo.getResourceKeys();
 
@@ -155,7 +156,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
         entity = systemAnnouncementRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "System announcement is not saved");
+            throw new ExecutionFailException("System announcement is not saved");
         }
 
 
@@ -196,7 +197,7 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
      * @return boolean
      */
     @Override
-    public boolean delete(String publicKey) throws ServiceException{
+    public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
 
         User deletedBy = customUserDetailService.getAuthenticatedUser();
 
@@ -206,14 +207,14 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
 
         SystemAnnouncement entity = systemAnnouncementRepository.findByPublicKey(publicKey);
         if (entity == null){
-            throw new ServiceException(ExceptionType.NO_SUCH_DATA_NOT_FOUND, String.format("No system announcement is found by publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No system announcement is found by publicKey: %s", publicKey));
         }
         entity.setUpdatedBy(deletedBy);
         entity.setVisible(false);
         entity = systemAnnouncementRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException(ExceptionType.EXECUTION_FAILS, "Delete system authentication process is not executed successfully");
+            throw new ExecutionFailException("Delete system authentication process is not executed successfully");
         }
         return true;
     }

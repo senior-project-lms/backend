@@ -1,14 +1,16 @@
 package com.lms.pojos.course;
 
-import com.lms.enums.AnswerChoice;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.lms.enums.EAnswerChoice;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QtAvailableAnswerPojo {
 
     private String text;
 
-    private AnswerChoice type;
+    private EAnswerChoice type;
 
     private boolean correct;
 

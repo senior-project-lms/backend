@@ -1,65 +1,45 @@
 package com.lms.controllers;
 
-import com.lms.components.ExceptionConverter;
-import com.lms.customExceptions.DataNotFoundException;
-import com.lms.customExceptions.EmptyFieldException;
-import com.lms.customExceptions.ExecutionFailException;
-import com.lms.customExceptions.ServiceException;
+import com.lms.customExceptions.*;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
+import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ResourceNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = {"/api"})
 public class UserController {
 
-    @Autowired
-    private ExceptionConverter exceptionConverter;
 
     @Autowired
     private UserService userService;
 
 
+    @GetMapping(value = {"/users/active"})
+    public List<UserPojo> getAllUsers() throws DataNotFoundException {
+        return userService.getAllByVisible(true);
+    }
+
+    @GetMapping(value = {"users/deactivated"})
+    public List<UserPojo> getAllDeactivatedUsers() throws DataNotFoundException {
+        return userService.getAllByVisible(false);
+    }
+
+
     @GetMapping(value = {"/me"})
-    public UserPojo getMe() throws DataNotFoundException, ExecutionFailException{
+    public UserPojo getMe() throws DataNotFoundException {
 
-        try {
-            return userService.getMe();
-        }
-        catch (ServiceException ex){
-            exceptionConverter.convert(ex);
-        }
+        return userService.getMe();
 
-        throw new DataNotFoundException("No such user data is found");
+
     }
 
-    /**
-     * the pojo object that comes from API goes to save method of the Service
-     * check userPojo is whether null or not
-     * check the pojo which includes email, name, password, username and authority if one of them is null or empty
-     * return false, else return result of the save method of the service
-     *
-     * @param userPojo
-     * @return boolean
-     * @author atalay samet ergen
-     */
-    @PostMapping(value = {"/admin/user"})
-    public boolean saveUser(@RequestBody UserPojo userPojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
-        try {
-            if (isValidUserPojo(userPojo)) {
-                return userService.save(userPojo);
-            }
-        }
-        catch (ServiceException ex){
-            exceptionConverter.convert(ex);
-        }
-
-        throw new ExecutionFailException("No such user is saved");
-    }
 
     /**
      * the pojo object list that comes from API goes to save method of the Service
@@ -71,54 +51,116 @@ public class UserController {
      * @return boolean
      * @author atalay samet ergen
      */
-    @PostMapping(value = {"/admin/users"})
-    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException{
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_USER.CODE)")
+    @PostMapping(value = {"/users"})
+    public boolean saveUsers(@RequestBody List<UserPojo> userPojos) throws EmptyFieldException, DataNotFoundException, ExecutionFailException, ExistRecordException {
 
-        try {
-            for (UserPojo pojo : userPojos) {
-                if (!isValidUserPojo(pojo)) {
-                    throw new ExecutionFailException("No such user is saved");
-
-                }
+        for (UserPojo pojo : userPojos) {
+            if (!isValidUserPojo(pojo)) {
+                throw new ExecutionFailException("No such user is saved");
 
             }
-            return userService.save(userPojos);
-
-        } catch (ServiceException e) {
-            exceptionConverter.convert(e);
-
-        }
-        throw new ExecutionFailException("No such user is saved");
-    }
-
-    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException{
-        if (userPojo != null) {
-            if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
-                throw new EmptyFieldException("Email field cannot be empty");
-            }
-
-            if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
-                throw new EmptyFieldException("Username field cannot be empty");
-            }
-            if (userPojo.getPassword() == null || userPojo.getPassword().isEmpty()) {
-                throw new EmptyFieldException("Password field cannot be empty");
-
-            }
-            if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
-                throw new EmptyFieldException("Name field cannot be empty");
-            }
-
-            if (userPojo.getSurname() == null || userPojo.getSurname().isEmpty()) {
-                throw new EmptyFieldException("Surname field cannot be empty");
-            }
-            if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
-                throw new EmptyFieldException("Authority field cannot be empty");
-            }
-            return true;
 
 
         }
+        return userService.save(userPojos);
 
-        throw new EmptyFieldException("User object cannot be empty");
+
     }
+
+    /**
+     * Gets the all the users ,
+     * return 5 of System Announcement, for each page, for each request
+     *
+     * @param
+     * @return List<UserPojo>
+     * @author atalay
+     */
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_ALL_USERS.CODE)")
+    @GetMapping(value = {"/users"})
+    public List<UserPojo> getUsers() throws DataNotFoundException {
+
+        return userService.getAllByVisible(true);
+    }
+
+
+    /**
+     * Get the public key and
+     * returns the user according to the public key
+     *
+     * @param publicKey
+     * @return UserPojo
+     * @author atalay
+     */
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
+    @GetMapping(value = {"/user/{publicKey}"})
+    public UserPojo getUser(@PathVariable String publicKey) throws DataNotFoundException {
+
+        if (publicKey == null) {
+            throw new DataNotFoundException("Public key not found.");
+        }
+
+        UserPojo pojo = userService.getByPublicKey(publicKey);
+        return pojo;
+
+    }
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
+    @GetMapping(value = {"/users/lecturer"})
+    public List<UserPojo> getUserBySearchParameter() throws DataNotFoundException {
+
+        return userService.getUsersByAuthority(AccessLevel.LECTURER);
+
+
+    }
+
+
+
+    private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException, ExistRecordException {
+
+        if (userPojo.getEmail() == null || userPojo.getEmail().isEmpty()) {
+            throw new EmptyFieldException("Email field cannot be empty");
+        } else if (userPojo.getUsername() == null || userPojo.getUsername().isEmpty()) {
+            throw new EmptyFieldException("Username field cannot be empty");
+        } else if (userPojo.getPassword() == null || userPojo.getPassword().isEmpty()) {
+            throw new EmptyFieldException("Password field cannot be empty");
+
+        } else if (userPojo.getName() == null || userPojo.getName().isEmpty()) {
+            throw new EmptyFieldException("Name field cannot be empty");
+        } else if (userPojo.getSurname() == null || userPojo.getSurname().isEmpty()) {
+            throw new EmptyFieldException("Surname field cannot be empty");
+        } else if (userPojo.getAuthority() == null || userPojo.getAuthority().getPublicKey() == null || userPojo.getAuthority().getPublicKey().isEmpty()) {
+            throw new EmptyFieldException("Authority field cannot be empty");
+        } else if (userService.userAlreadyExist(userPojo.getUsername(), userPojo.getEmail())) {
+            throw new ExistRecordException(String.format("For record %s, email or username already exist", userPojo.getUsername()));
+        }
+        return true;
+
+    }
+
+    @GetMapping("/users/status")
+    public Map<String, Integer> getUsersStatus() {
+        return userService.getUserStatus();
+    }
+
+    @PutMapping("/user/{publicKey}/visible")
+    public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return userService.updateVisibility(publicKey, true);
+
+        }
+        throw new EmptyFieldException("PublicKey is empty");
+    }
+
+    @PutMapping("/user/{publicKey}/invisible")
+    public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
+        if (publicKey != null || !publicKey.isEmpty()) {
+            return userService.updateVisibility(publicKey, false);
+        }
+        throw new EmptyFieldException("PublicKey is empty");
+
+    }
+
+
 }

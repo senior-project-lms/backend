@@ -11,6 +11,7 @@ import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
 import com.lms.services.interfaces.EnrolmentRequestService;
 import com.lms.services.interfaces.UserService;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -344,25 +345,78 @@ public class CourseServiceImpl implements CourseService{
     }
 
     /**
-     * returns not registered courses by authenticated and search param
+     * returns not registered courses by authenticated and search param code
      *
      * @return List<CoursePojo>
      * @author umit.kas
      */
     @Override
-    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(String param) throws DataNotFoundException {
+    public List<CoursePojo> getNotRegisteredCoursesByCode(String param) throws DataNotFoundException {
+        param = param.toUpperCase();
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisibleAndCodeContaining(authUser, true, param);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        return getNotRegisteredCoursesHelper(entities);
+    }
+
+    /**
+     * returns not registered courses by authenticated and search param name
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCoursesByName(String param) throws DataNotFoundException {
+        param = param.toUpperCase();
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
+        List<Course> entities = courseRepository
+                .findAllByRegisteredUsersNotContainsAndVisibleAndNameContaining(authUser, true, param);
 
         if (entities == null) {
-            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
         }
 
+        return getNotRegisteredCoursesHelper(entities);
+    }
+
+
+    /**
+     * returns not registered courses by authenticated and search param lecturer
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCoursesByLecturer(String name, String surname) throws DataNotFoundException {
+        if (name != null)
+            name = name.toUpperCase();
+        else if (surname != null)
+            surname = surname.toUpperCase();
+
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+        List<User> lecturers = userService.findAllByNameOrSurname(name, surname);
+        List<Course> entities = courseRepository
+                .findAllByRegisteredUsersNotContainsAndVisibleAndOwnerIn(authUser, true, lecturers);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        return getNotRegisteredCoursesHelper(entities);
+    }
+
+
+    private List<CoursePojo> getNotRegisteredCoursesHelper(List<Course> entities) throws DataNotFoundException {
         List<CoursePojo> pojos = entities
                 .stream()
-                .filter(entity -> entity.getCode().contains(param.toUpperCase()) || entity.getName().contains(param.toUpperCase()))
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
 
@@ -382,4 +436,6 @@ public class CourseServiceImpl implements CourseService{
 
         return pojos;
     }
+
+
 }

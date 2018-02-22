@@ -2,6 +2,7 @@ package com.lms.controllers;
 
 import com.lms.customExceptions.*;
 
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = {"/api"})
@@ -83,12 +85,36 @@ public class CourseController {
     }
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
-    @GetMapping("/courses/not-registered/{param}")
-    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(@PathVariable String param) throws DataNotFoundException {
+    @GetMapping("/courses/not-registered/code/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByCode(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCoursesBySearchParam(param);
+        return courseService.getNotRegisteredCoursesByCode(param);
 
     }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/name/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByName(@PathVariable String param) throws DataNotFoundException {
+
+        return courseService.getNotRegisteredCoursesByName(param);
+
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PostMapping("/courses/not-registered/lecturer")
+    public List<CoursePojo> getNotRegisteredCoursesByLecturer(@RequestBody UserPojo pojo) throws DataNotFoundException, EmptyFieldException {
+
+
+        if ((pojo.getName() == null || pojo.getName().isEmpty()) && (pojo.getSurname() == null || pojo.getSurname().isEmpty())) {
+            throw new EmptyFieldException("name and surname cannot be empty");
+
+        }
+        return courseService.getNotRegisteredCoursesByLecturer(pojo.getName(), pojo.getSurname());
+
+    }
+
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {

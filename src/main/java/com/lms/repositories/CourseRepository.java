@@ -16,8 +16,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Course findByPublicKey(String publicKey);
 
-    List<Course> findAllByRegisteredUsersIn(List<User> registeredUsers);
-
     List<Course> findAllByVisible(boolean visible);
 
     boolean existsByCode(String code);
@@ -26,5 +24,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findAllByRegisteredUsersNotContainsAndVisible(User user, boolean visible);
 
+    List<Course> findAllByRegisteredUsersNotContainsAndVisibleAndCodeContaining(User user, boolean visible, String param);
+
+    List<Course> findAllByRegisteredUsersNotContainsAndVisibleAndNameContaining(User user, boolean visible, String param);
+
+    List<Course> findAllByRegisteredUsersNotContainsAndVisibleAndOwnerIn(User user, boolean visible, List<User> lecturer);
 
 }

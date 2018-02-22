@@ -200,11 +200,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeSuperAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultSuperAdminPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultSuperAdminPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);

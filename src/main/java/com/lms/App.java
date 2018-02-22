@@ -10,7 +10,6 @@ import com.lms.properties.StorageProperties;
 import com.lms.repositories.*;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.StorageService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,11 +31,6 @@ public class App {
 	@Bean
 	BCryptPasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	ModelMapper getModelMapper() {
-		return new ModelMapper();
 	}
 
 	// run the app

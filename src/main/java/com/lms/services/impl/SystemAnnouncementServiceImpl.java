@@ -14,7 +14,6 @@ import com.lms.services.interfaces.MailService;
 import com.lms.services.interfaces.SystemAnnouncementService;
 import com.lms.services.interfaces.SystemResourceService;
 import com.lms.services.interfaces.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -41,9 +40,6 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService{
 
     @Autowired
     private MailService mailService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     /**
      * Converts SystemAnnouncement entity to SystemAnnouncement pojo according to boolean variables,

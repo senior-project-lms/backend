@@ -1,5 +1,4 @@
 package com.lms.pojos;
-
 import lombok.Data;
 
 import java.util.List;

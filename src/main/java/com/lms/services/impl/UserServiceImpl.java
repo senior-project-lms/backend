@@ -10,7 +10,6 @@ import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.AccessPrivilegeService;
 import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
-import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,6 +56,7 @@ public class UserServiceImpl implements UserService {
 
         return entity;
     }
+
 
 
     /**

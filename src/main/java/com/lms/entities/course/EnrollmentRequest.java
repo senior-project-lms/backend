@@ -10,13 +10,17 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "course_enrolment_request")
-public class EnrolmentRequest extends BaseEntity {
+public class EnrollmentRequest extends BaseEntity {
 
     @OneToOne
     private Course course;
 
     @OneToOne
     private User user;
+
+    private boolean cancelled;
+
+    private boolean rejected;
 
 
 }

@@ -328,13 +328,13 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.SAVE_DEFAULT_AUTHORITY.CODE,
                 EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
 
-                // ENROLMENT
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
+                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
 
-                // PRIVILEGE
-                EPrivilege.READ_ALL_PRIVILEGES.CODE,
                 EPrivilege.GLOBAL_ACCESS.CODE
+
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
@@ -383,10 +383,13 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 //                EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
 
                 // DEFAULT AUTHORITY
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
+                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
 
-                EPrivilege.GLOBAL_ACCESS.CODE
+                EPrivilege.GLOBAL_ACCESS.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
+
 
 //                EPrivilege.UPDATE_COURSE.CODE,
 //                EPrivilege.UPDATE_COURSE.CODE,
@@ -416,10 +419,15 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // DEFAULT AUTHORITY
 
-                // ENROLMENT
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE
+                // ENROLLMENT
+                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
+                EPrivilege.GLOBAL_ACCESS.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
+
+
 
         );
     }
@@ -443,10 +451,13 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // DEFAULT AUTHORITY
 
-                // ENROLMENT
+                // ENROLLMENT
                 EPrivilege.ENROLL_COURSE.CODE,
 
-                EPrivilege.GLOBAL_ACCESS.CODE
+                EPrivilege.GLOBAL_ACCESS.CODE,
+                EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE
+
 
         );
     }
@@ -469,13 +480,16 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 // DEFAULT AUTHORITY
 
-                // ENROLMENT
-                // ENROLMENT
+                // ENROLLMENT
+                // ENROLLMENT
                 EPrivilege.ENROLL_COURSE.CODE,
 
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE
+                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
+                EPrivilege.GLOBAL_ACCESS.CODE,
+                EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
         );
     }
 

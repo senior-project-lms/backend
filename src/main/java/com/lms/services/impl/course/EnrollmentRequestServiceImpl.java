@@ -5,12 +5,12 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
-import com.lms.entities.course.EnrolmentRequest;
-import com.lms.pojos.course.EnrolmentRequestPojo;
-import com.lms.repositories.EnrolmentRequestRepository;
+import com.lms.entities.course.EnrollmentRequest;
+import com.lms.pojos.course.EnrollmentRequestPojo;
+import com.lms.repositories.EnrollmentRequestRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
-import com.lms.services.interfaces.EnrolmentRequestService;
+import com.lms.services.interfaces.EnrollmentRequestService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
+public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
     @Autowired
-    private EnrolmentRequestRepository enrolmentRequestRepository;
+    private EnrollmentRequestRepository enrolmentRequestRepository;
 
     @Autowired
     private UserService userService;
@@ -35,8 +35,8 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
 
 
     @Override
-    public EnrolmentRequestPojo entityToPojo(EnrolmentRequest entity) {
-        EnrolmentRequestPojo pojo = new EnrolmentRequestPojo();
+    public EnrollmentRequestPojo entityToPojo(EnrollmentRequest entity) {
+        EnrollmentRequestPojo pojo = new EnrollmentRequestPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setCourse(courseService.entityToPojo(entity.getCourse()));
@@ -47,8 +47,8 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
     }
 
     @Override
-    public EnrolmentRequest pojoToEntity(EnrolmentRequestPojo pojo) {
-        EnrolmentRequest entity = new EnrolmentRequest();
+    public EnrollmentRequest pojoToEntity(EnrollmentRequestPojo pojo) {
+        EnrollmentRequest entity = new EnrollmentRequest();
         return entity;
     }
 
@@ -66,7 +66,7 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
         User enrolledBy = userDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
 
-        EnrolmentRequest enrolmentRequest = new EnrolmentRequest();
+        EnrollmentRequest enrolmentRequest = new EnrollmentRequest();
 
         enrolmentRequest.generatePublicKey();
         enrolmentRequest.setCourse(course);
@@ -87,21 +87,21 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
      * returns enrollment request of specific course
      *
      * @param publicKey
-     * @return List<EnrolmentRequestPojo>
+     * @return List<EnrollmentRequestPojo>
      * @author umit.kas
      */
     @Override
-    public List<EnrolmentRequestPojo> getEnrolmentRequests(String publicKey) throws DataNotFoundException {
+    public List<EnrollmentRequestPojo> getEnrolmentRequests(String publicKey) throws DataNotFoundException {
         Course course = courseService.findByPublicKey(publicKey);
 
-        List<EnrolmentRequest> entities = enrolmentRequestRepository.findAllByCourseAndVisible(course, true);
+        List<EnrollmentRequest> entities = enrolmentRequestRepository.findAllByCourseAndVisibleAndCancelled(course, true, false);
 
 
         if (entities == null) {
             throw new DataNotFoundException("No such a enrolment request list is fetched");
         }
 
-        List<EnrolmentRequestPojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
+        List<EnrollmentRequestPojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
         return pojos;
     }
@@ -119,7 +119,7 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
 
         User authUser = userDetailService.getAuthenticatedUser();
 
-        EnrolmentRequest entity = enrolmentRequestRepository.findByPublicKey(enrolmentRequestPublicKey);
+        EnrollmentRequest entity = enrolmentRequestRepository.findByPublicKey(enrolmentRequestPublicKey);
 
         if (entity == null) {
             throw new DataNotFoundException(String.format("No such enrolment request is found by publicKey: %s", enrolmentRequestPublicKey));
@@ -147,14 +147,14 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
      *
      * @param userPublicKey
      * @param visible
-     * @return List<EnrolmentRequest>
+     * @return List<EnrollmentRequest>
      * @author umit.kas
      */
     @Override
-    public List<EnrolmentRequest> findEnrollmentRequests(String userPublicKey, boolean visible) throws DataNotFoundException {
+    public List<EnrollmentRequest> findEnrollmentRequests(String userPublicKey, boolean visible) throws DataNotFoundException {
 
         User authUser = userService.findByPublicKey(userPublicKey);
-        List<EnrolmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisible(authUser, visible);
+        List<EnrollmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisibleAndCancelled(authUser, visible, false);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrolment request list is fetched");
         }
@@ -166,14 +166,14 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
      * finds enrolment request entities by authenticated user and visibility
      *
      * @param visible
-     * @return List<EnrolmentRequest>
+     * @return List<EnrollmentRequest>
      * @author umit.kas
      */
     @Override
-    public List<EnrolmentRequest> findEnrollmentRequests(boolean visible) throws DataNotFoundException {
+    public List<EnrollmentRequest> findEnrollmentRequests(boolean visible) throws DataNotFoundException {
 
         User authUser = userDetailService.getAuthenticatedUser();
-        List<EnrolmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisible(authUser, visible);
+        List<EnrollmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisibleAndCancelled(authUser, visible, false);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrolment request list is fetched");
         }
@@ -184,11 +184,11 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
      * finds enrolment request pojos by authenticated user and visibility
      *
      * @param visible
-     * @return List<EnrolmentRequestPojo>
+     * @return List<EnrollmentRequestPojo>
      * @author umit.kas
      */
     @Override
-    public List<EnrolmentRequestPojo> getEnrollmentRequest(boolean visible) throws DataNotFoundException {
+    public List<EnrollmentRequestPojo> getEnrollmentRequest(boolean visible) throws DataNotFoundException {
         User authUser = userDetailService.getAuthenticatedUser();
         return this.getEnrolmentRequest(authUser, visible);
     }
@@ -197,26 +197,83 @@ public class EnrolmentRequestServiceImpl implements EnrolmentRequestService {
      * finds enrolment request pojos by userPublicKey  and visibility
      *
      * @param visible
-     * @return List<EnrolmentRequestPojo>
+     * @return List<EnrollmentRequestPojo>
      * @author umit.kas
      */
     @Override
-    public List<EnrolmentRequestPojo> getEnrollmentRequest(String userPublicKey, boolean visible) throws DataNotFoundException {
+    public List<EnrollmentRequestPojo> getEnrollmentRequest(String userPublicKey, boolean visible) throws DataNotFoundException {
         User authUser = userService.findByPublicKey(userPublicKey);
-        return this.getEnrolmentRequest(authUser, visible);
+        List<EnrollmentRequestPojo> pojos = this.getEnrolmentRequest(authUser, visible);
+        pojos
+                .stream()
+                .map(pojo -> {
+                    pojo.setUser(null);
+                    return pojo;
+                })
+                .collect(Collectors.toList());
+
+
+        return pojos;
     }
 
-    private List<EnrolmentRequestPojo> getEnrolmentRequest(User user, boolean visible) throws DataNotFoundException {
-        List<EnrolmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisible(user, visible);
+    private List<EnrollmentRequestPojo> getEnrolmentRequest(User user, boolean visible) throws DataNotFoundException {
+        List<EnrollmentRequest> entities = enrolmentRequestRepository.findAllByUserAndVisibleAndCancelled(user, visible, false);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrolment request list is fetched");
         }
-        List<EnrolmentRequestPojo> pojos = entities
+        List<EnrollmentRequestPojo> pojos = entities
                 .stream()
                 .map(pojo -> entityToPojo(pojo))
                 .collect(Collectors.toList());
 
         return pojos;
-
     }
+
+    @Override
+    public boolean cancel(String publicKey) throws DataNotFoundException, ExecutionFailException {
+
+        User authUser = userDetailService.getAuthenticatedUser();
+
+        EnrollmentRequest entity = enrolmentRequestRepository.findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new DataNotFoundException("No such a enrolment request is found");
+        }
+
+        entity.setCancelled(true);
+        entity.setUpdatedBy(authUser);
+
+        entity = enrolmentRequestRepository.save(entity);
+
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException("No such a enrolment request is cancelled");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean reject(String publicKey) throws DataNotFoundException, ExecutionFailException {
+
+        User authUser = userDetailService.getAuthenticatedUser();
+
+        EnrollmentRequest entity = enrolmentRequestRepository.findByPublicKey(publicKey);
+
+        if (entity == null) {
+            throw new DataNotFoundException("No such a enrolment request is found");
+        }
+
+        entity.setRejected(true);
+        entity.setUpdatedBy(authUser);
+
+        entity = enrolmentRequestRepository.save(entity);
+
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException("No such a enrolment request is cancelled");
+        }
+        return true;
+    }
+
+    // TODO: 23.02.2018
+    // rejectedler listlensin ama enroll requested icindeki course yine aranabilsin ve arama listesinde ciksin, course service de update yap
 }

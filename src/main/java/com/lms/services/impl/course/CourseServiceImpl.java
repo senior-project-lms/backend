@@ -4,14 +4,13 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
-import com.lms.entities.course.EnrolmentRequest;
+import com.lms.entities.course.EnrollmentRequest;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.repositories.CourseRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
-import com.lms.services.interfaces.EnrolmentRequestService;
+import com.lms.services.interfaces.EnrollmentRequestService;
 import com.lms.services.interfaces.UserService;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class CourseServiceImpl implements CourseService{
     private CustomUserDetailService userDetailsService;
 
     @Autowired
-    private EnrolmentRequestService enrolmentRequestService;
+    private EnrollmentRequestService enrollmentRequestService;
 
     @Override
     public CoursePojo entityToPojo(Course entity) {
@@ -292,7 +291,7 @@ public class CourseServiceImpl implements CourseService{
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
 
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
+        List<EnrollmentRequest> enrolmentRequests = enrollmentRequestService.findEnrollmentRequests(true);
 
         List<String> coursePublicKeys = enrolmentRequests
                 .stream()
@@ -327,7 +326,7 @@ public class CourseServiceImpl implements CourseService{
 
         List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
 
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(userPublicKey, true);
+        List<EnrollmentRequest> enrolmentRequests = enrollmentRequestService.findEnrollmentRequests(userPublicKey, true);
 
         List<String> coursePublicKeys = enrolmentRequests
                 .stream()
@@ -415,24 +414,19 @@ public class CourseServiceImpl implements CourseService{
 
 
     private List<CoursePojo> getNotRegisteredCoursesHelper(List<Course> entities) throws DataNotFoundException {
+
+        List<EnrollmentRequest> enrolmentRequestsEntities = enrollmentRequestService.findEnrollmentRequests(true);
+        List<String> enrollmentRequestedCoursesPublicKeys = enrolmentRequestsEntities
+                .stream()
+                .map(entity -> entity.getCourse().getPublicKey())
+                .collect(Collectors.toList());
+
+
         List<CoursePojo> pojos = entities
                 .stream()
+                .filter(entity -> !enrollmentRequestedCoursesPublicKeys.contains(entity.getPublicKey()))
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
-
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
-
-        List<String> coursePublicKeys = enrolmentRequests
-                .stream()
-                .map(req -> req.getCourse().getPublicKey())
-                .collect(Collectors.toList());
-
-
-        for (CoursePojo pojo : pojos) {
-            if (coursePublicKeys.contains(pojo.getPublicKey())) {
-                pojo.setHasEnrollmentRequest(true);
-            }
-        }
 
         return pojos;
     }

@@ -1,6 +1,7 @@
-package com.lms.customExceptions;
+package com.lms.customExceptions.handler;
 
 
+import com.lms.customExceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @RestControllerAdvice
 public class RestExceptionHandler{
 
+
+    @ExceptionHandler(value = {NotAuthenticatedRequest.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ApiError handleNotAuthenticatedFunctionalityException(NotAuthenticatedRequest ex) {
+        return new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
 
 
     @ExceptionHandler(value = {EmptyFieldException.class})

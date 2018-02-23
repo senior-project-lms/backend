@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EnrolmentRequestPojo extends BasePojo {
+public class EnrollmentRequestPojo extends BasePojo {
 
     private CoursePojo course;
 

@@ -322,6 +322,8 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.DELETE_AUTHORITY.CODE,
                 EPrivilege.UPDATE_AUTHORITY.CODE,
 
+                // PRIVILEGES
+                EPrivilege.READ_ALL_PRIVILEGES.CODE,
                 // DEFAULT AUTHORITY
                 EPrivilege.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES.CODE,
                 EPrivilege.UPDATE_DEFAULT_AUTHORITY.CODE,
@@ -385,6 +387,10 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 // DEFAULT AUTHORITY
                 EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
                 EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
+
+                // PRIVILEGES
+
+                EPrivilege.READ_ALL_PRIVILEGES.CODE,
 
                 EPrivilege.GLOBAL_ACCESS.CODE,
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,

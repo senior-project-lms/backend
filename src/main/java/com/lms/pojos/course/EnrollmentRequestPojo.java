@@ -13,6 +13,12 @@ public class EnrollmentRequestPojo extends BasePojo {
 
     private UserPojo user;
 
+    private boolean cancelled;
+
+    private boolean rejected;
+
+    private boolean enrolled;
+
 }
 
 

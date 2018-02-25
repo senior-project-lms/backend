@@ -2,6 +2,9 @@ package com.lms.services.interfaces;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.customExceptions.ExistRecordException;
+import com.lms.customExceptions.NotAuthenticatedRequest;
+import com.lms.entities.User;
 import com.lms.entities.course.EnrollmentRequest;
 import com.lms.pojos.course.EnrollmentRequestPojo;
 
@@ -14,22 +17,27 @@ public interface EnrollmentRequestService {
 
     EnrollmentRequest pojoToEntity(EnrollmentRequestPojo pojo);
 
-    boolean enroll(String publicKey) throws DataNotFoundException, ExecutionFailException;
+    boolean enroll(String publicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
-    List<EnrollmentRequestPojo> getEnrolmentRequests(String publicKey) throws DataNotFoundException;
 
-    boolean approveEnrolmentRequest(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException;
+    boolean approve(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
-    List<EnrollmentRequest> findEnrollmentRequests(boolean visible) throws DataNotFoundException;
+    List<EnrollmentRequest> findEnrollmentRequestsOfAuthUser(boolean visible) throws DataNotFoundException;
 
-    List<EnrollmentRequest> findEnrollmentRequests(String userPublicKey, boolean visible) throws DataNotFoundException;
+    List<EnrollmentRequest> findEnrollmentRequestsOfUser(String userPublicKey, boolean visible) throws DataNotFoundException;
 
-    List<EnrollmentRequestPojo> getEnrollmentRequest(boolean visible) throws DataNotFoundException;
+    List<EnrollmentRequestPojo> getEnrollmentRequestOfAuthUser(boolean visible) throws DataNotFoundException;
 
-    List<EnrollmentRequestPojo> getEnrollmentRequest(String userPublicKey, boolean visible) throws DataNotFoundException;
+    List<EnrollmentRequestPojo> getEnrollmentRequestOfUser(String userPublicKey, boolean visible) throws DataNotFoundException;
 
-    boolean cancel(String publicKey) throws DataNotFoundException, ExecutionFailException;
+    boolean cancel(String publicKey) throws DataNotFoundException, ExecutionFailException, NotAuthenticatedRequest;
 
-    boolean reject(String publicKey) throws DataNotFoundException, ExecutionFailException;
+    boolean reject(String publicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
+
+    boolean existByPublicKeyAndUser(String publicKey, User user);
+
+
+    List<EnrollmentRequestPojo> getEnrollmentRequestsOfCourse(String publicKey) throws DataNotFoundException;
+
 
 }

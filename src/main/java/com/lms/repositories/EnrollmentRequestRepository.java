@@ -17,5 +17,10 @@ public interface EnrollmentRequestRepository extends JpaRepository<EnrollmentReq
 
     List<EnrollmentRequest> findAllByUserAndVisibleAndCancelled(User user, boolean visible, boolean cancelled);
 
+    List<EnrollmentRequest> findAllByCourse(Course course);
+
+    boolean existsByPublicKeyAndUser(String publicKey, User user);
+
+    boolean existsByUserAndCourseAndRejectedAndCancelledAndEnrolled(User user, Course course, boolean rejected, boolean cancelled, boolean enrolled);
 
 }

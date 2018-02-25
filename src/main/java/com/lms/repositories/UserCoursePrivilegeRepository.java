@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Repository
@@ -15,4 +16,8 @@ public interface UserCoursePrivilegeRepository extends JpaRepository<UserCourseP
 
 
     UserCoursePrivilege findByCourseAndUser(Course course, User user);
+
+    List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible);
+
+    boolean existsByUser(User user);
 }

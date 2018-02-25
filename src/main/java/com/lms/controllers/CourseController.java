@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = {"/api"})
@@ -88,7 +87,7 @@ public class CourseController {
     @GetMapping("/courses/not-registered/code/{param}")
     public List<CoursePojo> getNotRegisteredCoursesByCode(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCoursesByCode(param);
+        return courseService.getNotRegisteredCoursesByCodeByAuthUser(param);
 
     }
 
@@ -97,7 +96,7 @@ public class CourseController {
     @GetMapping("/courses/not-registered/name/{param}")
     public List<CoursePojo> getNotRegisteredCoursesByName(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCoursesByName(param);
+        return courseService.getNotRegisteredCoursesByNameByAuthUser(param);
 
     }
 
@@ -111,11 +110,22 @@ public class CourseController {
             throw new EmptyFieldException("name and surname cannot be empty");
 
         }
-        return courseService.getNotRegisteredCoursesByLecturer(pojo.getName(), pojo.getSurname());
+        return courseService.getNotRegisteredCoursesByLecturerByAuthUser(pojo.getName(), pojo.getSurname());
 
     }
 
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.EPrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @GetMapping(value = {"/me/courses"})
+    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
+        return courseService.getAuthUserCourses();
+    }
+
+    //@PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.EPrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @GetMapping(value = {"/course/{publicKey}/enrolled-users"})
+    public List<UserPojo> getEnrolledUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getEnrolledUsers(publicKey);
+    }
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {
 

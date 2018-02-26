@@ -17,6 +17,9 @@ import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         pojo.setRejected(entity.isRejected());
         pojo.setCancelled(entity.isCancelled());
         pojo.setEnrolled(entity.isEnrolled());
+        pojo.setPending(entity.isPending());
 
         return pojo;
     }
@@ -77,16 +81,17 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         }
 
 
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
+        EnrollmentRequest entity = new EnrollmentRequest();
 
-        enrollmentRequest.generatePublicKey();
-        enrollmentRequest.setCourse(course);
-        enrollmentRequest.setUser(enrolledBy);
-        enrollmentRequest.setCreatedBy(enrolledBy);
+        entity.generatePublicKey();
+        entity.setCourse(course);
+        entity.setUser(enrolledBy);
+        entity.setCreatedBy(enrolledBy);
+        entity.setPending(true);
 
-        enrollmentRequest = enrollmentRequestRepository.save(enrollmentRequest);
+        entity = enrollmentRequestRepository.save(entity);
 
-        if (enrollmentRequest == null || enrollmentRequest.getId() == 0) {
+        if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("No such a enrollment request is saved");
 
         }
@@ -121,6 +126,13 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
                     return pojo;
                 })
                 .collect(Collectors.toList());
+//
+//        Collections.sort(pojos,(pojo1, pojo2) ->
+//                Boolean.compare(!pojo1.isPending(), !pojo2.isPending()));
+//
+
+        pojos.sort(Comparator.comparing(pojo -> pojo.getUpdatedAt()));
+        pojos.sort(Comparator.comparing(pojo -> !pojo.isPending()));
 
         return pojos;
     }
@@ -147,15 +159,15 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
 
         if (entity.getCourse().getRegisteredUsers().contains(entity.getUser())) {
-            throw new ExistRecordException("User is already enrolled the couse");
+            throw new ExistRecordException("User is already enrolled the course");
         } else if (!courseService.registerUserToCourse(entity.getCourse(), entity.getUser())) {
             throw new ExecutionFailException("User is not registered to course");
         }
 
 
         entity.setUpdatedBy(authUser);
-        entity.setVisible(false);
         entity.setEnrolled(true);
+        entity.setPending(false);
         entity = enrollmentRequestRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
@@ -178,7 +190,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
     public List<EnrollmentRequest> findEnrollmentRequestsOfUser(String userPublicKey, boolean visible) throws DataNotFoundException {
 
         User authUser = userService.findByPublicKey(userPublicKey);
-        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisibleAndCancelled(authUser, visible, false);
+        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisible(authUser, visible);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrollment request list is fetched");
         }
@@ -189,7 +201,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
     public List<EnrollmentRequest> findEnrollmentRequestsOfAuthUser(boolean visible) throws DataNotFoundException {
 
         User authUser = userDetailService.getAuthenticatedUser();
-        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisibleAndCancelled(authUser, visible, false);
+        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisible(authUser, visible);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrollment request list is fetched");
         }
@@ -243,7 +255,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
      * @author umit.kas
      */
     private List<EnrollmentRequestPojo> getEnrollmentRequest(User user, boolean visible) throws DataNotFoundException {
-        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisibleAndCancelled(user, visible, false);
+        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByUserAndVisible(user, visible);
         if (entities == null) {
             throw new DataNotFoundException("No such a enrollment request list is fetched");
         }
@@ -251,6 +263,12 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
                 .stream()
                 .map(pojo -> entityToPojo(pojo))
                 .collect(Collectors.toList());
+
+//        Collections.sort(pojos,(pojo1, pojo2) ->
+//                Boolean.compare(!pojo1.isPending(), !pojo2.isPending()));
+
+        pojos.sort(Comparator.comparing(pojo -> pojo.getUpdatedAt()));
+        pojos.sort(Comparator.comparing(pojo -> !pojo.isPending()));
 
         return pojos;
     }
@@ -280,6 +298,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
         entity.setCancelled(true);
         entity.setUpdatedBy(authUser);
+        entity.setPending(false);
 
         entity = enrollmentRequestRepository.save(entity);
 
@@ -307,7 +326,8 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
         entity.setRejected(true);
         entity.setUpdatedBy(authUser);
-        entity.setVisible(false);
+        entity.setPending(false);
+
         entity = enrollmentRequestRepository.save(entity);
 
 

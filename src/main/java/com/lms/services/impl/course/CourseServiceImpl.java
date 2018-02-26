@@ -354,6 +354,7 @@ public class CourseServiceImpl implements CourseService{
         List<EnrollmentRequest> enrolmentRequestsEntities = enrollmentRequestService.findEnrollmentRequestsOfAuthUser(true);
         List<String> enrollmentRequestedCoursesPublicKeys = enrolmentRequestsEntities
                 .stream()
+                .filter(entity -> entity.isPending() || entity.isEnrolled())
                 .map(entity -> entity.getCourse().getPublicKey())
                 .collect(Collectors.toList());
 

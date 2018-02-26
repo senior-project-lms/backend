@@ -23,4 +23,6 @@ public class EnrollmentRequest extends BaseEntity {
     private boolean rejected;
 
     private boolean enrolled;
+
+    private boolean pending;
 }

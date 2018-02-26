@@ -7,6 +7,8 @@ import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -96,7 +98,6 @@ public class UserController {
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
     @GetMapping(value = {"/user/{publicKey}"})
     public UserPojo getUser(@PathVariable String publicKey) throws DataNotFoundException {
-
         if (publicKey == null) {
             throw new DataNotFoundException("Public key not found.");
         }

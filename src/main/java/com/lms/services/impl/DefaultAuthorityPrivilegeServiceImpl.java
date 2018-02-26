@@ -219,11 +219,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultAdminPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultAdminPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -239,11 +239,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeLecturer() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultLecturerPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultLecturerPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -257,11 +257,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeAssistant() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultAssistantPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultAssistantPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -276,11 +276,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeStudent() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultStudentPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultStudentPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -288,6 +288,7 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
 
     // default authorities
+
 
     private List<Long> getDefaultSuperAdminPrivileges() {
         return Arrays.asList(
@@ -335,15 +336,32 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
                 EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
 
-                EPrivilege.GLOBAL_ACCESS.CODE
+                EPrivilege.GLOBAL_ACCESS.CODE,
 
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
+                EPrivilege.PAGE_USER_FOR_ADMIN.CODE,
+                EPrivilege.PAGE_COURSE_FOR_ADMIN.CODE,
+                EPrivilege.PAGE_HOME.CODE,
+                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
+                EPrivilege.PAGE_GLOBAL_QA.CODE,
+
+                //EPrivilege.PAGE_COURSES.CODE,
+                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_USER_DETAILS.CODE,
+                EPrivilege.PAGE_OWN_PROFILE.CODE,
+                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_COURSE_GRADES.CODE,
+                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
+                EPrivilege.PAGE_COURSE_QT.CODE,
+                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
+                EPrivilege.PAGE_COURSE_QA.CODE,
+                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
+                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
+                EPrivilege.PAGE_COURSE_SETTINGS.CODE
 
 
         );
     }
+
 
     private List<Long> getDefaultAdminPrivileges() {
         return Arrays.asList(
@@ -394,14 +412,30 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 EPrivilege.GLOBAL_ACCESS.CODE,
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
 
 
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
+                EPrivilege.PAGE_USER_FOR_ADMIN.CODE,
+                EPrivilege.PAGE_COURSE_FOR_ADMIN.CODE,
+                EPrivilege.PAGE_HOME.CODE,
+                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
+                EPrivilege.PAGE_GLOBAL_QA.CODE,
+                //EPrivilege.PAGE_AUTHORITIES.CODE,
+                //EPrivilege.PAGE_COURSES.CODE,
+                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
+                EPrivilege.PAGE_SETTINGS.CODE,
+                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_USER_DETAILS.CODE,
+                EPrivilege.PAGE_OWN_PROFILE.CODE,
+                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_COURSE_GRADES.CODE,
+                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
+                EPrivilege.PAGE_COURSE_QT.CODE,
+                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
+                EPrivilege.PAGE_COURSE_QA.CODE,
+                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
+                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
+                EPrivilege.PAGE_COURSE_SETTINGS.CODE
 
 
         );
@@ -431,8 +465,24 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.GLOBAL_ACCESS.CODE,
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
 
+
+                EPrivilege.PAGE_HOME.CODE,
+                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
+                EPrivilege.PAGE_GLOBAL_QA.CODE,
+                EPrivilege.PAGE_COURSES.CODE,
+                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_OWN_PROFILE.CODE,
+                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_COURSE_GRADES.CODE,
+                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
+                EPrivilege.PAGE_COURSE_QT.CODE,
+                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
+                EPrivilege.PAGE_COURSE_QA.CODE,
+                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
+                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
+                EPrivilege.PAGE_COURSE_SETTINGS.CODE
 
 
         );
@@ -462,7 +512,28 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
                 EPrivilege.GLOBAL_ACCESS.CODE,
                 EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE
+                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
+
+
+                EPrivilege.PAGE_HOME.CODE,
+                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
+                EPrivilege.PAGE_GLOBAL_QA.CODE,
+                EPrivilege.PAGE_COURSES.CODE,
+                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_OWN_PROFILE.CODE,
+                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
+                EPrivilege.PAGE_SETTINGS.CODE,
+
+                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_COURSE_GRADES.CODE,
+                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
+                EPrivilege.PAGE_COURSE_QT.CODE,
+                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
+                EPrivilege.PAGE_COURSE_QA.CODE,
+                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
+                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
+                EPrivilege.PAGE_COURSE_SETTINGS.CODE
+
 
 
         );
@@ -495,7 +566,25 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
                 EPrivilege.GLOBAL_ACCESS.CODE,
                 EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
                 EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE
+                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
+                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
+                EPrivilege.PAGE_SETTINGS.CODE,
+
+                EPrivilege.PAGE_HOME.CODE,
+                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
+                EPrivilege.PAGE_GLOBAL_QA.CODE,
+                EPrivilege.PAGE_COURSES.CODE,
+                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_OWN_PROFILE.CODE,
+                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
+                EPrivilege.PAGE_COURSE_GRADES.CODE,
+                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
+                EPrivilege.PAGE_COURSE_QT.CODE,
+                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
+                EPrivilege.PAGE_COURSE_QA.CODE,
+                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
+                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
+                EPrivilege.PAGE_COURSE_SETTINGS.CODE
         );
     }
 

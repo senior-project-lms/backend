@@ -396,6 +396,16 @@ public class UserServiceImpl implements UserService {
         return entities;
     }
 
+    @Override
+    public List<User> findAllByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException {
+
+        List<User> entities = userRepository.findAllByPublicKeyIn(publicKeys);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        return entities;    }
 
     /// code before here
 

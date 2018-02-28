@@ -140,11 +140,14 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER_STATUSES.CODE)")
     @GetMapping("/users/status")
     public Map<String, Integer> getUsersStatus() {
         return userService.getUserStatus();
     }
 
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_USER_VISIBILITY.CODE)")
     @PutMapping("/user/{publicKey}/visible")
     public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {
@@ -154,6 +157,7 @@ public class UserController {
         throw new EmptyFieldException("PublicKey is empty");
     }
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_USER_VISIBILITY.CODE)")
     @PutMapping("/user/{publicKey}/invisible")
     public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {

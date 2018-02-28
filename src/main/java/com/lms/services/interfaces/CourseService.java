@@ -32,7 +32,7 @@ public interface CourseService {
 
     Course findByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean registerUserToCourse(Course course, User user) throws ExecutionFailException;
+    boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException;
 
 
     List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException;

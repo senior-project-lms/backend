@@ -83,7 +83,7 @@ public class CourseController {
 
     }
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
     @GetMapping("/courses/not-registered/code/{param}")
     public List<CoursePojo> getNotRegisteredCoursesByCode(@PathVariable String param) throws DataNotFoundException {
 
@@ -92,7 +92,7 @@ public class CourseController {
     }
 
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
     @GetMapping("/courses/not-registered/name/{param}")
     public List<CoursePojo> getNotRegisteredCoursesByName(@PathVariable String param) throws DataNotFoundException {
 
@@ -101,7 +101,7 @@ public class CourseController {
     }
 
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
     @PostMapping("/courses/not-registered/lecturer")
     public List<CoursePojo> getNotRegisteredCoursesByLecturer(@RequestBody UserPojo pojo) throws DataNotFoundException, EmptyFieldException {
 
@@ -115,13 +115,13 @@ public class CourseController {
     }
 
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.EPrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.ECoursePrivilege).READ_AUTHENTICATED_COURSES.CODE)")
     @GetMapping(value = {"/me/courses"})
     public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
         return courseService.getAuthUserCourses();
     }
 
-    //@PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READCO.CODE) || hasRole(T(com.lms.enums.EPrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS.CODE)")
     @GetMapping(value = {"/course/{publicKey}/enrolled-users"})
     public List<UserPojo> getEnrolledUsers(@PathVariable String publicKey) throws DataNotFoundException {
         return courseService.getEnrolledUsers(publicKey);

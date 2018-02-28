@@ -1,7 +1,7 @@
 package com.lms.components;
 
 import com.lms.entities.User;
-import com.lms.entities.UserCoursePrivilege;
+import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.entities.course.Course;
 import com.lms.enums.EPrivilege;
 import com.lms.repositories.CourseRepository;

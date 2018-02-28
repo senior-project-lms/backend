@@ -6,9 +6,9 @@ import com.lms.entities.Authority;
 import com.lms.entities.DefaultAuthorityPrivilege;
 import com.lms.entities.Privilege;
 import com.lms.enums.AccessLevel;
-import com.lms.enums.EPrivilege;
+import com.lms.enums.ECoursePrivilege;
+import com.lms.enums.commonUserPrivileges.*;
 import com.lms.pojos.DefaultAuthorityPrivilegePojo;
-import com.lms.pojos.PrivilegePojo;
 import com.lms.repositories.DefaultAuthorityPrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.AuthorityService;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -291,301 +290,81 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
 
     private List<Long> getDefaultSuperAdminPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.SAVE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.UPDATE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE,
-                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
-                EPrivilege.SAVE_USER.CODE,
-                EPrivilege.READ_ALL_USERS.CODE,
-                EPrivilege.READ_USER.CODE,
-                EPrivilege.DELETE_USER.CODE,
-                EPrivilege.UPDATE_USER.CODE,
+        for (CommonSuperAdminPrivilege commonSuperAdminPrivilege : CommonSuperAdminPrivilege.values()){
+            privileges.add(commonSuperAdminPrivilege.CODE);
+        }
 
-                // COURSE
-                EPrivilege.SAVE_COURSE.CODE,
-                EPrivilege.READ_ALL_COURSES.CODE,
-                EPrivilege.DELETE_COURSE.CODE,
-                EPrivilege.UPDATE_COURSE.CODE,
-                EPrivilege.READ_COURSES_BY_VISIBILITY.CODE,
-                EPrivilege.READ_COURSE_STATUSES.CODE,
-                EPrivilege.UPDATE_COURSE_VISIBILITY.CODE,
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
+        return privileges;
 
-                // AUTHORITY
-                EPrivilege.SAVE_AUTHORITY.CODE,
-                EPrivilege.READ_ALL_AUTHORITIES.CODE,
-                EPrivilege.DELETE_AUTHORITY.CODE,
-                EPrivilege.UPDATE_AUTHORITY.CODE,
-
-                // PRIVILEGES
-                EPrivilege.READ_ALL_PRIVILEGES.CODE,
-                // DEFAULT AUTHORITY
-                EPrivilege.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES.CODE,
-                EPrivilege.UPDATE_DEFAULT_AUTHORITY.CODE,
-                EPrivilege.SAVE_DEFAULT_AUTHORITY.CODE,
-                EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
-
-                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
-
-                EPrivilege.GLOBAL_ACCESS.CODE,
-
-                EPrivilege.PAGE_USER_FOR_ADMIN.CODE,
-                EPrivilege.PAGE_COURSE_FOR_ADMIN.CODE,
-                EPrivilege.PAGE_HOME.CODE,
-                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
-                EPrivilege.PAGE_GLOBAL_QA.CODE,
-
-                //EPrivilege.PAGE_COURSES.CODE,
-                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_USER_DETAILS.CODE,
-                EPrivilege.PAGE_OWN_PROFILE.CODE,
-                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_COURSE_GRADES.CODE,
-                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
-                EPrivilege.PAGE_COURSE_QT.CODE,
-                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
-                EPrivilege.PAGE_COURSE_QA.CODE,
-                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
-                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
-                EPrivilege.PAGE_COURSE_SETTINGS.CODE
-
-
-        );
     }
 
 
     private List<Long> getDefaultAdminPrivileges() {
-        return Arrays.asList(
 
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.SAVE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.UPDATE_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE,
-//                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
-//                EPrivilege.SAVE_USER.CODE,
-                EPrivilege.READ_ALL_USERS.CODE,
-                EPrivilege.READ_USER.CODE,
-                //EPrivilege.DELETE_USER.CODE,
-                //EPrivilege.UPDATE_USER.CODE,
+        for (CommonAdminPrivilege commonAdminPrivilege : CommonAdminPrivilege.values()){
+            privileges.add(commonAdminPrivilege.CODE);
+        }
 
-                // COURSE
-//                EPrivilege.SAVE_COURSE.CODE,
-                EPrivilege.READ_ALL_COURSES.CODE,
-//                EPrivilege.DELETE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-                EPrivilege.READ_COURSES_BY_VISIBILITY.CODE,
-                EPrivilege.READ_COURSE_STATUSES.CODE,
-                //EPrivilege.UPDATE_COURSE_VISIBILITY.CODE,
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-
-                // AUTHORITY
-//                EPrivilege.SAVE_AUTHORITY.CODE,
-//                EPrivilege.READ_ALL_AUTHORITIES.CODE,
-//                EPrivilege.DELETE_AUTHORITY.CODE,
-//                EPrivilege.UPDATE_AUTHORITY.CODE,
-
-                EPrivilege.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES.CODE,
-//                EPrivilege.UPDATE_DEFAULT_AUTHORITY.CODE,
-//                EPrivilege.SAVE_DEFAULT_AUTHORITY.CODE,
-//                EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
-
-                // DEFAULT AUTHORITY
-                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
-
-                // PRIVILEGES
-
-                EPrivilege.READ_ALL_PRIVILEGES.CODE,
-
-                EPrivilege.GLOBAL_ACCESS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
+        return privileges;
 
 
-                EPrivilege.PAGE_USER_FOR_ADMIN.CODE,
-                EPrivilege.PAGE_COURSE_FOR_ADMIN.CODE,
-                EPrivilege.PAGE_HOME.CODE,
-                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
-                EPrivilege.PAGE_GLOBAL_QA.CODE,
-                //EPrivilege.PAGE_AUTHORITIES.CODE,
-                //EPrivilege.PAGE_COURSES.CODE,
-                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
-                EPrivilege.PAGE_SETTINGS.CODE,
-                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_USER_DETAILS.CODE,
-                EPrivilege.PAGE_OWN_PROFILE.CODE,
-                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_COURSE_GRADES.CODE,
-                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
-                EPrivilege.PAGE_COURSE_QT.CODE,
-                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
-                EPrivilege.PAGE_COURSE_QA.CODE,
-                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
-                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
-                EPrivilege.PAGE_COURSE_SETTINGS.CODE
-
-
-        );
     }
 
     private List<Long> getDefaultLecturerPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonLecturerPrivilege commonLecturerPrivilege : CommonLecturerPrivilege.values()){
+            privileges.add(commonLecturerPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
+        return privileges;
 
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
-
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLLMENT
-                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
-
-
-                EPrivilege.PAGE_HOME.CODE,
-                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
-                EPrivilege.PAGE_GLOBAL_QA.CODE,
-                EPrivilege.PAGE_COURSES.CODE,
-                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_OWN_PROFILE.CODE,
-                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_COURSE_GRADES.CODE,
-                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
-                EPrivilege.PAGE_COURSE_QT.CODE,
-                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
-                EPrivilege.PAGE_COURSE_QA.CODE,
-                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
-                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
-                EPrivilege.PAGE_COURSE_SETTINGS.CODE
-
-
-        );
     }
 
 
     private List<Long> getDefaultStudentPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonStudentPrivilege commonStudentPrivilege : CommonStudentPrivilege.values()){
+            privileges.add(commonStudentPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.ENROLL_COURSE.CODE);
+        privileges.add(ECoursePrivilege.CANCEL_ENROLLMENT_REQUEST.CODE);
+        privileges.add(ECoursePrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE);
+        privileges.add(ECoursePrivilege.READ_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_NOT_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
-                EPrivilege.READ_NOT_REGISTERED_COURSES.CODE,
-                EPrivilege.READ_REGISTERED_COURSES.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
+        return privileges;
 
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLLMENT
-                EPrivilege.ENROLL_COURSE.CODE,
-
-                EPrivilege.GLOBAL_ACCESS.CODE,
-                EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-
-
-                EPrivilege.PAGE_HOME.CODE,
-                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
-                EPrivilege.PAGE_GLOBAL_QA.CODE,
-                EPrivilege.PAGE_COURSES.CODE,
-                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_OWN_PROFILE.CODE,
-                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
-                EPrivilege.PAGE_SETTINGS.CODE,
-
-                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_COURSE_GRADES.CODE,
-                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
-                EPrivilege.PAGE_COURSE_QT.CODE,
-                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
-                EPrivilege.PAGE_COURSE_QA.CODE,
-                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
-                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
-                EPrivilege.PAGE_COURSE_SETTINGS.CODE
-
-
-
-        );
     }
 
     private List<Long> getDefaultAssistantPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonAssistantPrivilege commonAssistantPrivilege : CommonAssistantPrivilege.values()){
+            privileges.add(commonAssistantPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.ENROLL_COURSE.CODE);
+        privileges.add(ECoursePrivilege.CANCEL_ENROLLMENT_REQUEST.CODE);
+        privileges.add(ECoursePrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE);
+        privileges.add(ECoursePrivilege.READ_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_NOT_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
+        return privileges;
 
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
-
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLLMENT
-                // ENROLLMENT
-                EPrivilege.ENROLL_COURSE.CODE,
-
-                EPrivilege.APPROVE_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE,
-                EPrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE,
-                EPrivilege.CANCEL_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.REJECT_ENROLLMENT_REQUEST.CODE,
-                EPrivilege.PAGE_GLOBAL_RESOURCES.CODE,
-                EPrivilege.PAGE_SETTINGS.CODE,
-
-                EPrivilege.PAGE_HOME.CODE,
-                EPrivilege.PAGE_GLOBAL_CALENDAR.CODE,
-                EPrivilege.PAGE_GLOBAL_QA.CODE,
-                EPrivilege.PAGE_COURSES.CODE,
-                EPrivilege.PAGE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_OWN_PROFILE.CODE,
-                EPrivilege.PAGE_COURSE_ANNOUNCEMENT.CODE,
-                EPrivilege.PAGE_COURSE_GRADES.CODE,
-                EPrivilege.PAGE_COURSE_ASSIGNMENTS.CODE,
-                EPrivilege.PAGE_COURSE_QT.CODE,
-                EPrivilege.PAGE_COURSE_RESOURCES.CODE,
-                EPrivilege.PAGE_COURSE_QA.CODE,
-                EPrivilege.PAGE_COURSE_CALENDAR.CODE,
-                EPrivilege.PAGE_COURSE_STUDENTS.CODE,
-                EPrivilege.PAGE_COURSE_SETTINGS.CODE
-        );
     }
 
 

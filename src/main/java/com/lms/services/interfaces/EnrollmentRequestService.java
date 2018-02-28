@@ -5,6 +5,7 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.customExceptions.ExistRecordException;
 import com.lms.customExceptions.NotAuthenticatedRequest;
 import com.lms.entities.User;
+import com.lms.entities.course.Course;
 import com.lms.entities.course.EnrollmentRequest;
 import com.lms.pojos.course.EnrollmentRequestPojo;
 
@@ -22,6 +23,8 @@ public interface EnrollmentRequestService {
 
     boolean approve(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
+    boolean approveAll(List<String> enrollmentRequestPublicKeys) throws DataNotFoundException, ExecutionFailException;
+
     List<EnrollmentRequest> findEnrollmentRequestsOfAuthUser(boolean visible) throws DataNotFoundException;
 
     List<EnrollmentRequest> findEnrollmentRequestsOfUser(String userPublicKey, boolean visible) throws DataNotFoundException;
@@ -38,6 +41,9 @@ public interface EnrollmentRequestService {
 
 
     List<EnrollmentRequestPojo> getEnrollmentRequestsOfCourse(String publicKey) throws DataNotFoundException;
+
+
+    boolean updateVisibilityByCourse(Course course, boolean visibility) throws DataNotFoundException;
 
 
 }

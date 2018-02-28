@@ -13,14 +13,13 @@ import com.lms.repositories.EnrollmentRequestRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
 import com.lms.services.interfaces.EnrollmentRequestService;
+import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +37,8 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
     @Autowired
     private CustomUserDetailService userDetailService;
 
+    @Autowired
+    private UserCoursePrivilegeService userCoursePrivilegeService;
 
     @Override
     public EnrollmentRequestPojo entityToPojo(EnrollmentRequest entity) {
@@ -76,24 +77,45 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         Course course = courseService.findByPublicKey(coursePublicKey);
 
 
-        if (enrollmentRequestRepository.existsByUserAndCourseAndRejectedAndCancelledAndEnrolled(enrolledBy, course, false, false, false)) {
-            throw new ExistRecordException(String.format("Already have a request for course %s", course.getCode()));
+        if (enrollmentRequestRepository.existsByUserAndCourseAndVisible(enrolledBy, course, true)) {
+            // throw new ExistRecordException(String.format("Already have a request for course %s", course.getCode()));
+            EnrollmentRequest entity = enrollmentRequestRepository.findByUserAndCourse(enrolledBy, course);
+
+            if (entity.isEnrolled()){
+                throw new ExistRecordException(String.format("Already enrolled to course %s", course.getCode()));
+
+            }
+
+            entity.setPending(true);
+            entity.setCancelled(false);
+            entity.setRejected(false);
+            entity.setEnrolled(false);
+            entity.setUpdatedBy(enrolledBy);
+
+            entity = enrollmentRequestRepository.save(entity);
+
+            if (entity == null || entity.getId() == 0) {
+                throw new ExecutionFailException("No such a enrollment request is saved");
+
+            }
         }
+        else {
 
 
-        EnrollmentRequest entity = new EnrollmentRequest();
+            EnrollmentRequest entity = new EnrollmentRequest();
 
-        entity.generatePublicKey();
-        entity.setCourse(course);
-        entity.setUser(enrolledBy);
-        entity.setCreatedBy(enrolledBy);
-        entity.setPending(true);
+            entity.generatePublicKey();
+            entity.setCourse(course);
+            entity.setUser(enrolledBy);
+            entity.setCreatedBy(enrolledBy);
+            entity.setPending(true);
 
-        entity = enrollmentRequestRepository.save(entity);
+            entity = enrollmentRequestRepository.save(entity);
 
-        if (entity == null || entity.getId() == 0) {
-            throw new ExecutionFailException("No such a enrollment request is saved");
+            if (entity == null || entity.getId() == 0) {
+                throw new ExecutionFailException("No such a enrollment request is saved");
 
+            }
         }
 
         return true;
@@ -160,7 +182,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
         if (entity.getCourse().getRegisteredUsers().contains(entity.getUser())) {
             throw new ExistRecordException("User is already enrolled the course");
-        } else if (!courseService.registerUserToCourse(entity.getCourse(), entity.getUser())) {
+        } else if (!courseService.registerUsersToCourse(entity.getCourse(), Arrays.asList(entity.getUser()))) {
             throw new ExecutionFailException("User is not registered to course");
         }
 
@@ -174,9 +196,58 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new ExecutionFailException("User is not registered to course");
         }
 
+        userCoursePrivilegeService.saveUserCoursePrivileges(Arrays.asList(entity.getUser()), entity.getCourse());
+
         return true;
     }
 
+    @Transactional
+    @Override
+    public boolean approveAll(List<String> enrollmentRequestPublicKeys) throws DataNotFoundException, ExecutionFailException {
+
+
+        User authUser = userDetailService.getAuthenticatedUser();
+
+        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByPublicKeyIn(enrollmentRequestPublicKeys);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException(String.format("No such enrollment request collection is found"));
+
+        }
+
+        Course course = entities.get(0).getCourse();
+
+        entities = entities
+                .stream()
+                .filter(entity -> !entity.getCourse().getRegisteredUsers().contains(entity.getUser()))
+                .map(entity -> {
+                    entity.setUpdatedBy(authUser);
+                    entity.setEnrolled(true);
+                    entity.setPending(false);
+                    return entity;
+                })
+                .collect(Collectors.toList());
+
+
+        List<User> students = entities
+                .stream()
+                .map(entity -> entity.getUser())
+                .collect(Collectors.toList());
+
+        if (!courseService.registerUsersToCourse(course,  students)) {
+            throw new ExecutionFailException("User is not registered to course");
+        }
+
+        entities = enrollmentRequestRepository.save(entities);
+
+        if (entities == null || entities.size() == 0) {
+            throw new ExecutionFailException("User is not registered to course");
+        }
+
+        userCoursePrivilegeService.saveUserCoursePrivileges(students, course);
+
+        return true;
+    }
 
     /**
      * finds enrollment request entities by userPublicKey and visibility
@@ -343,6 +414,27 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
     }
 
 
-    // TODO: 23.02.2018
-    // rejectedler listlensin ama enroll requested icindeki course yine aranabilsin ve arama listesinde ciksin, course service de update yap
+    @Override
+    public boolean updateVisibilityByCourse(Course course, boolean visibility) throws DataNotFoundException {
+
+        List<EnrollmentRequest> entities = enrollmentRequestRepository.findAllByCourse(course);
+        if (entities == null) {
+            throw new DataNotFoundException("No such a enrollment request collection is found");
+        }
+
+        entities = entities
+                .stream()
+                .map(entity -> {
+                    entity.setVisible(visibility);
+                    return entity;
+                })
+                .collect(Collectors.toList());
+
+        entities = enrollmentRequestRepository.save(entities);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a enrollment request collection is found");
+        }
+        return  true;
+    }
 }

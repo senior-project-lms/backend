@@ -232,6 +232,8 @@ public class CourseServiceImpl implements CourseService{
             throw new ExecutionFailException("Setting course visibility is not executed successfully");
         }
 
+        enrollmentRequestService.updateVisibilityByCourse(entity, visible);
+
         return true;
     }
 
@@ -257,17 +259,17 @@ public class CourseServiceImpl implements CourseService{
      * adds the users to course registered user collection
      *
      * @param course
-     * @param user
+     * @param users
      * @return boolean
      * @author umit.kas
      */
     @Override
-    public boolean registerUserToCourse(Course course, User user) throws ExecutionFailException {
+    public boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
         course.setUpdatedBy(authUser);
-        course.getRegisteredUsers().add(user);
+        course.getRegisteredUsers().addAll(users);
         course = courseRepository.save(course);
 
         if (course == null || course.getId() == 0) {
@@ -276,6 +278,7 @@ public class CourseServiceImpl implements CourseService{
 
         return true;
     }
+
 
 
 
@@ -380,6 +383,7 @@ public class CourseServiceImpl implements CourseService{
         if (authUser.getAuthority().getCode() == AccessLevel.LECTURER.CODE) {
             entities = courseRepository.findAllByOwnerAndVisible(authUser, true);
         } else if (userCoursePrivilegeService.existByUser(authUser)) {
+
 
         } else {
             entities = courseRepository.findAllByRegisteredUsersContainsAndVisible(authUser, true);

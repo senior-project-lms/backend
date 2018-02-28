@@ -58,7 +58,7 @@ public class App {
             defaultAuthorityPrivilegeService.initialize();
             userService.initialize();
         } catch (Exception e) {
-
+            System.exit(-1);
         }
 
 

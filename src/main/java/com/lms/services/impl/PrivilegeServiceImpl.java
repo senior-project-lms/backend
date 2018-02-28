@@ -3,6 +3,7 @@ package com.lms.services.impl;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.Privilege;
+import com.lms.enums.ECoursePrivilege;
 import com.lms.enums.EPrivilege;
 import com.lms.pojos.PrivilegePojo;
 import com.lms.repositories.PrivilegeRepository;
@@ -121,17 +122,30 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 
         List<Privilege> privileges = new ArrayList<>();
 
-        for (EPrivilege EPrivilege : EPrivilege.values()) {
+        for (EPrivilege ePrivilege : EPrivilege.values()) {
 
             Privilege privilege1 = new Privilege();
 
             privilege1.generatePublicKey();
-            privilege1.setCode(EPrivilege.CODE);
-            String name = EPrivilege.toString();
+            privilege1.setCode(ePrivilege.CODE);
+            String name = ePrivilege.toString();
             name = name.replaceAll("_", " ");
             privilege1.setName(name);
             privileges.add(privilege1);
         }
+
+        for (ECoursePrivilege eCoursePrivilege: ECoursePrivilege.values()) {
+
+            Privilege privilege1 = new Privilege();
+
+            privilege1.generatePublicKey();
+            privilege1.setCode(eCoursePrivilege.CODE);
+            String name = eCoursePrivilege.toString();
+            name = name.replaceAll("_", " ");
+            privilege1.setName(name);
+            privileges.add(privilege1);
+        }
+
 
         privilegeRepository.save(privileges);
     }

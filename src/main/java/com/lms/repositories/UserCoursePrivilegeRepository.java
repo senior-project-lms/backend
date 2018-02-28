@@ -1,7 +1,7 @@
 package com.lms.repositories;
 
 import com.lms.entities.User;
-import com.lms.entities.UserCoursePrivilege;
+import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.entities.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

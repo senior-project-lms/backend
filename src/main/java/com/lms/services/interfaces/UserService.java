@@ -36,6 +36,8 @@ public interface UserService {
 
     User findByPublicKey(String publicKey) throws DataNotFoundException;
 
+    List<User> findAllByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException;
+
     void initialize() throws DataNotFoundException;
 
 

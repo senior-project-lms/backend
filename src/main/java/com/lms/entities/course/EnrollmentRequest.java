@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "course_enrolment_request")
+@Table(name = "course_enrollment_request")
 public class EnrollmentRequest extends BaseEntity {
 
     @OneToOne

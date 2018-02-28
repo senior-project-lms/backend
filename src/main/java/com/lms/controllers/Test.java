@@ -1,8 +1,14 @@
 package com.lms.controllers;
 
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
+import com.lms.entities.User;
+import com.lms.services.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by umit.kas on 21.11.2017.
@@ -11,18 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class Test {
 
 
-    @GetMapping("/test")
-    public String test() {
-        return "OK";
+    @Autowired
+    private UserService userService;
+
+    @GetMapping(value = {"/usernames"})
+    public List<String> getUsernames() throws DataNotFoundException {
+
+        return userService.getAllUsernames();
     }
-
-//
-//    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicId, T(com.lms.enums.EPrivilege).METHOD_Y)")
-//    @RequestMapping(value = "/api/course/{publicId}/test2", method = RequestMethod.POST)
-//    String courseTest2(@PathVariable String publicId){
-//        return "Secured method2";
-//    }
-
 
 
 

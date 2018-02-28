@@ -3,11 +3,13 @@ package com.lms.components;
 import com.lms.entities.User;
 import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.entities.course.Course;
+import com.lms.enums.ECoursePrivilege;
 import com.lms.enums.EPrivilege;
 import com.lms.repositories.CourseRepository;
 import com.lms.repositories.PrivilegeRepository;
 import com.lms.repositories.UserCoursePrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
+import com.lms.services.interfaces.UserCoursePrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +21,7 @@ public class MethodSecurity {
 
 
     @Autowired
-    private CustomUserDetailService customUserDetailService;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private PrivilegeRepository privilegeRepository;
-
-    @Autowired
-    private UserCoursePrivilegeRepository userCoursePrivilegeRepository;
-
+    UserCoursePrivilegeService userCoursePrivilegeService;
 
     /**
      *
@@ -43,24 +35,9 @@ public class MethodSecurity {
      * @return boolean
      *
      */
-    public boolean hasCoursePrivilege(String coursePublicKey, EPrivilege EPrivilege) {
+    public boolean hasCoursePrivilege(String coursePublicKey, ECoursePrivilege privilege) {
         try {
-            User user = customUserDetailService.getAuthenticatedUser();
-
-            Course course = courseRepository.findByPublicKey(coursePublicKey);
-
-
-
-            if (user == null || course == null){
-                return false;
-            }
-
-            UserCoursePrivilege userCoursePrivilege = userCoursePrivilegeRepository.findByCourseAndUser(course, user);
-
-            if (userCoursePrivilege == null){
-                return false;
-            }
-            return userCoursePrivilege.getPrivileges().parallelStream().filter(p -> p.getCode() == EPrivilege.CODE).findAny().isPresent();
+            return userCoursePrivilegeService.hasPrivilege(coursePublicKey, privilege);
         }
         catch (Exception e){
             e.printStackTrace();

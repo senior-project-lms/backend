@@ -222,7 +222,9 @@ public class UserServiceImpl implements UserService {
 
 
             entity.generatePublicKey();
-            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            //entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            entity.setPassword(passwordEncoder.encode("test.password"));
+
 
             // find authority
             Authority authority = authorities
@@ -405,7 +407,20 @@ public class UserServiceImpl implements UserService {
             throw new DataNotFoundException("No such a user collection found");
         }
 
-        return entities;    }
+        return entities;
+    }
+
+    @Override
+    public List<String> getAllUsernames() {
+
+        List<String> usernames = userRepository.findAll()
+                .stream()
+                .map(entity -> entity.getUsername())
+                .collect(Collectors.toList());
+
+        return usernames;
+
+    }
 
     /// code before here
 

@@ -44,4 +44,6 @@ public interface UserService {
     List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException;
 
     List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException;
+
+    List<String> getAllUsernames();
 }

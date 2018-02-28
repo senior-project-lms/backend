@@ -8,6 +8,7 @@ import com.lms.customExceptions.NotAuthenticatedRequest;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.EnrollmentRequest;
+import com.lms.enums.AccessLevel;
 import com.lms.pojos.course.EnrollmentRequestPojo;
 import com.lms.repositories.EnrollmentRequestRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -196,7 +197,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new ExecutionFailException("User is not registered to course");
         }
 
-        userCoursePrivilegeService.saveUserCoursePrivileges(Arrays.asList(entity.getUser()), entity.getCourse());
+        userCoursePrivilegeService.saveStudentCoursePrivileges(Arrays.asList(entity.getUser()), entity.getCourse());
 
         return true;
     }
@@ -244,7 +245,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new ExecutionFailException("User is not registered to course");
         }
 
-        userCoursePrivilegeService.saveUserCoursePrivileges(students, course);
+        userCoursePrivilegeService.saveStudentCoursePrivileges(students, course);
 
         return true;
     }
@@ -437,4 +438,8 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         }
         return  true;
     }
+
+
+
+
 }

@@ -28,24 +28,21 @@ public class EnrollmentRequestController {
     }
 
 
-    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_ENROLLMENT_REQUESTS.CODE)")
-    //@PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.EPrivilege).READ_ENROLLMENT_REQUESTS.CODE)")
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_ENROLLMENT_REQUESTS)")
     @GetMapping("/course/{publicKey}/enrollment-requests")
     public List<EnrollmentRequestPojo> getEnrolmentRequestsOfCourse(@PathVariable String publicKey) throws DataNotFoundException {
         return enrollmentRequestService.getEnrollmentRequestsOfCourse(publicKey);
     }
 
 
-    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).APPROVE_ENROLLMENT_REQUEST.CODE)")
-    //@PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.EPrivilege).APPROVE_ENROLLMENT_REQUEST.CODE)")
-    @PostMapping("/enrollment-request/{enrollmentRequestPublicKey}/approve")
-    public boolean approveEnrollmentRequest(@PathVariable String enrollmentRequestPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).APPROVE_ENROLLMENT_REQUEST)")
+    @PostMapping("/course/{coursePublicKey}/enrollment-request/{enrollmentRequestPublicKey}/approve")
+    public boolean approveEnrollmentRequest(@PathVariable String coursePublicKey, @PathVariable String enrollmentRequestPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
         return enrollmentRequestService.approve(enrollmentRequestPublicKey);
     }
 
 
     @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REQUESTED_ENROLLMENT_REQUESTS.CODE)")
-    //@PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.EPrivilege).READ_REQUESTED_ENROLLMENT_REQUESTS.CODE)")
     @GetMapping("/me/enrollment-requests")
     public List<EnrollmentRequestPojo> getEnrolmentRequestsByVisibilityTrue() throws DataNotFoundException {
         return enrollmentRequestService.getEnrollmentRequestOfAuthUser(true);
@@ -58,10 +55,10 @@ public class EnrollmentRequestController {
         return enrollmentRequestService.cancel(publicKey);
     }
 
-    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).REJECT_ENROLLMENT_REQUEST.CODE)")
-    @PostMapping("/enrollment-request/{publicKey}/reject")
-    boolean reject(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
-        return enrollmentRequestService.reject(publicKey);
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).REJECT_ENROLLMENT_REQUEST)")
+    @PostMapping("/course/{coursePublicKey}/enrollment-request/{enrollmentRequestPublicKey}/reject")
+    boolean reject(@PathVariable String coursePublicKey, @PathVariable String enrollmentRequestPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+        return enrollmentRequestService.reject(enrollmentRequestPublicKey);
     }
 
 }

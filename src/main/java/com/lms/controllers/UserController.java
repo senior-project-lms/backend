@@ -3,12 +3,9 @@ package com.lms.controllers;
 import com.lms.customExceptions.*;
 import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
-import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -166,6 +163,8 @@ public class UserController {
         throw new EmptyFieldException("PublicKey is empty");
 
     }
+
+
 
 
 }

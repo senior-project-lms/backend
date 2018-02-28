@@ -1,5 +1,6 @@
 package com.lms.repositories;
 
+import com.lms.entities.Privilege;
 import com.lms.entities.User;
 import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.entities.course.Course;
@@ -20,4 +21,6 @@ public interface UserCoursePrivilegeRepository extends JpaRepository<UserCourseP
     List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible);
 
     boolean existsByUser(User user);
+
+    boolean existsByUserAndCourseAndPrivilegesContaining(User user, Course course, Privilege privilege);
 }

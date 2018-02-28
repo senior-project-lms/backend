@@ -5,7 +5,10 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.UserCoursePrivilege;
+import com.lms.enums.AccessLevel;
+import com.lms.enums.ECoursePrivilege;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface UserCoursePrivilegeService {
@@ -16,7 +19,12 @@ public interface UserCoursePrivilegeService {
     boolean existByUser(User user);
 
 
-    boolean saveUserCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
+    boolean saveStudentCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
+
+    boolean saveCourseLecturerPrivileges(List<Course> courses) throws DataNotFoundException, ExecutionFailException;
+
+
+    List<Long> getCoursePrivilegesOfAuthUser(String coursePublicKey) throws DataNotFoundException;
 
     List<Long> getAllCoursePrivilegeCodes();
 
@@ -25,4 +33,7 @@ public interface UserCoursePrivilegeService {
     List<Long> getAssistantDefaultPrivilegeCodes();
 
     List<Long> getStudentDefaultPrivilegeCodes();
+
+    boolean hasPrivilege(String coursePublicKey, ECoursePrivilege coursePrivilege) throws DataNotFoundException;
+
 }

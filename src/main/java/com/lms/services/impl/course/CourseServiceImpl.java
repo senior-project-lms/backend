@@ -16,6 +16,7 @@ import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -144,7 +145,7 @@ public class CourseServiceImpl implements CourseService{
      * @return List<CoursePojo>
      * @author umit.kas
      */
-
+    @Transactional
     @Override
     public boolean save(List<CoursePojo> pojos) throws DataNotFoundException, ExecutionFailException {
 
@@ -167,6 +168,8 @@ public class CourseServiceImpl implements CourseService{
         if (entities == null || entities.size() == 0) {
             throw new ExecutionFailException("No such a list of courses is saved");
         }
+
+        userCoursePrivilegeService.saveCourseLecturerPrivileges(entities);
 
         return true;
     }
@@ -382,10 +385,8 @@ public class CourseServiceImpl implements CourseService{
 
         if (authUser.getAuthority().getCode() == AccessLevel.LECTURER.CODE) {
             entities = courseRepository.findAllByOwnerAndVisible(authUser, true);
-        } else if (userCoursePrivilegeService.existByUser(authUser)) {
-
-
-        } else {
+        }
+        else {
             entities = courseRepository.findAllByRegisteredUsersContainsAndVisible(authUser, true);
         }
 

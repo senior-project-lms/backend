@@ -121,7 +121,7 @@ public class CourseController {
         return courseService.getAuthUserCourses();
     }
 
-    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS.CODE)")
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
     @GetMapping(value = {"/course/{publicKey}/enrolled-users"})
     public List<UserPojo> getEnrolledUsers(@PathVariable String publicKey) throws DataNotFoundException {
         return courseService.getEnrolledUsers(publicKey);

@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
     private DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService;
 
 
-
     @Override
     public User pojoToEntity(UserPojo pojo) {
         User entity = new User();
@@ -167,9 +166,9 @@ public class UserServiceImpl implements UserService {
      * then finds default privileges for authorities and store in hashset
      * then iterates pojo list, and add related items then add the entity of user in a list
      * save the list of users
-     *
+     * <p>
      * Update Notes:
-     *
+     * <p>
      * access privileges are added for user by default authority.
      *
      * @param pojos
@@ -284,6 +283,7 @@ public class UserServiceImpl implements UserService {
             throw new SecurityException("Authenticated User is not found");
         }
         ;
+
         User entity = userRepository.findByPublicKey(publicKey);
         if (entity == null) {
             throw new DataNotFoundException(String.format("There is no user by publicKey: %s", publicKey));
@@ -305,7 +305,7 @@ public class UserServiceImpl implements UserService {
     /**
      * return user counts by visibility of users
      *
-     * @return Map<String ,   Integer>
+     * @return Map<String   ,       Integer>
      * @author atalay.ergen
      */
     @Override
@@ -510,7 +510,6 @@ public class UserServiceImpl implements UserService {
         user.setVisible(true);
         user.setAccessPrivileges(privileges);
         userRepository.save(user);
-
 
 
         authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);

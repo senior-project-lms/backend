@@ -4,6 +4,7 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.enums.AccessLevel;
+import com.lms.pojos.ResetPasswordPojo;
 import com.lms.pojos.UserPojo;
 
 import java.util.List;
@@ -41,4 +42,5 @@ public interface UserService {
     List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException;
 
     List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException;
+
 }

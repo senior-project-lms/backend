@@ -1,6 +1,7 @@
 package com.lms.repositories;
 
 import com.lms.entities.Authority;
+import com.lms.entities.PasswordResetToken;
 import com.lms.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,6 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUsernameOrEmail(String username, String email);
 
+    boolean existByEmail(String Email);
+
     List<User> findAllByEmailLikeOrNameLikeOrSurnameLikeAndAuthorityAndVisible(String email, String name, String surname, Authority authority, boolean visible);
+
 }
 

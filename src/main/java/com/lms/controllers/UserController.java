@@ -17,8 +17,11 @@ import java.util.Map;
 public class UserController {
 
 
+
+
     @Autowired
     private UserService userService;
+
 
 
     @GetMapping(value = {"/users/active"})
@@ -114,7 +117,6 @@ public class UserController {
 
 
     }
-
 
 
     private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException, ExistRecordException {

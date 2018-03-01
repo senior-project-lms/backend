@@ -9,8 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "course_enrolment_request")
-public class EnrolmentRequest extends BaseEntity {
+@Table(name = "course_enrollment_request")
+public class EnrollmentRequest extends BaseEntity {
 
     @OneToOne
     private Course course;
@@ -18,5 +18,11 @@ public class EnrolmentRequest extends BaseEntity {
     @OneToOne
     private User user;
 
+    private boolean cancelled;
 
+    private boolean rejected;
+
+    private boolean enrolled;
+
+    private boolean pending;
 }

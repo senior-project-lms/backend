@@ -2,6 +2,7 @@ package com.lms.controllers;
 
 import com.lms.customExceptions.*;
 
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,14 +83,49 @@ public class CourseController {
 
     }
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
-    @GetMapping("/courses/not-registered/{param}")
-    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(@PathVariable String param) throws DataNotFoundException {
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/code/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByCode(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCoursesBySearchParam(param);
+        return courseService.getNotRegisteredCoursesByCodeByAuthUser(param);
 
     }
 
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/name/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByName(@PathVariable String param) throws DataNotFoundException {
+
+        return courseService.getNotRegisteredCoursesByNameByAuthUser(param);
+
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PostMapping("/courses/not-registered/lecturer")
+    public List<CoursePojo> getNotRegisteredCoursesByLecturer(@RequestBody UserPojo pojo) throws DataNotFoundException, EmptyFieldException {
+
+
+        if ((pojo.getName() == null || pojo.getName().isEmpty()) && (pojo.getSurname() == null || pojo.getSurname().isEmpty())) {
+            throw new EmptyFieldException("name and surname cannot be empty");
+
+        }
+        return courseService.getNotRegisteredCoursesByLecturerByAuthUser(pojo.getName(), pojo.getSurname());
+
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.ECoursePrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @GetMapping(value = {"/me/courses"})
+    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
+        return courseService.getAuthUserCourses();
+    }
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @GetMapping(value = {"/course/{publicKey}/enrolled-users"})
+    public List<UserPojo> getEnrolledUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getEnrolledUsers(publicKey);
+    }
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {
 

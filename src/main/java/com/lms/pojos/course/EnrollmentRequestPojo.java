@@ -7,11 +7,20 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EnrolmentRequestPojo extends BasePojo {
+public class EnrollmentRequestPojo extends BasePojo {
 
     private CoursePojo course;
 
     private UserPojo user;
+
+    private boolean cancelled;
+
+    private boolean rejected;
+
+    private boolean enrolled;
+
+    private boolean pending;
+
 
 }
 

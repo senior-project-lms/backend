@@ -1,12 +1,14 @@
 package com.lms.repositories;
 
+import com.lms.entities.Privilege;
 import com.lms.entities.User;
-import com.lms.entities.UserCoursePrivilege;
+import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.entities.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Repository
@@ -15,4 +17,10 @@ public interface UserCoursePrivilegeRepository extends JpaRepository<UserCourseP
 
 
     UserCoursePrivilege findByCourseAndUser(Course course, User user);
+
+    List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible);
+
+    boolean existsByUser(User user);
+
+    boolean existsByUserAndCourseAndPrivilegesContaining(User user, Course course, Privilege privilege);
 }

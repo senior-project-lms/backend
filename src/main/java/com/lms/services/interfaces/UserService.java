@@ -37,10 +37,14 @@ public interface UserService {
 
     User findByPublicKey(String publicKey) throws DataNotFoundException;
 
+    List<User> findAllByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException;
+
     void initialize() throws DataNotFoundException;
 
-    List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException;
 
     List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException;
 
+    List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException;
+
+    List<String> getAllUsernames();
 }

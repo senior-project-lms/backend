@@ -4,6 +4,7 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
 
 import java.util.List;
@@ -31,15 +32,19 @@ public interface CourseService {
 
     Course findByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean registerUserToCourse(Course course, User user) throws ExecutionFailException;
+    boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException;
 
 
-    List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException;
+    List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException;
 
-    List<CoursePojo> getNotRegisteredCoursesBySearchParam(String param) throws DataNotFoundException;
+    List<CoursePojo> getNotRegisteredCoursesByNameByAuthUser(String param) throws DataNotFoundException;
+
+    List<CoursePojo> getNotRegisteredCoursesByLecturerByAuthUser(String name, String surname) throws DataNotFoundException;
+
+    List<CoursePojo> getAuthUserCourses() throws DataNotFoundException;
 
 
-    List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException;
+    List<UserPojo> getEnrolledUsers(String publicKey) throws DataNotFoundException;
 
 
 }

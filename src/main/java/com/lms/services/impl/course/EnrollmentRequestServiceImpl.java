@@ -118,7 +118,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
             if (entity == null || entity.getId() == 0) {
                 throw new ExecutionFailException("No such a enrollment request is saved");
-
             }
         }
 
@@ -453,7 +452,11 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         return  true;
     }
 
-
-
-
+    @Override
+    public Map<String, Integer> getReqeustCountsOfCourse(String publicKey) {
+        Map<String, Integer> requests = new HashMap<>();
+        int pendingCount = enrollmentRequestRepository.countByCourse_PublicKeyAndPendingAndVisible(publicKey, true, true);
+        requests.put("pending", pendingCount);
+        return requests;
+    }
 }

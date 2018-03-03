@@ -20,7 +20,12 @@ public interface UserCoursePrivilegeRepository extends JpaRepository<UserCourseP
 
     List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible);
 
+    List<UserCoursePrivilege> findAllByUserInAndVisible(List<User> user, boolean visible);
+
+
     boolean existsByUser(User user);
 
     boolean existsByUserAndCourseAndPrivilegesContaining(User user, Course course, Privilege privilege);
+
+
 }

@@ -422,6 +422,62 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<UserPojo> searchAssistantByName(String name) throws DataNotFoundException {
+
+        List<Authority> authorities = new ArrayList<>();
+
+        Authority assistant = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        Authority student = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+
+        authorities.add(assistant);
+        authorities.add(student);
+
+        List<User> entities = userRepository.findAllByNameContainsAndAuthorityInAndVisible(name, authorities, true);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        List<UserPojo> pojos = new ArrayList<>();
+
+        pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+    @Override
+    public List<UserPojo> searchAssistantBySurname(String surname) throws DataNotFoundException {
+
+        List<Authority> authorities = new ArrayList<>();
+
+        Authority assistant = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        Authority student = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+
+        authorities.add(assistant);
+        authorities.add(student);
+
+        List<User> entities = userRepository.findAllBySurnameContainsAndAuthorityInAndVisible(surname, authorities, true);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        List<UserPojo> pojos = new ArrayList<>();
+
+
+        pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+
     /// code before here
 
     /**

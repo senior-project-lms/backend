@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -65,6 +66,13 @@ public class EnrollmentRequestController {
     @PostMapping("/course/{coursePublicKey}/enrollment-request/{enrollmentRequestPublicKey}/reject")
     boolean reject(@PathVariable String coursePublicKey, @PathVariable String enrollmentRequestPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
         return enrollmentRequestService.reject(enrollmentRequestPublicKey);
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_ENROLLMENT_REQUESTS)")
+    @GetMapping("/course/{publicKey}/enrollment-request/counts")
+    public Map<String, Integer> getEnrollmentRequestCounts(@PathVariable String publicKey) throws DataNotFoundException {
+        return enrollmentRequestService.getReqeustCountsOfCourse(publicKey);
     }
 
 }

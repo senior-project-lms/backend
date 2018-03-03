@@ -10,6 +10,7 @@ import com.lms.entities.course.EnrollmentRequest;
 import com.lms.pojos.course.EnrollmentRequestPojo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EnrollmentRequestService {
 
@@ -44,5 +45,5 @@ public interface EnrollmentRequestService {
 
     boolean updateVisibilityByCourse(Course course, boolean visibility) throws DataNotFoundException;
 
-
+    Map<String, Integer> getReqeustCountsOfCourse(String publicKey);
 }

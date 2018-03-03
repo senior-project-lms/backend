@@ -7,12 +7,14 @@ import com.lms.entities.course.Course;
 import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.enums.AccessLevel;
 import com.lms.enums.ECoursePrivilege;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 
 import java.util.HashMap;
 import java.util.List;
 
 public interface UserCoursePrivilegeService {
 
+    UserCoursePrivilegePojo entityToPojo(UserCoursePrivilege entity);
 
     List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible) throws DataNotFoundException;
 
@@ -37,5 +39,7 @@ public interface UserCoursePrivilegeService {
     List<Long> getStudentDefaultPrivilegeCodes();
 
     boolean hasPrivilege(String coursePublicKey, ECoursePrivilege coursePrivilege) throws DataNotFoundException;
+
+    List<UserCoursePrivilegePojo> getAssistantUsersOfCourse(String publicKey) throws DataNotFoundException;
 
 }

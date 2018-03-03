@@ -12,11 +12,14 @@ import com.lms.enums.courseUserPrivileges.ECourseAssistantPrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseLecturerPrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseObserverPrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseStudentPrivilege;
+import com.lms.pojos.PrivilegePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.repositories.UserCoursePrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
 import com.lms.services.interfaces.PrivilegeService;
 import com.lms.services.interfaces.UserCoursePrivilegeService;
+import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +44,24 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public UserCoursePrivilegePojo entityToPojo(UserCoursePrivilege entity) {
+        UserCoursePrivilegePojo pojo = new UserCoursePrivilegePojo();
+
+        pojo.setUser(userService.entityToPojo(entity.getUser()));
+
+        List<PrivilegePojo> privilegePojos = new ArrayList<>();
+        for (Privilege privilege : entity.getPrivileges()) {
+            privilegePojos.add(privilegeService.entityToPojo(privilege));
+        }
+        pojo.setPrivileges(privilegePojos);
+
+        return pojo;
+    }
 
     @Override
     public List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible) throws DataNotFoundException {
@@ -208,4 +229,21 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
 
         return false;
     }
+
+
+    @Override
+    public List<UserCoursePrivilegePojo> getAssistantUsersOfCourse(String publicKey) throws DataNotFoundException {
+
+        Course course = courseService.findByPublicKey(publicKey);
+        List<UserCoursePrivilege> userCoursePrivileges = userCoursePrivilegeRepository.findAllByUserInAndVisible(course.getAssistantUsers(), false);
+
+        List<UserCoursePrivilegePojo> pojos = userCoursePrivileges
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+
+        return pojos;
+    }
 }
+

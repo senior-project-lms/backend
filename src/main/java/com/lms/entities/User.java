@@ -42,9 +42,11 @@ public class User extends BaseEntity {
     @ManyToMany(mappedBy = "observerUsers")
     private List<Course> registeredCoursesAsObserver;
 
+    @ManyToMany(mappedBy = "assistantUsers")
+    private List<Course> registeredCoursesAsAssistant;
+
     @OneToMany(mappedBy = "owner")
 	private List<Course> ownedCourses;
-
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany

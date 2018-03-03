@@ -33,5 +33,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByVisibleAndSurnameContaining(boolean visible, String surname);
 
+    List<User> findAllByAuthorityInAndVisible(List<Authority> authorities, boolean visible);
+
+    List<User> findAllByNameContainsAndAuthorityInAndVisible(String name, List<Authority> authorities, boolean visible);
+
+    List<User> findAllBySurnameContainsAndAuthorityInAndVisible(String surname, List<Authority> authorities, boolean visible);
+
+
 }
 

@@ -46,4 +46,10 @@ public interface UserService {
     List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException;
 
     List<String> getAllUsernames();
+
+    List<UserPojo> searchAssistantByName(String name) throws DataNotFoundException;
+
+    List<UserPojo> searchAssistantBySurname(String surname) throws DataNotFoundException;
+
 }
+

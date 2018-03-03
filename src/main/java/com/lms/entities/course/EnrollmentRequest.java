@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "course_enrollment_request")
+@Table(name = "course_enrollment_requests")
 public class EnrollmentRequest extends BaseEntity {
 
     @OneToOne
@@ -25,4 +25,7 @@ public class EnrollmentRequest extends BaseEntity {
     private boolean enrolled;
 
     private boolean pending;
+
+    private boolean observer;
+
 }

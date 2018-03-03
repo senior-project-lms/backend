@@ -21,6 +21,7 @@ public class EnrollmentRequestPojo extends BasePojo {
 
     private boolean pending;
 
+    private boolean observer;
 
 }
 

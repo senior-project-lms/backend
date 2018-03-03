@@ -27,7 +27,7 @@ public interface UserService {
 
     boolean updateVisibility(String publicKey, boolean visible)throws ExecutionFailException, DataNotFoundException;
 
-    boolean userAlreadyExist(String user, String email);
+    boolean userAlreadyExist(String username, String email);
 
 
     Map<String, Integer> getUserStatus();

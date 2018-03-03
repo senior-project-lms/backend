@@ -27,6 +27,10 @@ public class Course extends BaseEntity {
     @ManyToMany
     private List<User> registeredUsers;
 
+    @ManyToMany
+    private List<User> observerUsers;
+
+
     @OneToMany(mappedBy = "course")
     private List<UserCoursePrivilege> userCoursePrivileges;
 

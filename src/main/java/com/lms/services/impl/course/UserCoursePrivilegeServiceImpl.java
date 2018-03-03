@@ -10,6 +10,7 @@ import com.lms.enums.AccessLevel;
 import com.lms.enums.ECoursePrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseAssistantPrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseLecturerPrivilege;
+import com.lms.enums.courseUserPrivileges.ECourseObserverPrivilege;
 import com.lms.enums.courseUserPrivileges.ECourseStudentPrivilege;
 import com.lms.repositories.UserCoursePrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -64,8 +65,9 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
     public boolean saveStudentCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException {
 
         User authUser = userDetailService.getAuthenticatedUser();
+        List<Privilege> privileges = null;
+        privileges = privilegeService.findAllByCode(getStudentDefaultPrivilegeCodes());
 
-        List<Privilege> privileges = privilegeService.findAllByCode(getStudentDefaultPrivilegeCodes());
 
         List<UserCoursePrivilege> entities = new ArrayList<>();
 
@@ -163,6 +165,19 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
 
         return privilegeCodes;
     }
+
+
+    @Override
+    public List<Long> getObserverDefaultPrivilegeCodes() {
+        List<Long> privilegeCodes = new ArrayList<>();
+
+        for (ECourseObserverPrivilege eCourseObserverPrivilege : ECourseObserverPrivilege.values()) {
+            privilegeCodes.add(eCourseObserverPrivilege.CODE);
+        }
+
+        return privilegeCodes;
+    }
+
 
     @Override
     public List<Long> getCoursePrivilegesOfAuthUser(String coursePublicKey) throws DataNotFoundException {

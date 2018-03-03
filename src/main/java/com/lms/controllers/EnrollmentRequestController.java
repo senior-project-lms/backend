@@ -24,7 +24,13 @@ public class EnrollmentRequestController {
     @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).ENROLL_COURSE.CODE)")
     @PostMapping("/course/{publicKey}/enroll")
     public boolean enroll(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
-        return enrollmentRequestService.enroll(publicKey);
+        return enrollmentRequestService.enroll(publicKey, false);
+    }
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).ENROLL_COURSE.CODE)")
+    @PostMapping("/course/{publicKey}/enroll-as-observer")
+    public boolean enrollAsObserver(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+        return enrollmentRequestService.enroll(publicKey, true);
     }
 
 

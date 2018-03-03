@@ -283,6 +283,31 @@ public class CourseServiceImpl implements CourseService{
     }
 
 
+    /**
+     * adds the users to course observer user collection
+     *
+     * @param course
+     * @param users
+     * @return boolean
+     * @author umit.kas
+     */
+    @Override
+    public boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException {
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        course.setUpdatedBy(authUser);
+        course.getObserverUsers().addAll(users);
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+
+        return true;
+    }
+
+
 
 
     /**
@@ -428,4 +453,36 @@ public class CourseServiceImpl implements CourseService{
 
         return pojos;
     }
+
+    @Override
+    public List<UserPojo> getEnrolledObserverUsers(String publicKey) throws DataNotFoundException {
+        Course entity = courseRepository.findByPublicKey(publicKey);
+
+        if (entity == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        List<UserPojo> pojos = entity.getObserverUsers()
+                .stream()
+                .map(user -> {
+                    UserPojo pojo = userService.entityToPojo(user);
+                    pojo.setAuthority(null);
+                    return pojo;
+                })
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+    @Override
+    public CoursePojo getBasicCourseInfo(String publicKey) throws DataNotFoundException {
+        Course entity = courseRepository.findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("No such course is found by publicKey: %s", publicKey));
+        }
+        CoursePojo pojo = entityToPojo(entity);
+        pojo.setOwner(null);
+        return pojo;
+    }
+
 }

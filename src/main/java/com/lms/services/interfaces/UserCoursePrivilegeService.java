@@ -32,6 +32,8 @@ public interface UserCoursePrivilegeService {
 
     List<Long> getAssistantDefaultPrivilegeCodes();
 
+    List<Long> getObserverDefaultPrivilegeCodes();
+
     List<Long> getStudentDefaultPrivilegeCodes();
 
     boolean hasPrivilege(String coursePublicKey, ECoursePrivilege coursePrivilege) throws DataNotFoundException;

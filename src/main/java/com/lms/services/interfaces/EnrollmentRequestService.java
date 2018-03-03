@@ -18,8 +18,7 @@ public interface EnrollmentRequestService {
 
     EnrollmentRequest pojoToEntity(EnrollmentRequestPojo pojo);
 
-    boolean enroll(String publicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
-
+    boolean enroll(String publicKey, boolean observer) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
     boolean approve(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 

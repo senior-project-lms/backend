@@ -39,6 +39,9 @@ public class User extends BaseEntity {
     @ManyToMany(mappedBy = "registeredUsers")
 	private List<Course> registeredCoursesAsStudent;
 
+    @ManyToMany(mappedBy = "observerUsers")
+    private List<Course> registeredCoursesAsObserver;
+
     @OneToMany(mappedBy = "owner")
 	private List<Course> ownedCourses;
 

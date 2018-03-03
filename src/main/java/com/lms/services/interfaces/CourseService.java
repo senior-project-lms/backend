@@ -34,6 +34,7 @@ public interface CourseService {
 
     boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException;
 
+    boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException;
 
     List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException;
 
@@ -45,6 +46,10 @@ public interface CourseService {
 
 
     List<UserPojo> getEnrolledUsers(String publicKey) throws DataNotFoundException;
+
+    List<UserPojo> getEnrolledObserverUsers(String publicKey) throws DataNotFoundException;
+
+    CoursePojo getBasicCourseInfo(String publicKey) throws DataNotFoundException;
 
 
 }

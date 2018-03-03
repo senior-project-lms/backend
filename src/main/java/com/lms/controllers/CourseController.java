@@ -127,6 +127,24 @@ public class CourseController {
         return courseService.getEnrolledUsers(publicKey);
     }
 
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @GetMapping(value = {"/course/{publicKey}/observer-users"})
+    public List<UserPojo> getEnrolledObserverUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getEnrolledObserverUsers(publicKey);
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).GLOBAL_ACCESS.CODE)")
+    @GetMapping(value = {"/course/{publicKey}/info"})
+    public CoursePojo getBasicCourseInfo(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getBasicCourseInfo(publicKey);
+    }
+
+
+
+
+
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {
 
         if (pojo == null) {

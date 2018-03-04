@@ -2,11 +2,13 @@ package com.lms.services.interfaces;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.Privilege;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.UserCoursePrivilege;
 import com.lms.enums.AccessLevel;
 import com.lms.enums.ECoursePrivilege;
+import com.lms.pojos.PrivilegePojo;
 import com.lms.pojos.course.UserCoursePrivilegePojo;
 
 import java.util.HashMap;
@@ -16,6 +18,8 @@ public interface UserCoursePrivilegeService {
 
     UserCoursePrivilegePojo entityToPojo(UserCoursePrivilege entity);
 
+    UserCoursePrivilege pojoToEntity(UserCoursePrivilegePojo pojo);
+
     List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible) throws DataNotFoundException;
 
     boolean existByUser(User user);
@@ -24,6 +28,10 @@ public interface UserCoursePrivilegeService {
     boolean saveStudentCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
 
     boolean saveCourseLecturerPrivileges(List<Course> courses) throws DataNotFoundException, ExecutionFailException;
+
+    boolean saveAssistantCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
+
+    boolean saveObserverUserCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
 
 
     List<Long> getCoursePrivilegesOfAuthUser(String coursePublicKey) throws DataNotFoundException;
@@ -38,8 +46,18 @@ public interface UserCoursePrivilegeService {
 
     List<Long> getStudentDefaultPrivilegeCodes();
 
+
     boolean hasPrivilege(String coursePublicKey, ECoursePrivilege coursePrivilege) throws DataNotFoundException;
 
     List<UserCoursePrivilegePojo> getAssistantUsersOfCourse(String publicKey) throws DataNotFoundException;
 
+    boolean saveUserCoursePrivilege(Course course, UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException;
+
+    boolean updateUserCoursePrivilege(String coursePublicKey, UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException;
+
+    boolean deleteUserCoursePrivilege(Course course, User user) throws DataNotFoundException, ExecutionFailException;
+
+    List<PrivilegePojo> getAllCoursePrivileges() throws DataNotFoundException;
+
+    List<PrivilegePojo> getAllDefaultCoursePrivilegesOfAssistant() throws DataNotFoundException;
 }

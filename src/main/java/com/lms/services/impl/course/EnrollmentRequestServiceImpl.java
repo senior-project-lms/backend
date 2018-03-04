@@ -171,6 +171,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
      * @author umit.kas
      */
     @Override
+    @Transactional
     public boolean approve(String enrollmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         User authUser = userDetailService.getAuthenticatedUser();
@@ -207,7 +208,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new ExecutionFailException("User is not registered to course");
         }
 
-        userCoursePrivilegeService.saveStudentCoursePrivileges(Arrays.asList(entity.getUser()), entity.getCourse());
 
         return true;
     }
@@ -254,8 +254,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         if (entities == null || entities.size() == 0) {
             throw new ExecutionFailException("User is not registered to course");
         }
-
-        userCoursePrivilegeService.saveStudentCoursePrivileges(students, course);
 
         return true;
     }
@@ -453,7 +451,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
     }
 
     @Override
-    public Map<String, Integer> getReqeustCountsOfCourse(String publicKey) {
+    public Map<String, Integer> getRequestCountsOfCourse(String publicKey) {
         Map<String, Integer> requests = new HashMap<>();
         int pendingCount = enrollmentRequestRepository.countByCourse_PublicKeyAndPendingAndVisible(publicKey, true, true);
         requests.put("pending", pendingCount);

@@ -8,6 +8,7 @@ import com.lms.entities.course.EnrollmentRequest;
 import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.repositories.CourseRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
@@ -133,6 +134,7 @@ public class CourseServiceImpl implements CourseService{
         if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("No such a course is saved");
         }
+        userCoursePrivilegeService.saveCourseLecturerPrivileges(Arrays.asList(entity));
 
         return true;
     }
@@ -267,7 +269,7 @@ public class CourseServiceImpl implements CourseService{
      * @author umit.kas
      */
     @Override
-    public boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException {
+    public boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
@@ -279,9 +281,52 @@ public class CourseServiceImpl implements CourseService{
             throw new ExecutionFailException("No such user is registered to a course");
         }
 
+        userCoursePrivilegeService.saveStudentCoursePrivileges(users, course);
         return true;
     }
 
+
+    @Override
+    public boolean registerUserAsAssistantToCourse(String publicKey, UserCoursePrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException {
+
+        Course course = findByPublicKey(publicKey);
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+
+        User user = userService.findByPublicKey(pojo.getUser().getPublicKey());
+
+        course.getAssistantUsers().add(user);
+
+        course.setUpdatedBy(authUser);
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+
+        userCoursePrivilegeService.saveUserCoursePrivilege(course, pojo);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean deleteAssistantUser(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException {
+        Course course = findByPublicKey(coursePublicKey);
+        User user = userService.findByPublicKey(userPublicKey);
+
+        course.getAssistantUsers().remove(user);
+
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+
+        userCoursePrivilegeService.deleteUserCoursePrivilege(course, user);
+
+        return true;
+    }
 
     /**
      * adds the users to course observer user collection
@@ -292,7 +337,7 @@ public class CourseServiceImpl implements CourseService{
      * @author umit.kas
      */
     @Override
-    public boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException {
+    public boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
@@ -303,6 +348,7 @@ public class CourseServiceImpl implements CourseService{
         if (course == null || course.getId() == 0) {
             throw new ExecutionFailException("No such user is registered to a course");
         }
+        userCoursePrivilegeService.saveObserverUserCoursePrivileges(users, course);
 
         return true;
     }
@@ -400,7 +446,6 @@ public class CourseServiceImpl implements CourseService{
     }
 
 
-    // TODO: 24.02.2018 course a ait authenticated user icin(asistan veya yetkili user) courselar cekilmedi
     @Override
     public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
 
@@ -444,6 +489,7 @@ public class CourseServiceImpl implements CourseService{
 
         List<UserPojo> pojos = entity.getRegisteredUsers()
                 .stream()
+                .filter(user -> user.isVisible())
                 .map(user -> {
                     UserPojo pojo = userService.entityToPojo(user);
                     pojo.setAuthority(null);
@@ -464,6 +510,7 @@ public class CourseServiceImpl implements CourseService{
 
         List<UserPojo> pojos = entity.getObserverUsers()
                 .stream()
+                .filter(user -> user.isVisible())
                 .map(user -> {
                     UserPojo pojo = userService.entityToPojo(user);
                     pojo.setAuthority(null);
@@ -484,5 +531,6 @@ public class CourseServiceImpl implements CourseService{
         pojo.setOwner(null);
         return pojo;
     }
+
 
 }

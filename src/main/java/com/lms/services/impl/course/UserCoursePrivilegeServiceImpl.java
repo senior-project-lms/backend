@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +62,13 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
         pojo.setPrivileges(privilegePojos);
 
         return pojo;
+    }
+
+    @Override
+    public UserCoursePrivilege pojoToEntity(UserCoursePrivilegePojo pojo) {
+        UserCoursePrivilege entity = new UserCoursePrivilege();
+
+        return entity;
     }
 
     @Override
@@ -241,7 +249,176 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
                 .stream()
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
+        return pojos;
+    }
 
+
+    @Override
+    public boolean saveAssistantCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException {
+
+        User authUser = userDetailService.getAuthenticatedUser();
+        List<Privilege> privileges = null;
+        privileges = privilegeService.findAllByCode(getAssistantDefaultPrivilegeCodes());
+
+
+        List<UserCoursePrivilege> entities = new ArrayList<>();
+
+        UserCoursePrivilege entity = null;
+
+        for (User user : users) {
+            entity = new UserCoursePrivilege();
+            entity.generatePublicKey();
+            entity.setCreatedBy(authUser);
+            entity.setUser(user);
+            entity.setCourse(course);
+            entity.setPrivileges(privileges);
+            entities.add(entity);
+        }
+
+        entities = userCoursePrivilegeRepository.save(entities);
+
+        if (entities == null || entities.size() == 0) {
+            throw new ExecutionFailException(String.format("No such student privileges for course %s is saved", course.getCode()));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean saveObserverUserCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException {
+
+        User authUser = userDetailService.getAuthenticatedUser();
+        List<Privilege> privileges = null;
+        privileges = privilegeService.findAllByCode(getObserverDefaultPrivilegeCodes());
+
+
+        List<UserCoursePrivilege> entities = new ArrayList<>();
+
+        UserCoursePrivilege entity = null;
+
+        for (User user : users) {
+            entity = new UserCoursePrivilege();
+            entity.generatePublicKey();
+            entity.setCreatedBy(authUser);
+            entity.setUser(user);
+            entity.setCourse(course);
+            entity.setPrivileges(privileges);
+            entities.add(entity);
+        }
+
+        entities = userCoursePrivilegeRepository.save(entities);
+
+        if (entities == null || entities.size() == 0) {
+            throw new ExecutionFailException(String.format("No such student privileges for course %s is saved", course.getCode()));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean saveUserCoursePrivilege(Course course, UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException {
+        User authUser = userDetailService.getAuthenticatedUser();
+
+
+        UserCoursePrivilege entity = new UserCoursePrivilege();
+
+        entity.setUser(userService.findByPublicKey(pojo.getUser().getPublicKey()));
+        entity.setCourse(course);
+
+        List<String> privilegePublicKeys = pojo
+                .getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getPublicKey())
+                .collect(Collectors.toList());
+
+
+        List<Privilege> privileges = privilegeService.findAllByPublicKeys(privilegePublicKeys);
+
+        entity.setPrivileges(privileges);
+        entity.setUpdatedBy(authUser);
+        entity.generatePublicKey();
+
+        entity = userCoursePrivilegeRepository.save(entity);
+
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException(String.format("No such student privileges for course %s is saved", course.getCode()));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean updateUserCoursePrivilege(String coursePublicKey, UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException {
+        User authUser = userDetailService.getAuthenticatedUser();
+
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
+        UserCoursePrivilege entity = userCoursePrivilegeRepository.findByCourseAndPublicKey(course, pojo.getPublicKey());
+
+
+        List<String> privilegePublicKeys = pojo
+                .getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getPublicKey())
+                .collect(Collectors.toList());
+
+
+        List<Privilege> privileges = privilegeService.findAllByPublicKeys(privilegePublicKeys);
+
+        entity.setPrivileges(privileges);
+
+        entity.setUpdatedBy(authUser);
+
+        entity = userCoursePrivilegeRepository.save(entity);
+
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException(String.format("No such student privileges for course %s is saved", course.getCode()));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean deleteUserCoursePrivilege(Course course, User user) throws DataNotFoundException, ExecutionFailException {
+
+
+        UserCoursePrivilege entity = userCoursePrivilegeRepository.findByCourseAndUser(course, user);
+
+        entity.setVisible(false);
+
+        entity = userCoursePrivilegeRepository.save(entity);
+
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException(String.format("No such student privileges for course %s is saved", course.getCode()));
+        }
+
+        return true;
+    }
+
+
+    @Override
+    public List<PrivilegePojo> getAllCoursePrivileges() throws DataNotFoundException {
+
+        List<Privilege> privileges = privilegeService.findAllByCode(getAllCoursePrivilegeCodes());
+        List<PrivilegePojo> pojos = privileges
+                .stream()
+                .map(entity -> privilegeService.entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+    @Override
+    public List<PrivilegePojo> getAllDefaultCoursePrivilegesOfAssistant() throws DataNotFoundException {
+
+        List<Privilege> privileges = privilegeService.findAllByCode(getAssistantDefaultPrivilegeCodes());
+        List<PrivilegePojo> pojos = privileges
+                .stream()
+                .map(entity -> privilegeService.entityToPojo(entity))
+                .collect(Collectors.toList());
 
         return pojos;
     }

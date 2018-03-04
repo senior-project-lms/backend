@@ -16,7 +16,12 @@ import java.util.List;
 public interface UserCoursePrivilegeRepository extends JpaRepository<UserCoursePrivilege, Long> {
 
 
+    UserCoursePrivilege findByCourseAndPublicKey(Course course, String publicKey);
+
     UserCoursePrivilege findByCourseAndUser(Course course, User user);
+
+    List<UserCoursePrivilege> findAllByCourseAndUserInAndVisible(Course course, User user, boolean visible);
+
 
     List<UserCoursePrivilege> findAllByUserAndVisible(User user, boolean visible);
 

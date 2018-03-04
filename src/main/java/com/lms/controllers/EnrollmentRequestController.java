@@ -72,7 +72,7 @@ public class EnrollmentRequestController {
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_ENROLLMENT_REQUESTS)")
     @GetMapping("/course/{publicKey}/enrollment-request/counts")
     public Map<String, Integer> getEnrollmentRequestCounts(@PathVariable String publicKey) throws DataNotFoundException {
-        return enrollmentRequestService.getReqeustCountsOfCourse(publicKey);
+        return enrollmentRequestService.getRequestCountsOfCourse(publicKey);
     }
 
 }

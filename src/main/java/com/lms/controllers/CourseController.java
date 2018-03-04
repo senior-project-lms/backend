@@ -4,6 +4,7 @@ import com.lms.customExceptions.*;
 
 import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -142,7 +143,17 @@ public class CourseController {
     }
 
 
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @PostMapping(value = {"/course/{publicKey}/assistant"})
+    public boolean saveCourseAssistant(@PathVariable String publicKey, @RequestBody UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException {
+        return courseService.registerUserAsAssistantToCourse(publicKey, pojo);
+    }
 
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).DELETE_AUTHENTICATED_USER)")
+    @DeleteMapping(value = {"/course/{coursePublicKey}/assistant/{userPublicKey}"})
+    public boolean deleteCourseAssistant(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws DataNotFoundException, ExecutionFailException {
+        return courseService.deleteAssistantUser(coursePublicKey, userPublicKey);
+    }
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {

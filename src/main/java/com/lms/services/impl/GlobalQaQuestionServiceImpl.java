@@ -85,7 +85,7 @@ public class GlobalQaQuestionServiceImpl implements GlobalQaQuestionService {
     public List<GlobalQaQuestionPojo> getAllByPage(int page) throws DataNotFoundException {
         List<GlobalQaQuestionPojo> pojos = new ArrayList<>();
 
-        List<GlobalQaQuestion> entities = globalQaQuestionRepository.findAllByVisible(true,new PageRequest(page,10));
+        List<GlobalQaQuestion> entities = globalQaQuestionRepository.findAllByVisible(true, new PageRequest(page, 10));
 
         if (entities == null){
             throw new DataNotFoundException("no such a question is found");
@@ -237,7 +237,7 @@ public class GlobalQaQuestionServiceImpl implements GlobalQaQuestionService {
         entity = globalQaQuestionRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new DataNotFoundException("System resource is not deleted by publicKey");
+            throw new DataNotFoundException("Question is not deleted by publicKey");
         }
         return true;
     }

@@ -457,7 +457,9 @@ public class CourseServiceImpl implements CourseService{
             entities = courseRepository.findAllByOwnerAndVisible(authUser, true);
         }
         else {
-            entities = courseRepository.findAllByRegisteredUsersContainsAndVisible(authUser, true);
+            entities = courseRepository.findAllByRegisteredUsersContainsAndAssistantUsersNotContainsAndVisible(authUser, authUser, true);
+            List<Course> authenticatedCourses = courseRepository.findAllByAssistantUsersContainsAndVisible(authUser, true);
+            entities.addAll(authenticatedCourses);
         }
 
 

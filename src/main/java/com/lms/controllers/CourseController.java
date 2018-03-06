@@ -149,7 +149,7 @@ public class CourseController {
         return courseService.registerUserAsAssistantToCourse(publicKey, pojo);
     }
 
-    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).DELETE_AUTHENTICATED_USER)")
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).DELETE_AUTHENTICATED_USER)")
     @DeleteMapping(value = {"/course/{coursePublicKey}/assistant/{userPublicKey}"})
     public boolean deleteCourseAssistant(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws DataNotFoundException, ExecutionFailException {
         return courseService.deleteAssistantUser(coursePublicKey, userPublicKey);

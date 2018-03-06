@@ -4,7 +4,6 @@ package com.lms.controllers;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.pojos.PrivilegePojo;
 import com.lms.pojos.course.UserCoursePrivilegePojo;
-import com.lms.services.interfaces.CourseService;
 import com.lms.services.interfaces.UserCoursePrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +45,12 @@ public class UserCoursePrivilegeController {
     @GetMapping(value = {"/course/{publicKey}/privileges/assistant"})
     public List<PrivilegePojo> getAllCoursePrivilegesOfAssistant(@PathVariable String publicKey) throws DataNotFoundException {
         return userCoursePrivilegeService.getAllDefaultCoursePrivilegesOfAssistant();
+    }
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_AUTHENTICATED_USERS)")
+    @GetMapping(value = {"/course/{publicKey}/assistant/{userPublicKey}"})
+    public List<PrivilegePojo> getPrivilegesOfAssistantUsers(@PathVariable String publicKey, @PathVariable String userPublicKey) throws DataNotFoundException {
+        return userCoursePrivilegeService.getAssistantPrivileges(publicKey, userPublicKey);
     }
 
 

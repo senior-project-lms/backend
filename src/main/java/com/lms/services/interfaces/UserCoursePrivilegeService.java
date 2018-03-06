@@ -29,7 +29,7 @@ public interface UserCoursePrivilegeService {
 
     boolean saveCourseLecturerPrivileges(List<Course> courses) throws DataNotFoundException, ExecutionFailException;
 
-    boolean saveAssistantCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
+    boolean saveAssistantCoursePrivilege(User user, Course course) throws DataNotFoundException, ExecutionFailException;
 
     boolean saveObserverUserCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException;
 
@@ -60,4 +60,6 @@ public interface UserCoursePrivilegeService {
     List<PrivilegePojo> getAllCoursePrivileges() throws DataNotFoundException;
 
     List<PrivilegePojo> getAllDefaultCoursePrivilegesOfAssistant() throws DataNotFoundException;
+
+    List<PrivilegePojo> getAssistantPrivileges(String coursePublicKey, String userPublicKey) throws DataNotFoundException;
 }

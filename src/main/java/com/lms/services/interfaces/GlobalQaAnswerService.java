@@ -14,4 +14,5 @@ public interface GlobalQaAnswerService {
 
     List<GlobalQaAnswerPojo> getQuestionAnswersByQuestionPublicKey(String questionPublicKey) throws DataNotFoundException;
 
+
 }

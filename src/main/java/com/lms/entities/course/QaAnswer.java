@@ -4,10 +4,8 @@ import com.lms.entities.BaseEntity;
 import com.lms.entities.User;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by umit.kas on 05.12.2017.
@@ -27,5 +25,14 @@ public class QaAnswer extends BaseEntity {
 
     @OneToOne
     private User verifiedBy;
+
+    @OneToMany
+    @JoinTable(
+            name = "answer_subanswer",
+            joinColumns = @JoinColumn(name = "answer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "subanswer_id", referencedColumnName = "id")
+
+    )
+    private List<QaAnswer> subanswers;
 
 }

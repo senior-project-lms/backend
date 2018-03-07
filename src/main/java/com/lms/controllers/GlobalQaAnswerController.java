@@ -18,7 +18,7 @@ public class GlobalQaAnswerController{
     @Autowired
     GlobalQaAnswerService globalQaAnswerService;
 
-    @GetMapping(value = {"/answers"})
+    @GetMapping(value = {"/global-answers"})
     public List<GlobalQaAnswerPojo> getAnswers(@PathVariable String questionPublicKey ) throws DataNotFoundException {
 
         return globalQaAnswerService.getQuestionAnswersByQuestionPublicKey(questionPublicKey);

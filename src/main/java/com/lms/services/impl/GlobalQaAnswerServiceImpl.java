@@ -26,6 +26,9 @@ public class GlobalQaAnswerServiceImpl implements GlobalQaAnswerService {
     @Autowired
     private GlobalQaQuestionService globalQaQuestionService;
 
+    @Autowired
+    private GlobalQaAnswerService globalQaAnswerService;
+
 
     /**
      * Converts GlobalQaAnswer entity to GlobalAnswer pojo according to boolean variables,
@@ -69,8 +72,8 @@ public class GlobalQaAnswerServiceImpl implements GlobalQaAnswerService {
     @Override
     public List<GlobalQaAnswerPojo> getQuestionAnswersByQuestionPublicKey(String questionPublicKey) throws DataNotFoundException {
 
-        GlobalQaQuestion qlobalanswer = globalQaQuestionService.findByPublicKey(questionPublicKey);
-        List<GlobalQaAnswer> qaAnswers = globalQaAnswerRepository.findAllByQuestion(qlobalanswer);
+        GlobalQaQuestion globalquestion = globalQaQuestionService.findByPublicKey(questionPublicKey);
+        List<GlobalQaAnswer> qaAnswers = globalQaAnswerRepository.findAllByQuestion(globalquestion);
 
         List<GlobalQaAnswerPojo> pojos = new ArrayList<>();
         for (GlobalQaAnswer entity : qaAnswers) {
@@ -78,7 +81,5 @@ public class GlobalQaAnswerServiceImpl implements GlobalQaAnswerService {
         }
         return pojos;
     }
-
-
 }
 

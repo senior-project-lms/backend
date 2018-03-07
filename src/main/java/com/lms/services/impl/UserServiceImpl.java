@@ -268,6 +268,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsernameOrEmail(username, email);
     }
 
+    @Override
+    public boolean emailExist(final String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
     /**
      * updates user visibility
      *
@@ -307,7 +312,7 @@ public class UserServiceImpl implements UserService {
     /**
      * return user counts by visibility of users
      *
-     * @return Map<String   ,       Integer>
+     * @return Map<String               ,                               Integer>
      * @author atalay.ergen
      */
     @Override
@@ -342,6 +347,7 @@ public class UserServiceImpl implements UserService {
         return entity;
     }
 
+
     /**
      * return user entity by publicKey
      *
@@ -359,8 +365,6 @@ public class UserServiceImpl implements UserService {
 
         return entity;
     }
-
-
 
 
     @Override
@@ -552,7 +556,7 @@ public class UserServiceImpl implements UserService {
         user = new User();
         user.generatePublicKey();
         user.setUsername("mock.student");
-        user.setEmail("mock.student@lms.com");
+        user.setEmail("lmsantalya@gmail.com");
         user.setName("mock".toUpperCase());
         user.setSurname("student".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
@@ -564,7 +568,28 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
+        authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+        defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        privileges = privilegeService.findAllByCode(privilegeCodes);
+
+
     }
 
+    @Override
+    public boolean updatePassword(User user, String newPassword) throws ExecutionFailException {
+        user.setPassword(passwordEncoder.encode(newPassword));
 
+        user = userRepository.save(user);
+        if (user == null || user.getId() == 0) {
+            throw new ExecutionFailException("The password is not saved");
+
+        }
+        return true;
+    }
 }

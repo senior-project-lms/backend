@@ -30,6 +30,8 @@ public interface UserService {
 
     boolean userAlreadyExist(String user, String email);
 
+    boolean emailExist(final String email);
+
 
     Map<String, Integer> getUserStatus();
 
@@ -47,4 +49,6 @@ public interface UserService {
     List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException;
 
     List<String> getAllUsernames();
+
+    boolean updatePassword(User user,String newPassword) throws ExecutionFailException;
 }

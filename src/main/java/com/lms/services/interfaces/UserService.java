@@ -28,7 +28,7 @@ public interface UserService {
 
     boolean updateVisibility(String publicKey, boolean visible)throws ExecutionFailException, DataNotFoundException;
 
-    boolean userAlreadyExist(String user, String email);
+    boolean userAlreadyExist(String username, String email);
 
     boolean emailExist(final String email);
 
@@ -50,5 +50,11 @@ public interface UserService {
 
     List<String> getAllUsernames();
 
+    List<UserPojo> searchAssistantByName(String name) throws DataNotFoundException;
+
+    List<UserPojo> searchAssistantBySurname(String surname) throws DataNotFoundException;
+
+
     boolean updatePassword(User user,String newPassword) throws ExecutionFailException;
 }
+

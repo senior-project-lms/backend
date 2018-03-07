@@ -31,4 +31,6 @@ public interface EnrollmentRequestRepository extends JpaRepository<EnrollmentReq
 
     EnrollmentRequest findByUserAndCourse(User user, Course course);
 
+    int countByCourse_PublicKeyAndPendingAndVisible(String publicKey, boolean pending, boolean visible);
+
 }

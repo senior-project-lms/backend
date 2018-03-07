@@ -6,6 +6,7 @@ import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,9 @@ public interface CourseService {
 
     Course findByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException;
+    boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException;
 
+    boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException;
 
     List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException;
 
@@ -46,5 +48,13 @@ public interface CourseService {
 
     List<UserPojo> getEnrolledUsers(String publicKey) throws DataNotFoundException;
 
+
+    List<UserPojo> getEnrolledObserverUsers(String publicKey) throws DataNotFoundException;
+
+    CoursePojo getBasicCourseInfo(String publicKey) throws DataNotFoundException;
+
+    boolean registerUserAsAssistantToCourse(String publicKey, UserCoursePrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException;
+
+    boolean deleteAssistantUser(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException;
 
 }

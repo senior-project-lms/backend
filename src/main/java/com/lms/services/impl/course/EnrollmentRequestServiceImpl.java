@@ -53,6 +53,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         pojo.setCancelled(entity.isCancelled());
         pojo.setEnrolled(entity.isEnrolled());
         pojo.setPending(entity.isPending());
+        pojo.setObserver(entity.isObserver());
 
         return pojo;
     }
@@ -72,7 +73,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
      * @author umit.kas
      */
     @Override
-    public boolean enroll(String coursePublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
+    public boolean enroll(String coursePublicKey, boolean observer) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         User enrolledBy = userDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
@@ -87,7 +88,9 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
             }
 
+
             entity.setPending(true);
+            entity.setObserver(observer);
             entity.setCancelled(false);
             entity.setRejected(false);
             entity.setEnrolled(false);
@@ -104,7 +107,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
 
             EnrollmentRequest entity = new EnrollmentRequest();
-
+            entity.setObserver(observer);
             entity.generatePublicKey();
             entity.setCourse(course);
             entity.setUser(enrolledBy);
@@ -115,7 +118,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
             if (entity == null || entity.getId() == 0) {
                 throw new ExecutionFailException("No such a enrollment request is saved");
-
             }
         }
 
@@ -169,6 +171,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
      * @author umit.kas
      */
     @Override
+    @Transactional
     public boolean approve(String enrollmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
 
         User authUser = userDetailService.getAuthenticatedUser();
@@ -177,15 +180,23 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
 
         if (entity == null) {
             throw new DataNotFoundException(String.format("No such enrollment request is found by publicKey: %s", enrollmentRequestPublicKey));
+        }
 
+        if (entity.isObserver()) {
+            if (entity.getCourse().getObserverUsers().contains(entity.getUser())) {
+                throw new ExistRecordException("User is already enrolled the course");
+            } else if (!courseService.registerUsersToCourseAsObserver(entity.getCourse(), Arrays.asList(entity.getUser()))) {
+                throw new ExecutionFailException("User is not registered to course");
+            }
+        } else {
+            if (entity.getCourse().getRegisteredUsers().contains(entity.getUser())) {
+                throw new ExistRecordException("User is already enrolled the course");
+            } else if (!courseService.registerUsersToCourse(entity.getCourse(), Arrays.asList(entity.getUser()))) {
+                throw new ExecutionFailException("User is not registered to course");
+            }
         }
 
 
-        if (entity.getCourse().getRegisteredUsers().contains(entity.getUser())) {
-            throw new ExistRecordException("User is already enrolled the course");
-        } else if (!courseService.registerUsersToCourse(entity.getCourse(), Arrays.asList(entity.getUser()))) {
-            throw new ExecutionFailException("User is not registered to course");
-        }
 
 
         entity.setUpdatedBy(authUser);
@@ -197,7 +208,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new ExecutionFailException("User is not registered to course");
         }
 
-        userCoursePrivilegeService.saveStudentCoursePrivileges(Arrays.asList(entity.getUser()), entity.getCourse());
 
         return true;
     }
@@ -244,8 +254,6 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         if (entities == null || entities.size() == 0) {
             throw new ExecutionFailException("User is not registered to course");
         }
-
-        userCoursePrivilegeService.saveStudentCoursePrivileges(students, course);
 
         return true;
     }
@@ -369,8 +377,10 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         }
 
         entity.setCancelled(true);
+
         entity.setUpdatedBy(authUser);
         entity.setPending(false);
+        entity.setObserver(false);
 
         entity = enrollmentRequestRepository.save(entity);
 
@@ -399,6 +409,7 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         entity.setRejected(true);
         entity.setUpdatedBy(authUser);
         entity.setPending(false);
+        entity.setObserver(false);
 
         entity = enrollmentRequestRepository.save(entity);
 
@@ -439,7 +450,11 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         return  true;
     }
 
-
-
-
+    @Override
+    public Map<String, Integer> getRequestCountsOfCourse(String publicKey) {
+        Map<String, Integer> requests = new HashMap<>();
+        int pendingCount = enrollmentRequestRepository.countByCourse_PublicKeyAndPendingAndVisible(publicKey, true, true);
+        requests.put("pending", pendingCount);
+        return requests;
+    }
 }

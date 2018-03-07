@@ -167,6 +167,18 @@ public class UserController {
     }
 
 
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @GetMapping(value = {"/course/{publicKey}/user/search-assistant/name/{param}"})
+    public List<UserPojo> searchAssistantByName(@PathVariable String publicKey, @PathVariable String param) throws DataNotFoundException {
+        return userService.searchAssistantByName(param);
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @GetMapping(value = {"/course/{publicKey}/user/search-assistant/surname/{param}"})
+    public List<UserPojo> searchAssitantBySurname(@PathVariable String publicKey, @PathVariable String param) throws DataNotFoundException {
+        return userService.searchAssistantByName(param);
+    }
 
 
 }

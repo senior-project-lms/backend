@@ -32,7 +32,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findAllByRegisteredUsersNotContainsAndVisibleAndOwnerIn(User user, boolean visible, List<User> lecturer);
 
 
-    List<Course> findAllByRegisteredUsersContainsAndVisible(User user, boolean visible);
+    List<Course> findAllByRegisteredUsersContainsAndAssistantUsersNotContainsAndVisible(User user, User user2, boolean visible);
+
+    List<Course> findAllByAssistantUsersContainsAndVisible(User user, boolean visible);
 
     List<Course> findAllByOwnerAndVisible(User user, boolean visible);
 

@@ -10,6 +10,7 @@ import com.lms.entities.course.EnrollmentRequest;
 import com.lms.pojos.course.EnrollmentRequestPojo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EnrollmentRequestService {
 
@@ -18,8 +19,7 @@ public interface EnrollmentRequestService {
 
     EnrollmentRequest pojoToEntity(EnrollmentRequestPojo pojo);
 
-    boolean enroll(String publicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
-
+    boolean enroll(String publicKey, boolean observer) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
     boolean approve(String enrolmentRequestPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
@@ -45,5 +45,5 @@ public interface EnrollmentRequestService {
 
     boolean updateVisibilityByCourse(Course course, boolean visibility) throws DataNotFoundException;
 
-
+    Map<String, Integer> getRequestCountsOfCourse(String publicKey);
 }

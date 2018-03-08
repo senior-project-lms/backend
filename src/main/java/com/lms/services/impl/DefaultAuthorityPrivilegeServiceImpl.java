@@ -6,9 +6,9 @@ import com.lms.entities.Authority;
 import com.lms.entities.DefaultAuthorityPrivilege;
 import com.lms.entities.Privilege;
 import com.lms.enums.AccessLevel;
-import com.lms.enums.EPrivilege;
+import com.lms.enums.ECoursePrivilege;
+import com.lms.enums.commonUserPrivileges.*;
 import com.lms.pojos.DefaultAuthorityPrivilegePojo;
-import com.lms.pojos.PrivilegePojo;
 import com.lms.repositories.DefaultAuthorityPrivilegeRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.AuthorityService;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -200,11 +199,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeSuperAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultSuperAdminPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.SUPER_ADMIN.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultSuperAdminPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -219,11 +218,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeAdmin() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultAdminPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.ADMIN.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultAdminPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -239,11 +238,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeLecturer() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultLecturerPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultLecturerPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -257,11 +256,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeAssistant() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultAssistantPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultAssistantPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -276,11 +275,11 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
     private void initializeStudent() throws DataNotFoundException {
         DefaultAuthorityPrivilege defaultAuthorityPrivilege = new DefaultAuthorityPrivilege();
 
-        Authority studentAuthority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
-        List<Privilege> studentPrivileges = privilegeService.findAllByCode(getDefaultStudentPrivileges());
+        Authority authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+        List<Privilege> privileges = privilegeService.findAllByCode(getDefaultStudentPrivileges());
 
-        defaultAuthorityPrivilege.setAuthority(studentAuthority);
-        defaultAuthorityPrivilege.setPrivileges(studentPrivileges);
+        defaultAuthorityPrivilege.setAuthority(authority);
+        defaultAuthorityPrivilege.setPrivileges(privileges);
         defaultAuthorityPrivilege.generatePublicKey();
 
         defaultAuthorityPrivilegeRepository.save(defaultAuthorityPrivilege);
@@ -289,194 +288,83 @@ public class DefaultAuthorityPrivilegeServiceImpl implements DefaultAuthorityPri
 
     // default authorities
 
+
     private List<Long> getDefaultSuperAdminPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.SAVE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.UPDATE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE,
-                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
-                EPrivilege.SAVE_USER.CODE,
-                EPrivilege.READ_ALL_USERS.CODE,
-                EPrivilege.READ_USER.CODE,
-                EPrivilege.DELETE_USER.CODE,
-                EPrivilege.UPDATE_USER.CODE,
+        for (CommonSuperAdminPrivilege commonSuperAdminPrivilege : CommonSuperAdminPrivilege.values()){
+            privileges.add(commonSuperAdminPrivilege.CODE);
+        }
 
-                // COURSE
-                EPrivilege.SAVE_COURSE.CODE,
-                EPrivilege.READ_ALL_COURSES.CODE,
-                EPrivilege.DELETE_COURSE.CODE,
-                EPrivilege.UPDATE_COURSE.CODE,
-                EPrivilege.READ_COURSES_BY_VISIBILITY.CODE,
-                EPrivilege.READ_COURSE_STATUSES.CODE,
-                EPrivilege.UPDATE_COURSE_VISIBILITY.CODE,
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
+        return privileges;
 
-                // AUTHORITY
-                EPrivilege.SAVE_AUTHORITY.CODE,
-                EPrivilege.READ_ALL_AUTHORITIES.CODE,
-                EPrivilege.DELETE_AUTHORITY.CODE,
-                EPrivilege.UPDATE_AUTHORITY.CODE,
-
-                // DEFAULT AUTHORITY
-                EPrivilege.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES.CODE,
-                EPrivilege.UPDATE_DEFAULT_AUTHORITY.CODE,
-                EPrivilege.SAVE_DEFAULT_AUTHORITY.CODE,
-                EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
-
-                // ENROLMENT
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-
-                // PRIVILEGE
-                EPrivilege.READ_ALL_PRIVILEGES.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-
-
-        );
     }
 
+
     private List<Long> getDefaultAdminPrivileges() {
-        return Arrays.asList(
 
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.SAVE_SYSTEM_ANNOUNCEMENT.CODE,
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.UPDATE_SYSTEM_ANNOUNCEMENT.CODE,
-//                EPrivilege.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE,
-//                EPrivilege.DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
-//                EPrivilege.SAVE_USER.CODE,
-                EPrivilege.READ_ALL_USERS.CODE,
-                EPrivilege.READ_USER.CODE,
-                //EPrivilege.DELETE_USER.CODE,
-                //EPrivilege.UPDATE_USER.CODE,
+        for (CommonAdminPrivilege commonAdminPrivilege : CommonAdminPrivilege.values()){
+            privileges.add(commonAdminPrivilege.CODE);
+        }
 
-                // COURSE
-//                EPrivilege.SAVE_COURSE.CODE,
-                EPrivilege.READ_ALL_COURSES.CODE,
-//                EPrivilege.DELETE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-                EPrivilege.READ_COURSES_BY_VISIBILITY.CODE,
-                EPrivilege.READ_COURSE_STATUSES.CODE,
-                //EPrivilege.UPDATE_COURSE_VISIBILITY.CODE,
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-
-                // AUTHORITY
-//                EPrivilege.SAVE_AUTHORITY.CODE,
-//                EPrivilege.READ_ALL_AUTHORITIES.CODE,
-//                EPrivilege.DELETE_AUTHORITY.CODE,
-//                EPrivilege.UPDATE_AUTHORITY.CODE,
-
-                EPrivilege.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES.CODE,
-//                EPrivilege.UPDATE_DEFAULT_AUTHORITY.CODE,
-//                EPrivilege.SAVE_DEFAULT_AUTHORITY.CODE,
-//                EPrivilege.DELETE_DEFAULT_AUTHORITY.CODE,
-
-                // DEFAULT AUTHORITY
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-
-                EPrivilege.GLOBAL_ACCESS.CODE
-
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
-//                EPrivilege.UPDATE_COURSE.CODE,
+        return privileges;
 
 
-        );
     }
 
     private List<Long> getDefaultLecturerPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonLecturerPrivilege commonLecturerPrivilege : CommonLecturerPrivilege.values()){
+            privileges.add(commonLecturerPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
+        return privileges;
 
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
-
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLMENT
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE
-
-        );
     }
 
 
     private List<Long> getDefaultStudentPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonStudentPrivilege commonStudentPrivilege : CommonStudentPrivilege.values()){
+            privileges.add(commonStudentPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.ENROLL_COURSE.CODE);
+        privileges.add(ECoursePrivilege.CANCEL_ENROLLMENT_REQUEST.CODE);
+        privileges.add(ECoursePrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE);
+        privileges.add(ECoursePrivilege.READ_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_NOT_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
-                EPrivilege.READ_NOT_REGISTERED_COURSES.CODE,
-                EPrivilege.READ_REGISTERED_COURSES.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
+        return privileges;
 
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLMENT
-                EPrivilege.ENROLL_COURSE.CODE,
-
-                EPrivilege.GLOBAL_ACCESS.CODE
-
-        );
     }
 
     private List<Long> getDefaultAssistantPrivileges() {
-        return Arrays.asList(
-                // SYSTEM ANNOUNCEMENT
-                EPrivilege.READ_SYSTEM_ANNOUNCEMENT.CODE,
+        List<Long> privileges = new ArrayList<>();
 
-                // USER
+        for (CommonAssistantPrivilege commonAssistantPrivilege : CommonAssistantPrivilege.values()){
+            privileges.add(commonAssistantPrivilege.CODE);
+        }
 
+        privileges.add(ECoursePrivilege.ENROLL_COURSE.CODE);
+        privileges.add(ECoursePrivilege.CANCEL_ENROLLMENT_REQUEST.CODE);
+        privileges.add(ECoursePrivilege.READ_REQUESTED_ENROLLMENT_REQUESTS.CODE);
+        privileges.add(ECoursePrivilege.READ_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_AUTHENTICATED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.READ_NOT_REGISTERED_COURSES.CODE);
+        privileges.add(ECoursePrivilege.PAGE_COURSE.CODE);
 
-                // COURSE
+        return privileges;
 
-                EPrivilege.READ_REGISTERED_STUDENTS.CODE,
-                EPrivilege.READ_AUTHENTICATED_COURSES.CODE,
-                EPrivilege.ACCESS_COURSES_PAGE.CODE,
-
-                // AUTHORITY
-
-                // DEFAULT AUTHORITY
-
-                // ENROLMENT
-                // ENROLMENT
-                EPrivilege.ENROLL_COURSE.CODE,
-
-                EPrivilege.APPROVE_ENROLMENT_REQUEST.CODE,
-                EPrivilege.READ_ENROLMENT_REQUESTS.CODE,
-                EPrivilege.GLOBAL_ACCESS.CODE
-        );
     }
 
 

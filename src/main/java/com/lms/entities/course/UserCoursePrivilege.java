@@ -1,5 +1,8 @@
-package com.lms.entities;
+package com.lms.entities.course;
 
+import com.lms.entities.BaseEntity;
+import com.lms.entities.Privilege;
+import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import lombok.Data;
 

@@ -4,6 +4,7 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.enums.AccessLevel;
+import com.lms.pojos.ResetPasswordPojo;
 import com.lms.pojos.UserPojo;
 
 import java.util.List;
@@ -27,7 +28,9 @@ public interface UserService {
 
     boolean updateVisibility(String publicKey, boolean visible)throws ExecutionFailException, DataNotFoundException;
 
-    boolean userAlreadyExist(String user, String email);
+    boolean userAlreadyExist(String username, String email);
+
+    boolean emailExist(final String email);
 
 
     Map<String, Integer> getUserStatus();
@@ -36,9 +39,22 @@ public interface UserService {
 
     User findByPublicKey(String publicKey) throws DataNotFoundException;
 
+    List<User> findAllByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException;
+
     void initialize() throws DataNotFoundException;
 
-    List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException;
 
     List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException;
+
+    List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException;
+
+    List<String> getAllUsernames();
+
+    List<UserPojo> searchAssistantByName(String name) throws DataNotFoundException;
+
+    List<UserPojo> searchAssistantBySurname(String surname) throws DataNotFoundException;
+
+
+    boolean updatePassword(User user,String newPassword) throws ExecutionFailException;
 }
+

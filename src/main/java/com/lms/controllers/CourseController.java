@@ -2,7 +2,9 @@ package com.lms.controllers;
 
 import com.lms.customExceptions.*;
 
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -82,12 +84,75 @@ public class CourseController {
 
     }
 
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
-    @GetMapping("/courses/not-registered/{param}")
-    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(@PathVariable String param) throws DataNotFoundException {
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/code/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByCode(@PathVariable String param) throws DataNotFoundException {
 
-        return courseService.getNotRegisteredCoursesBySearchParam(param);
+        return courseService.getNotRegisteredCoursesByCodeByAuthUser(param);
 
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @GetMapping("/courses/not-registered/name/{param}")
+    public List<CoursePojo> getNotRegisteredCoursesByName(@PathVariable String param) throws DataNotFoundException {
+
+        return courseService.getNotRegisteredCoursesByNameByAuthUser(param);
+
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_NOT_REGISTERED_COURSES.CODE)")
+    @PostMapping("/courses/not-registered/lecturer")
+    public List<CoursePojo> getNotRegisteredCoursesByLecturer(@RequestBody UserPojo pojo) throws DataNotFoundException, EmptyFieldException {
+
+
+        if ((pojo.getName() == null || pojo.getName().isEmpty()) && (pojo.getSurname() == null || pojo.getSurname().isEmpty())) {
+            throw new EmptyFieldException("name and surname cannot be empty");
+
+        }
+        return courseService.getNotRegisteredCoursesByLecturerByAuthUser(pojo.getName(), pojo.getSurname());
+
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_COURSES.CODE) || hasRole(T(com.lms.enums.ECoursePrivilege).READ_AUTHENTICATED_COURSES.CODE)")
+    @GetMapping(value = {"/me/courses"})
+    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
+        return courseService.getAuthUserCourses();
+    }
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @GetMapping(value = {"/course/{publicKey}/enrolled-users"})
+    public List<UserPojo> getEnrolledUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getEnrolledUsers(publicKey);
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @GetMapping(value = {"/course/{publicKey}/observer-users"})
+    public List<UserPojo> getEnrolledObserverUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getEnrolledObserverUsers(publicKey);
+    }
+
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).GLOBAL_ACCESS.CODE)")
+    @GetMapping(value = {"/course/{publicKey}/info"})
+    public CoursePojo getBasicCourseInfo(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getBasicCourseInfo(publicKey);
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @PostMapping(value = {"/course/{publicKey}/assistant"})
+    public boolean saveCourseAssistant(@PathVariable String publicKey, @RequestBody UserCoursePrivilegePojo pojo) throws DataNotFoundException, ExecutionFailException {
+        return courseService.registerUserAsAssistantToCourse(publicKey, pojo);
+    }
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).DELETE_AUTHENTICATED_USER)")
+    @DeleteMapping(value = {"/course/{coursePublicKey}/assistant/{userPublicKey}"})
+    public boolean deleteCourseAssistant(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws DataNotFoundException, ExecutionFailException {
+        return courseService.deleteAssistantUser(coursePublicKey, userPublicKey);
     }
 
 

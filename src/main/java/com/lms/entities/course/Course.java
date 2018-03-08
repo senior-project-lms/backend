@@ -2,7 +2,6 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import com.lms.entities.User;
-import com.lms.entities.UserCoursePrivilege;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,6 +26,13 @@ public class Course extends BaseEntity {
 
     @ManyToMany
     private List<User> registeredUsers;
+
+    @ManyToMany
+    private List<User> observerUsers;
+
+    @ManyToMany
+    private List<User> assistantUsers;
+
 
     @OneToMany(mappedBy = "course")
     private List<UserCoursePrivilege> userCoursePrivileges;

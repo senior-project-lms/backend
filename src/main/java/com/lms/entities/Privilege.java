@@ -1,5 +1,6 @@
 package com.lms.entities;
 
+import com.lms.entities.course.UserCoursePrivilege;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -4,15 +4,20 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
-import com.lms.entities.course.EnrolmentRequest;
+import com.lms.entities.course.EnrollmentRequest;
+import com.lms.enums.AccessLevel;
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.repositories.CourseRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseService;
-import com.lms.services.interfaces.EnrolmentRequestService;
+import com.lms.services.interfaces.EnrollmentRequestService;
+import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +35,11 @@ public class CourseServiceImpl implements CourseService{
     private CustomUserDetailService userDetailsService;
 
     @Autowired
-    private EnrolmentRequestService enrolmentRequestService;
+    private EnrollmentRequestService enrollmentRequestService;
+
+    @Autowired
+    private UserCoursePrivilegeService userCoursePrivilegeService;
+
 
     @Override
     public CoursePojo entityToPojo(Course entity) {
@@ -125,6 +134,7 @@ public class CourseServiceImpl implements CourseService{
         if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("No such a course is saved");
         }
+        userCoursePrivilegeService.saveCourseLecturerPrivileges(Arrays.asList(entity));
 
         return true;
     }
@@ -137,7 +147,7 @@ public class CourseServiceImpl implements CourseService{
      * @return List<CoursePojo>
      * @author umit.kas
      */
-
+    @Transactional
     @Override
     public boolean save(List<CoursePojo> pojos) throws DataNotFoundException, ExecutionFailException {
 
@@ -160,6 +170,8 @@ public class CourseServiceImpl implements CourseService{
         if (entities == null || entities.size() == 0) {
             throw new ExecutionFailException("No such a list of courses is saved");
         }
+
+        userCoursePrivilegeService.saveCourseLecturerPrivileges(entities);
 
         return true;
     }
@@ -225,6 +237,8 @@ public class CourseServiceImpl implements CourseService{
             throw new ExecutionFailException("Setting course visibility is not executed successfully");
         }
 
+        enrollmentRequestService.updateVisibilityByCourse(entity, visible);
+
         return true;
     }
 
@@ -250,136 +264,275 @@ public class CourseServiceImpl implements CourseService{
      * adds the users to course registered user collection
      *
      * @param course
-     * @param user
+     * @param users
      * @return boolean
      * @author umit.kas
      */
     @Override
-    public boolean registerUserToCourse(Course course, User user) throws ExecutionFailException {
+    public boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
         course.setUpdatedBy(authUser);
-        course.getRegisteredUsers().add(user);
+        course.getRegisteredUsers().addAll(users);
         course = courseRepository.save(course);
 
         if (course == null || course.getId() == 0) {
             throw new ExecutionFailException("No such user is registered to a course");
         }
 
+        userCoursePrivilegeService.saveStudentCoursePrivileges(users, course);
+        return true;
+    }
+
+
+    @Override
+    public boolean registerUserAsAssistantToCourse(String publicKey, UserCoursePrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException {
+
+        Course course = findByPublicKey(publicKey);
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+
+        User user = userService.findByPublicKey(pojo.getUser().getPublicKey());
+
+        course.getAssistantUsers().add(user);
+
+        course.setUpdatedBy(authUser);
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+
+        userCoursePrivilegeService.saveUserCoursePrivilege(course, pojo);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean deleteAssistantUser(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException {
+        Course course = findByPublicKey(coursePublicKey);
+        User user = userService.findByPublicKey(userPublicKey);
+
+        course.getAssistantUsers().remove(user);
+
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+
+        userCoursePrivilegeService.deleteUserCoursePrivilege(course, user);
+
         return true;
     }
 
     /**
-     * returns not registered courses by authenticated user
+     * adds the users to course observer user collection
+     *
+     * @param course
+     * @param users
+     * @return boolean
+     * @author umit.kas
+     */
+    @Override
+    public boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException {
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        course.setUpdatedBy(authUser);
+        course.getObserverUsers().addAll(users);
+        course = courseRepository.save(course);
+
+        if (course == null || course.getId() == 0) {
+            throw new ExecutionFailException("No such user is registered to a course");
+        }
+        userCoursePrivilegeService.saveObserverUserCoursePrivileges(users, course);
+
+        return true;
+    }
+
+
+
+
+    /**
+     * returns not registered courses by authenticated and search param code
      *
      * @return List<CoursePojo>
      * @author umit.kas
      */
     @Override
-    public List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException {
+    public List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException {
+        param = param.toUpperCase();
         User authUser = userDetailsService.getAuthenticatedUser();
 
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
+        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisibleAndCodeContaining(authUser, true, param);
 
         if (entities == null) {
-            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        return getNotRegisteredCoursesHelperForAuthUser(entities);
+    }
+
+    /**
+     * returns not registered courses by authenticated and search param name
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCoursesByNameByAuthUser(String param) throws DataNotFoundException {
+        param = param.toUpperCase();
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        List<Course> entities = courseRepository
+                .findAllByRegisteredUsersNotContainsAndVisibleAndNameContaining(authUser, true, param);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        return getNotRegisteredCoursesHelperForAuthUser(entities);
+    }
+
+
+    /**
+     * returns not registered courses by authenticated and search param lecturer
+     *
+     * @return List<CoursePojo>
+     * @author umit.kas
+     */
+    @Override
+    public List<CoursePojo> getNotRegisteredCoursesByLecturerByAuthUser(String name, String surname) throws DataNotFoundException {
+        if (name != null)
+            name = name.toUpperCase();
+        else if (surname != null)
+            surname = surname.toUpperCase();
+
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+        List<User> lecturers = userService.findAllByNameOrSurname(name, surname);
+        List<Course> entities = courseRepository
+                .findAllByRegisteredUsersNotContainsAndVisibleAndOwnerIn(authUser, true, lecturers);
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
+        }
+
+        return getNotRegisteredCoursesHelperForAuthUser(entities);
+    }
+
+
+    private List<CoursePojo> getNotRegisteredCoursesHelperForAuthUser(List<Course> entities) throws DataNotFoundException {
+
+        List<EnrollmentRequest> enrolmentRequestsEntities = enrollmentRequestService.findEnrollmentRequestsOfAuthUser(true);
+        List<String> enrollmentRequestedCoursesPublicKeys = enrolmentRequestsEntities
+                .stream()
+                .filter(entity -> entity.isPending() || entity.isEnrolled())
+                .map(entity -> entity.getCourse().getPublicKey())
+                .collect(Collectors.toList());
+
+
+        List<CoursePojo> pojos = entities
+                .stream()
+                .filter(entity -> !enrollmentRequestedCoursesPublicKeys.contains(entity.getPublicKey()))
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+
+    @Override
+    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        List<Course> entities = null;
+
+        if (authUser.getAuthority().getCode() == AccessLevel.LECTURER.CODE) {
+            entities = courseRepository.findAllByOwnerAndVisible(authUser, true);
+        }
+        else {
+            entities = courseRepository.findAllByRegisteredUsersContainsAndAssistantUsersNotContainsAndVisible(authUser, authUser, true);
+            List<Course> authenticatedCourses = courseRepository.findAllByAssistantUsersContainsAndVisible(authUser, true);
+            entities.addAll(authenticatedCourses);
+        }
+
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
         }
 
         List<CoursePojo> pojos = entities
                 .stream()
-                .map(entity -> entityToPojo(entity))
+                .map(entity -> {
+                    CoursePojo pojo = entityToPojo(entity);
+                    pojo.setOwner(null);
+                    pojo.setCreatedAt(null);
+                    pojo.setUpdatedAt(null);
+                    return pojo;
+                })
                 .collect(Collectors.toList());
-
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
-
-        List<String> coursePublicKeys = enrolmentRequests
-                .stream()
-                .map(req -> req.getCourse().getPublicKey())
-                .collect(Collectors.toList());
-
-
-        for (CoursePojo pojo : pojos) {
-            if (coursePublicKeys.contains(pojo.getPublicKey())) {
-                pojo.setHasEnrollmentRequest(true);
-            }
-        }
 
         return pojos;
     }
 
-    /**
-     * returns not registered courses by userPublicKey
-     *
-     * @return List<CoursePojo>
-     * @author umit.kas
-     */
     @Override
-    public List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException {
-        User authUser = userService.findByPublicKey(userPublicKey);
+    public List<UserPojo> getEnrolledUsers(String publicKey) throws DataNotFoundException {
+        Course entity = courseRepository.findByPublicKey(publicKey);
 
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
-
-        if (entities == null) {
-            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+        if (entity == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
         }
 
-        List<CoursePojo> pojos = entities.stream().map(entity -> entityToPojo(entity)).collect(Collectors.toList());
-
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(userPublicKey, true);
-
-        List<String> coursePublicKeys = enrolmentRequests
+        List<UserPojo> pojos = entity.getRegisteredUsers()
                 .stream()
-                .map(req -> req.getCourse().getPublicKey())
+                .filter(user -> user.isVisible())
+                .map(user -> {
+                    UserPojo pojo = userService.entityToPojo(user);
+                    pojo.setAuthority(null);
+                    return pojo;
+                })
                 .collect(Collectors.toList());
-
-
-        for (CoursePojo pojo : pojos) {
-            if (coursePublicKeys.contains(pojo.getPublicKey())) {
-                pojo.setHasEnrollmentRequest(true);
-            }
-        }
 
         return pojos;
     }
 
-    /**
-     * returns not registered courses by authenticated and search param
-     *
-     * @return List<CoursePojo>
-     * @author umit.kas
-     */
     @Override
-    public List<CoursePojo> getNotRegisteredCoursesBySearchParam(String param) throws DataNotFoundException {
+    public List<UserPojo> getEnrolledObserverUsers(String publicKey) throws DataNotFoundException {
+        Course entity = courseRepository.findByPublicKey(publicKey);
 
-        User authUser = userDetailsService.getAuthenticatedUser();
-
-        List<Course> entities = courseRepository.findAllByRegisteredUsersNotContainsAndVisible(authUser, true);
-
-        if (entities == null) {
-            throw new DataNotFoundException("No such a registered courses found for authenticated users");
+        if (entity == null) {
+            throw new DataNotFoundException("No such a not registered course is found for authenticated users");
         }
 
-        List<CoursePojo> pojos = entities
+        List<UserPojo> pojos = entity.getObserverUsers()
                 .stream()
-                .filter(entity -> entity.getCode().contains(param.toUpperCase()) || entity.getName().contains(param.toUpperCase()))
-                .map(entity -> entityToPojo(entity))
+                .filter(user -> user.isVisible())
+                .map(user -> {
+                    UserPojo pojo = userService.entityToPojo(user);
+                    pojo.setAuthority(null);
+                    return pojo;
+                })
                 .collect(Collectors.toList());
-
-        List<EnrolmentRequest> enrolmentRequests = enrolmentRequestService.findEnrollmentRequests(true);
-
-        List<String> coursePublicKeys = enrolmentRequests
-                .stream()
-                .map(req -> req.getCourse().getPublicKey())
-                .collect(Collectors.toList());
-
-
-        for (CoursePojo pojo : pojos) {
-            if (coursePublicKeys.contains(pojo.getPublicKey())) {
-                pojo.setHasEnrollmentRequest(true);
-            }
-        }
 
         return pojos;
     }
+
+    @Override
+    public CoursePojo getBasicCourseInfo(String publicKey) throws DataNotFoundException {
+        Course entity = courseRepository.findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("No such course is found by publicKey: %s", publicKey));
+        }
+        CoursePojo pojo = entityToPojo(entity);
+        pojo.setOwner(null);
+        return pojo;
+    }
+
+
 }

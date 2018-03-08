@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
     private DefaultAuthorityPrivilegeService defaultAuthorityPrivilegeService;
 
 
-
     @Override
     public User pojoToEntity(UserPojo pojo) {
         User entity = new User();
@@ -168,9 +167,9 @@ public class UserServiceImpl implements UserService {
      * then finds default privileges for authorities and store in hashset
      * then iterates pojo list, and add related items then add the entity of user in a list
      * save the list of users
-     *
+     * <p>
      * Update Notes:
-     *
+     * <p>
      * access privileges are added for user by default authority.
      *
      * @param pojos
@@ -223,7 +222,9 @@ public class UserServiceImpl implements UserService {
 
 
             entity.generatePublicKey();
-            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            //entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            entity.setPassword(passwordEncoder.encode("test.password"));
+
 
             // find authority
             Authority authority = authorities
@@ -268,6 +269,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsernameOrEmail(username, email);
     }
 
+    @Override
+    public boolean emailExist(final String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
     /**
      * updates user visibility
      *
@@ -285,6 +291,7 @@ public class UserServiceImpl implements UserService {
             throw new SecurityException("Authenticated User is not found");
         }
         ;
+
         User entity = userRepository.findByPublicKey(publicKey);
         if (entity == null) {
             throw new DataNotFoundException(String.format("There is no user by publicKey: %s", publicKey));
@@ -306,7 +313,7 @@ public class UserServiceImpl implements UserService {
     /**
      * return user counts by visibility of users
      *
-     * @return Map<String ,   Integer>
+     * @return Map<String               ,                               Integer>
      * @author atalay.ergen
      */
     @Override
@@ -341,6 +348,7 @@ public class UserServiceImpl implements UserService {
         return entity;
     }
 
+
     /**
      * return user entity by publicKey
      *
@@ -360,27 +368,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /**
-     * returns user objects by search parameters
-     *
-     * @return List<UserPojo>
-     * @author umit.kas
-     */
-    @Override
-    public List<UserPojo> getUsersBySearchingParameter(String parameter) throws DataNotFoundException {
-        Authority authority = authorityService.findByCode(AccessLevel.LECTURER.CODE);
-        List<User> entities = userRepository.findAllByEmailLikeOrNameLikeOrSurnameLikeAndAuthorityAndVisible(parameter, parameter, parameter, authority, true);
-        if (entities == null) {
-            return new ArrayList<>();
-        }
-        List<UserPojo> pojos = entities
-                .stream()
-                .map(entity -> entityToPojo(entity))
-                .collect(Collectors.toList());
-
-        return pojos;
-    }
-
     @Override
     public List<UserPojo> getUsersByAuthority(AccessLevel accessLevel) throws DataNotFoundException {
         Authority authority = authorityService.findByCode(accessLevel.CODE);
@@ -396,6 +383,105 @@ public class UserServiceImpl implements UserService {
 
         return pojos;
     }
+
+    @Override
+    public List<User> findAllByNameOrSurname(String name, String surname) throws DataNotFoundException {
+
+        List<User> entities = null;
+        if (name != null && surname != null) {
+            entities = userRepository.findAllByVisibleAndNameContainingOrSurnameContaining(true, name, surname);
+        } else if (surname == null) {
+            entities = userRepository.findAllByVisibleAndNameContaining(true, name);
+        } else if (name == null) {
+            entities = userRepository.findAllByVisibleAndSurnameContaining(true, surname);
+        }
+
+        if (entities == null) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        return entities;
+    }
+
+    @Override
+    public List<User> findAllByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException {
+
+        List<User> entities = userRepository.findAllByPublicKeyIn(publicKeys);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        return entities;
+    }
+
+    @Override
+    public List<String> getAllUsernames() {
+
+        List<String> usernames = userRepository.findAll()
+                .stream()
+                .map(entity -> entity.getUsername())
+                .collect(Collectors.toList());
+
+        return usernames;
+
+    }
+
+    @Override
+    public List<UserPojo> searchAssistantByName(String name) throws DataNotFoundException {
+
+        List<Authority> authorities = new ArrayList<>();
+
+        Authority assistant = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        Authority student = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+
+        authorities.add(assistant);
+        authorities.add(student);
+
+        List<User> entities = userRepository.findAllByNameContainsAndAuthorityInAndVisible(name, authorities, true);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        List<UserPojo> pojos = new ArrayList<>();
+
+        pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
+    @Override
+    public List<UserPojo> searchAssistantBySurname(String surname) throws DataNotFoundException {
+
+        List<Authority> authorities = new ArrayList<>();
+
+        Authority assistant = authorityService.findByCode(AccessLevel.ASSISTANT.CODE);
+        Authority student = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+
+        authorities.add(assistant);
+        authorities.add(student);
+
+        List<User> entities = userRepository.findAllBySurnameContainsAndAuthorityInAndVisible(surname, authorities, true);
+
+        if (entities == null || entities.size() == 0) {
+            throw new DataNotFoundException("No such a user collection found");
+        }
+
+        List<UserPojo> pojos = new ArrayList<>();
+
+
+        pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+        return pojos;
+    }
+
 
     /// code before here
 
@@ -513,7 +599,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
-
         authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
         defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
 
@@ -528,7 +613,7 @@ public class UserServiceImpl implements UserService {
         user = new User();
         user.generatePublicKey();
         user.setUsername("mock.student");
-        user.setEmail("mock.student@lms.com");
+        user.setEmail("lmsantalya@gmail.com");
         user.setName("mock".toUpperCase());
         user.setSurname("student".toUpperCase());
         user.setPassword(passwordEncoder.encode("test.password"));
@@ -540,7 +625,28 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
+        authority = authorityService.findByCode(AccessLevel.STUDENT.CODE);
+        defaultAuthorityPrivilege = defaultAuthorityPrivilegeService.findByAuthority(authority);
+
+        privilegeCodes = defaultAuthorityPrivilege.getPrivileges()
+                .stream()
+                .map(privilege -> privilege.getCode())
+                .collect(Collectors.toList());
+
+        privileges = privilegeService.findAllByCode(privilegeCodes);
+
+
     }
 
+    @Override
+    public boolean updatePassword(User user, String newPassword) throws ExecutionFailException {
+        user.setPassword(passwordEncoder.encode(newPassword));
 
+        user = userRepository.save(user);
+        if (user == null || user.getId() == 0) {
+            throw new ExecutionFailException("The password is not saved");
+
+        }
+        return true;
+    }
 }

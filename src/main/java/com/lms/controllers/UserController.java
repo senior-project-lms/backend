@@ -3,7 +3,6 @@ package com.lms.controllers;
 import com.lms.customExceptions.*;
 import com.lms.enums.AccessLevel;
 import com.lms.pojos.UserPojo;
-import com.lms.services.interfaces.AuthorityService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,8 +16,11 @@ import java.util.Map;
 public class UserController {
 
 
+
+
     @Autowired
     private UserService userService;
+
 
 
     @GetMapping(value = {"/users/active"})
@@ -96,7 +98,6 @@ public class UserController {
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER.CODE)")
     @GetMapping(value = {"/user/{publicKey}"})
     public UserPojo getUser(@PathVariable String publicKey) throws DataNotFoundException {
-
         if (publicKey == null) {
             throw new DataNotFoundException("Public key not found.");
         }
@@ -114,7 +115,6 @@ public class UserController {
 
 
     }
-
 
 
     private boolean isValidUserPojo(UserPojo userPojo) throws EmptyFieldException, ExistRecordException {
@@ -139,11 +139,14 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_USER_STATUSES.CODE)")
     @GetMapping("/users/status")
     public Map<String, Integer> getUsersStatus() {
         return userService.getUserStatus();
     }
 
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_USER_VISIBILITY.CODE)")
     @PutMapping("/user/{publicKey}/visible")
     public boolean setVisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {
@@ -153,6 +156,7 @@ public class UserController {
         throw new EmptyFieldException("PublicKey is empty");
     }
 
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPDATE_USER_VISIBILITY.CODE)")
     @PutMapping("/user/{publicKey}/invisible")
     public boolean setInvisible(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, EmptyFieldException {
         if (publicKey != null || !publicKey.isEmpty()) {
@@ -160,6 +164,20 @@ public class UserController {
         }
         throw new EmptyFieldException("PublicKey is empty");
 
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @GetMapping(value = {"/course/{publicKey}/user/search-assistant/name/{param}"})
+    public List<UserPojo> searchAssistantByName(@PathVariable String publicKey, @PathVariable String param) throws DataNotFoundException {
+        return userService.searchAssistantByName(param);
+    }
+
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).SAVE_AUTHENTICATED_USER)")
+    @GetMapping(value = {"/course/{publicKey}/user/search-assistant/surname/{param}"})
+    public List<UserPojo> searchAssitantBySurname(@PathVariable String publicKey, @PathVariable String param) throws DataNotFoundException {
+        return userService.searchAssistantByName(param);
     }
 
 

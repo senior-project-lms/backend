@@ -1,11 +1,7 @@
-package com.lms.enums;
+package com.lms.enums.commonUserPrivileges;
 
-/**
- * Created by umit.kas on 28.11.2017.
- */
-public enum EPrivilege {
+public enum CommonSuperAdminPrivilege {
 
-    // Home
     GLOBAL_ACCESS(1111100001),
 
 
@@ -17,6 +13,7 @@ public enum EPrivilege {
     UPDATE_SYSTEM_ANNOUNCEMENT(1110001100),
     UPLOAD_SYSTEM_ANNOUNCEMENT_FILE(1110110010),
     DELETE_SYSTEM_ANNOUNCEMENT_FILE(1110010111),
+
 
 
     // User
@@ -66,29 +63,14 @@ public enum EPrivilege {
     PAGE_COURSE_FOR_ADMIN(1111011001),
     PAGE_AUTHORITIES(1111111100),
     PAGE_HOME(1110101111),
-    PAGE_COURSES(1111000011),
     PAGE_GLOBAL_CALENDAR(1110011111),
     PAGE_GLOBAL_QA(1110001001),
     PAGE_SYSTEM_ANNOUNCEMENT(1111110000),
     PAGE_USER_DETAILS(1110011101),
     PAGE_OWN_PROFILE(1110100001),
     PAGE_SETTINGS(1111110101),
-    PAGE_GLOBAL_RESOURCES(1110011000),
+    PAGE_GLOBAL_RESOURCES(1110011000);
 
-//
-//
-
-//
-//1110000011
-//1010100110
-//1111100111
-//1100010011
-//1100001110
-//1101111111
-//1000111001
-//1111110101
-
-    ;
 
 
 
@@ -96,8 +78,7 @@ public enum EPrivilege {
     public long CODE;
 
 
-    EPrivilege(long CODE) {
+    CommonSuperAdminPrivilege(long CODE) {
         this.CODE = CODE;
     }
-
 }

@@ -1,14 +1,7 @@
 package com.lms;
 
 
-import com.lms.entities.Authority;
-import com.lms.entities.DefaultAuthorityPrivilege;
-import com.lms.entities.User;
-import com.lms.enums.AccessLevel;
-import com.lms.enums.EPrivilege;
 import com.lms.properties.StorageProperties;
-import com.lms.repositories.*;
-import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,11 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 @EnableAsync
@@ -58,7 +47,7 @@ public class App {
             defaultAuthorityPrivilegeService.initialize();
             userService.initialize();
         } catch (Exception e) {
-
+            //System.exit(-1);
         }
 
 

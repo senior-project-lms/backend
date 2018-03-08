@@ -4,7 +4,9 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
+import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
+import com.lms.pojos.course.UserCoursePrivilegePojo;
 
 import java.util.List;
 import java.util.Map;
@@ -31,15 +33,28 @@ public interface CourseService {
 
     Course findByPublicKey(String publicKey) throws DataNotFoundException;
 
-    boolean registerUserToCourse(Course course, User user) throws ExecutionFailException;
+    boolean registerUsersToCourse(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException;
+
+    boolean registerUsersToCourseAsObserver(Course course, List<User> users) throws ExecutionFailException, DataNotFoundException;
+
+    List<CoursePojo> getNotRegisteredCoursesByCodeByAuthUser(String param) throws DataNotFoundException;
+
+    List<CoursePojo> getNotRegisteredCoursesByNameByAuthUser(String param) throws DataNotFoundException;
+
+    List<CoursePojo> getNotRegisteredCoursesByLecturerByAuthUser(String name, String surname) throws DataNotFoundException;
+
+    List<CoursePojo> getAuthUserCourses() throws DataNotFoundException;
 
 
-    List<CoursePojo> getNotRegisteredCourses() throws DataNotFoundException;
-
-    List<CoursePojo> getNotRegisteredCoursesBySearchParam(String param) throws DataNotFoundException;
+    List<UserPojo> getEnrolledUsers(String publicKey) throws DataNotFoundException;
 
 
-    List<CoursePojo> getNotRegisteredCourses(String userPublicKey) throws DataNotFoundException;
+    List<UserPojo> getEnrolledObserverUsers(String publicKey) throws DataNotFoundException;
 
+    CoursePojo getBasicCourseInfo(String publicKey) throws DataNotFoundException;
+
+    boolean registerUserAsAssistantToCourse(String publicKey, UserCoursePrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException;
+
+    boolean deleteAssistantUser(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException;
 
 }

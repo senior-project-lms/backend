@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.lms'
@@ -24,8 +23,21 @@ repositories {
 
 
 dependencies {
+
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '1.1.2'
+
+	compileOnly('org.projectlombok:lombok')
+
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.5.9.RELEASE'
+
+	compile group: 'commons-io', name: 'commons-io', version: '2.4'
+
+	compile "org.springframework.boot:spring-boot-configuration-processor"
+
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.10.RELEASE'
-	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+	//compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
 
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.1.1.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
@@ -43,8 +55,9 @@ dependencies {
 
 
 	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('mysql:mysql-connector-java')
+	compile('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
 
 }
+

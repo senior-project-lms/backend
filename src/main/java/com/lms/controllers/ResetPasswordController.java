@@ -22,20 +22,11 @@ import java.util.Locale;
 @RestController
 public class ResetPasswordController {
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ResetPasswordService resetPasswordService;
 
-    @Autowired
-    private UserSecurityService userSecurityService;
 
-    @Qualifier("messageSource")
-    @Autowired
-    private MessageSource messages;
-    @Autowired
-    private MailService mailService;
 
 
     @PostMapping(value = {"/forgot-password"} )
@@ -49,7 +40,7 @@ public class ResetPasswordController {
     @PostMapping(value = {"/reset-password/{token}"})
     public void showChangePasswordPage(@PathVariable final String token, @RequestBody PasswordResetDto pojo) throws ExecutionFailException, DataNotFoundException {
 
-        resetPasswordService.updatePassword(token,pojo);
+        resetPasswordService.updatePassword(token, pojo);
 
     }
 }

@@ -1,0 +1,124 @@
+package com.lms.services.impl.course;
+
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.User;
+import com.lms.entities.course.Course;
+import com.lms.entities.course.Event;
+import com.lms.pojos.course.EventPojo;
+import com.lms.repositories.CourseEventRepository;
+import com.lms.services.custom.CustomUserDetailService;
+import com.lms.services.interfaces.CourseEventService;
+import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class CourseEventServiceImpl implements CourseEventService {
+
+    @Autowired
+    private CourseEventRepository courseEventRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CustomUserDetailService userDetailsService;
+
+    @Autowired
+    private CourseService courseService;
+
+
+    @Override
+    public Event pojoToEntity(EventPojo pojo) {
+        Event entity = new Event();
+        entity.setTitle(pojo.getTitle());
+        entity.setStart(pojo.getStart());
+        entity.setEnd(pojo.getStart());
+
+        return entity;
+    }
+
+    @Override
+    public EventPojo entityToPojo(Event entity) {
+        EventPojo pojo = new EventPojo();
+
+        pojo.setPublicKey(entity.getPublicKey());
+        pojo.setTitle(entity.getTitle());
+        pojo.setStart(entity.getStart());
+        pojo.setEnd(entity.getEnd());
+        return pojo;
+    }
+
+    @Override
+    public boolean save(String coursePublicKey, EventPojo pojo) throws DataNotFoundException, ExecutionFailException {
+
+        User authUser = userDetailsService.getAuthenticatedUser();
+
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
+        Event entity = pojoToEntity(pojo);
+
+        entity.generatePublicKey();
+        entity.setCourse(course);
+        entity.setCreatedBy(authUser);
+
+        entity = courseEventRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException("No such a course event is saved");
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean delete(String eventPublicKey) throws DataNotFoundException, ExecutionFailException {
+        User authUser = userDetailsService.getAuthenticatedUser();
+        Event entity = courseEventRepository.findByPublicKeyAndVisible(eventPublicKey, true);
+
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("No such a course event is found by publicKey: %s", eventPublicKey));
+        }
+        entity.setVisible(false);
+        entity.setUpdatedBy(authUser);
+
+        entity = courseEventRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException("No such a course event is deleted");
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean update(String coursePublicKey, EventPojo pojo) {
+        return false;
+    }
+
+    @Override
+    public List<EventPojo> getAllEventsOfCourse(String coursePublicKey) throws DataNotFoundException {
+        Course course = courseService.findByPublicKey(coursePublicKey);
+        List<Event> entities = courseEventRepository.findAllByCourseAndVisible(course, true);
+
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+
+
+        List<EventPojo> pojos = entities
+                .stream()
+                .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+
+        return pojos;
+    }
+}

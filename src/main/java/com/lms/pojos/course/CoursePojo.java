@@ -19,7 +19,7 @@ public class CoursePojo extends BasePojo {
 
     private List<UserCoursePrivilegePojo> userCoursePrivileges;
 
-    private List<GradeTypePojo> gradeTypes;
+    private List<GradePojo> grades;
 
 
     private List<AssignmentPojo> assignments;

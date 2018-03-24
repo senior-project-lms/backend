@@ -20,5 +20,7 @@ public interface CourseEventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByVisible(boolean visible);
 
+    List<Event> findAllByCourseInAndVisible(List<Course> courses, boolean visible);
+
 
 }

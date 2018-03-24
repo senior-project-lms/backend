@@ -11,7 +11,7 @@ import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.UserCoursePrivilegePojo;
 import com.lms.repositories.CourseRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.course.CourseService;
 import com.lms.services.interfaces.EnrollmentRequestService;
 import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
@@ -447,21 +447,29 @@ public class CourseServiceImpl implements CourseService{
 
 
     @Override
-    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
-
+    public List<Course> findAllCoursesOfAutUser() {
         User authUser = userDetailsService.getAuthenticatedUser();
 
         List<Course> entities = null;
 
         if (authUser.getAuthority().getCode() == AccessLevel.LECTURER.CODE) {
             entities = courseRepository.findAllByOwnerAndVisible(authUser, true);
-        }
-        else {
+        } else {
             entities = courseRepository.findAllByRegisteredUsersContainsAndAssistantUsersNotContainsAndVisible(authUser, authUser, true);
             List<Course> authenticatedCourses = courseRepository.findAllByAssistantUsersContainsAndVisible(authUser, true);
+            List<Course> observedCourses = courseRepository.findAllByObserverUsersContainsAndAssistantUsersNotContainsAndVisible(authUser, authUser, true);
             entities.addAll(authenticatedCourses);
+            entities.addAll(observedCourses);
+
         }
 
+        return entities;
+    }
+
+    @Override
+    public List<CoursePojo> getAuthUserCourses() throws DataNotFoundException {
+
+        List<Course> entities = findAllCoursesOfAutUser();
 
         if (entities == null) {
             throw new DataNotFoundException("No such a not registered course is found for authenticated users");

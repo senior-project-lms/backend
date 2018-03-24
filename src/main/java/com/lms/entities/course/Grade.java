@@ -12,17 +12,17 @@ import java.util.List;
 /**
  * Created by umit.kas on 28.11.2017.
  */
-@Entity
-@Table(name = "Grades")
+@Entity(name = "grades")
 @Data
 public class Grade extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "grade")
-    private List<Score> scores;
+    private float weight;
 
     @ManyToOne
-    private GradeType gradeType;
+    private Course course;
 
+    @OneToMany(mappedBy = "grade")
+    private List<Score> scores;
 }

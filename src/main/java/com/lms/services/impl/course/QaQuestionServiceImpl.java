@@ -10,7 +10,7 @@ import com.lms.pojos.course.QaAnswerPojo;
 import com.lms.pojos.course.QaQuestionPojo;
 import com.lms.repositories.QaQuestionRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.course.CourseService;
 import com.lms.services.interfaces.QaAnswerService;
 import com.lms.services.interfaces.QaQuestionService;
 import com.lms.services.interfaces.UserService;

@@ -75,6 +75,7 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
         if (entities == null) {
             throw new DataNotFoundException("No such a course announcement is found");
         }
+
         for (Announcement announcement : entities) {
             pojos.add(this.entityToPojo(announcement));
         }
@@ -92,7 +93,6 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
         entity.setCourse(course);
 
         entity.setCreatedBy(createdBy);
-        entity.setCourseResources(null);
         entity = courseAnnouncementRepository.save(entity);
         if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("Course announcement is not saved");

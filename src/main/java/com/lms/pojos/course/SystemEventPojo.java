@@ -1,10 +1,12 @@
 package com.lms.pojos.course;
+
+import com.lms.pojos.SystemAnnouncementPojo;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class EventPojo {
+public class SystemEventPojo {
 
     private String publicKey;
 
@@ -14,7 +16,5 @@ public class EventPojo {
 
     private Date end;
 
-    private CoursePojo course;
-
-    private AnnouncementPojo announcement;
+    private SystemAnnouncementPojo announcement;
 }

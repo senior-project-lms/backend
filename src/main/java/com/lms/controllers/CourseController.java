@@ -5,7 +5,7 @@ import com.lms.customExceptions.*;
 import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.UserCoursePrivilegePojo;
-import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

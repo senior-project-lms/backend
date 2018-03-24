@@ -1,4 +1,4 @@
-package com.lms.services.interfaces;
+package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
@@ -20,4 +20,6 @@ public interface CourseEventService {
     boolean update(String coursePublicKey, EventPojo pojo);
 
     List<EventPojo> getAllEventsOfCourse(String coursePublicKey) throws DataNotFoundException;
+
+    List<EventPojo> getAllEventsOfRegisteredCoursesOfAuthUser();
 }

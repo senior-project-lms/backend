@@ -1,4 +1,4 @@
-package com.lms.services.interfaces;
+package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
@@ -56,5 +56,7 @@ public interface CourseService {
     boolean registerUserAsAssistantToCourse(String publicKey, UserCoursePrivilegePojo pojo) throws ExecutionFailException, DataNotFoundException;
 
     boolean deleteAssistantUser(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException;
+
+    List<Course> findAllCoursesOfAutUser();
 
 }

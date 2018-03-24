@@ -3,7 +3,7 @@ package com.lms.controllers;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.course.EventPojo;
-import com.lms.services.interfaces.CourseEventService;
+import com.lms.services.interfaces.course.CourseEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +26,20 @@ public class CourseEventController {
 
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).DELETE_COURSE_CALENDAR)")
     @DeleteMapping("/course/{coursePublicKey}/calendar/{eventPublicKey}")
-    public boolean getAllEventsOfCourse(@PathVariable String coursePublicKey, @PathVariable String eventPublicKey) throws DataNotFoundException, ExecutionFailException {
+    public boolean deleteCourseEvent(@PathVariable String coursePublicKey, @PathVariable String eventPublicKey) throws DataNotFoundException, ExecutionFailException {
         return courseEventService.delete(eventPublicKey);
     }
 
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).SAVE_COURSE_CALENDAR)")
     @PostMapping("/course/{coursePublicKey}/calendar")
-    public boolean getAllEventsOfCourse(@PathVariable String coursePublicKey, @RequestBody EventPojo eventPojo) throws DataNotFoundException, ExecutionFailException {
+    public boolean saveCourseEvent(@PathVariable String coursePublicKey, @RequestBody EventPojo eventPojo) throws DataNotFoundException, ExecutionFailException {
         return courseEventService.save(coursePublicKey, eventPojo);
+    }
+
+    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_GLOBAL_CALENDAR.CODE)")
+    @GetMapping("/course/all/calendar")
+    public List<EventPojo> getAllEventsOfRegisteredCourses() {
+        return courseEventService.getAllEventsOfRegisteredCoursesOfAuthUser();
     }
 
 }

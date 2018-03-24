@@ -8,11 +8,10 @@ import com.lms.entities.course.Event;
 import com.lms.pojos.course.EventPojo;
 import com.lms.repositories.CourseEventRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseEventService;
-import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.course.CourseEventService;
+import com.lms.services.interfaces.course.CourseService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class CourseEventServiceImpl implements CourseEventService {
         Event entity = new Event();
         entity.setTitle(pojo.getTitle());
         entity.setStart(pojo.getStart());
-        entity.setEnd(pojo.getStart());
+        entity.setEnd(pojo.getEnd());
 
         return entity;
     }
@@ -116,6 +115,26 @@ public class CourseEventServiceImpl implements CourseEventService {
         List<EventPojo> pojos = entities
                 .stream()
                 .map(entity -> entityToPojo(entity))
+                .collect(Collectors.toList());
+
+
+        return pojos;
+    }
+
+
+    @Override
+    public List<EventPojo> getAllEventsOfRegisteredCoursesOfAuthUser() {
+
+        List<Course> courses = courseService.findAllCoursesOfAutUser();
+        List<Event> events = courseEventRepository.findAllByCourseInAndVisible(courses, true);
+
+        List<EventPojo> pojos = events
+                .stream()
+                .map(entity -> {
+                    EventPojo pojo = entityToPojo(entity);
+                    pojo.setCourse(courseService.entityToPojo(entity.getCourse()));
+                    return pojo;
+                })
                 .collect(Collectors.toList());
 
 

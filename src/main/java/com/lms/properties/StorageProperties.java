@@ -3,8 +3,6 @@ package com.lms.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,12 +20,20 @@ public class StorageProperties {
     @Value("${storage.systemAnnouncement.file.path}")
     private String systemAnnouncementFilePath;
 
+    @Value("${storage.course.image.path}")
+    private String courseImagePath;
+
+    @Value("${storage.course.file.path}")
+    private String courseFilePath;
+
 
     public List<String> getAllPaths(){
         return new ArrayList<>(Arrays.
                 asList(rootPath,
                         systemAnnouncementImagePath,
-                        systemAnnouncementFilePath));
+                        systemAnnouncementFilePath,
+                        courseImagePath,
+                        courseFilePath));
     }
 
 
@@ -55,7 +61,19 @@ public class StorageProperties {
         this.systemAnnouncementFilePath = systemAnnouncementFilePath;
     }
 
+    public String getCourseImagePath() {
+        return courseImagePath;
+    }
 
+    public void setCourseImagePath(String courseImagePath) {
+        this.courseImagePath = courseImagePath;
+    }
 
+    public String getCourseFilePath() {
+        return courseFilePath;
+    }
 
+    public void setCourseFilePath(String courseFilePath) {
+        this.courseFilePath = courseFilePath;
+    }
 }

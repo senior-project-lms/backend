@@ -12,4 +12,6 @@ public class GlobalQACommentPojo extends BasePojo {
 
     private String content;
 
+    private boolean anonymous;
+
 }

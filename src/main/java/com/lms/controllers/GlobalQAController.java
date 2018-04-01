@@ -21,6 +21,7 @@ public class GlobalQAController {
     @Autowired
     private GlobalQAService globalQAService;
 
+    @Autowired
     private GlobalQACommentService globalQACommentService;
 
     /**
@@ -33,9 +34,8 @@ public class GlobalQAController {
      */
     @PostMapping(value = "/global-qa-question")
     public boolean save(@RequestBody GlobalQAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
-        if(pojo == null){
-            throw new EmptyFieldException("");
-        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
+
+        if (!pojo.isAnswer() && (pojo.getTitle() == null || pojo.getTitle().isEmpty())) {
             throw new EmptyFieldException("Title field cannot be empty");
         } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException("Content field cannot be empty");
@@ -57,9 +57,8 @@ public class GlobalQAController {
     @PutMapping(value = {"/global-qa-question/{publicKey}"})
     public boolean update(@PathVariable String publicKey, @RequestBody GlobalQAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
-        if(pojo == null){
-            throw new EmptyFieldException("");
-        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
+        if (!pojo.isAnswer() && (pojo.getTitle() == null || pojo.getTitle().isEmpty())) {
+
             throw new EmptyFieldException("Title field cannot be empty");
         } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException("Content field cannot be empty");
@@ -118,7 +117,7 @@ public class GlobalQAController {
 
 
     @PostMapping(value = "/global-qa-question/{publicKey}/comment")
-    public boolean save(@PathVariable String publicKey, @RequestBody GlobalQACommentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+    public boolean saveComment(@PathVariable String publicKey, @RequestBody GlobalQACommentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
        if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException("Content field cannot be empty");

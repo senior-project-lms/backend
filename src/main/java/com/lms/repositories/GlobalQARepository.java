@@ -12,9 +12,11 @@ import java.util.List;
 @Transactional
 public interface GlobalQARepository extends JpaRepository<GlobalQA,Long>{
 
-    List<GlobalQA> findAllByVisible(boolean visible, Pageable pageable);
+    List<GlobalQA> findAllByVisibleAndAnswer(boolean visible, boolean answer, Pageable pageable);
 
      GlobalQA findByPublicKeyAndVisible(String publicKey, boolean visible);
 
      List<GlobalQA> findAllByParentAndVisible(GlobalQA parent, boolean visible);
+
+    int countByParentAndVisible(GlobalQA parent, boolean visible);
 }

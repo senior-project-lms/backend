@@ -70,6 +70,8 @@ public class GlobalQAServiceImpl implements GlobalQAService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
         pojo.setTitle(entity.getTitle());
+        pojo.setAnonymous(entity.isAnonymous());
+        pojo.setAnswer(entity.isAnswer());
         if (!entity.isAnonymous()){
             pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
         }
@@ -101,7 +103,7 @@ public class GlobalQAServiceImpl implements GlobalQAService {
     @Override
     public List<GlobalQAPojo> getAllByPage(int page) throws DataNotFoundException {
 
-        List<GlobalQA> entities = globalQARepository.findAllByVisible(true, new PageRequest(page, 10));
+        List<GlobalQA> entities = globalQARepository.findAllByVisibleAndAnswer(true, false, new PageRequest(page, 10));
 
         if (entities == null){
             throw new DataNotFoundException("no such a question is found");
@@ -113,6 +115,8 @@ public class GlobalQAServiceImpl implements GlobalQAService {
                     pojo.setComments(null);
                     pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(e, true, true));
                     pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(e, true, true));
+                    pojo.setAnswerCount(globalQARepository.countByParentAndVisible(e, true));
+
                     return pojo;
                 })
                 .collect(Collectors.toList());

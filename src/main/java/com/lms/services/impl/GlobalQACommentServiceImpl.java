@@ -47,6 +47,7 @@ public class GlobalQACommentServiceImpl implements GlobalQACommentService {
        GlobalQACommentPojo pojo = new GlobalQACommentPojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
+        pojo.setAnonymous(entity.isAnonymous());
         if (!entity.isAnonymous()){
             pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
         }
@@ -69,7 +70,8 @@ public class GlobalQACommentServiceImpl implements GlobalQACommentService {
     public GlobalQAComment pojoToEntity(GlobalQACommentPojo pojo)
     {
        GlobalQAComment entity = new GlobalQAComment();
-       entity.setContent(entity.getContent());
+        entity.setContent(pojo.getContent());
+        entity.setAnonymous(pojo.isAnonymous());
        return entity;
     }
 

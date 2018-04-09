@@ -19,6 +19,10 @@ public class CourseResourcePojo extends BasePojo {
 
     private String type;
 
+    private String originalFileName;
+
+    private String url;
+
     private CoursePojo course;
 
     private ResourcePackagePojo resourcePackage;

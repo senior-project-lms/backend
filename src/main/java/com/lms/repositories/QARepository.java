@@ -1,6 +1,6 @@
 package com.lms.repositories;
 
-import com.lms.entities.course.QaQuestion;
+import com.lms.entities.course.QA;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 @Transactional
-public interface QaQuestionRepository extends JpaRepository<QaQuestion,Long> {
+public interface QaQuestionRepository extends JpaRepository<QA,Long> {
 
-    List<QaQuestion> findAllByCourseAndVisible(boolean visible, Pageable pageable);
+    List<QA> findAllByCourseAndVisible(boolean visible, Pageable pageable);
 
-    QaQuestion findByCoursePublicKey(String publicKey);
+    QA findByCoursePublicKey(String publicKey);
 }

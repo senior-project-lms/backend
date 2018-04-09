@@ -42,69 +42,9 @@ public class StorageController {
     private CourseResourceService courseResourceService;
 
 
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Uploads image that is located in System Announcement text,
-     *
-     * @param file
-     * @return SystemResourcePojo
-     * @author umit.kas
-     */
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE)")
-    @PostMapping(value = {"/system-announcement/storage/image"})
-    public SystemResourcePojo systemAnnouncementUploadImage(@RequestParam MultipartFile file){
-
-        return  upload(properties.getSystemAnnouncementImagePath(), file);
-
-    }
-
-
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Serve image that is located in System Announcement text,
-     *
-     * @param
-     * @return ResponseEntity<Resource>
-     * @author umit.kas
-     */
-    @GetMapping(value = {"/system-announcement/storage/image/{filename:.+}"})
-    @ResponseBody
-    public ResponseEntity<Resource> systemAnnouncementServeImage(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(properties.getSystemAnnouncementImagePath(), filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
 
 
 
-
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Delete image that is located in System Announcement text,
-     *
-     * @param publicKey
-     * @return
-     * @author umit.kas
-     */
-    @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE)")
-    @DeleteMapping(value = {"/system-announcement/storage/image/{publicKey}"})
-    public void systemAnnouncementDeleteImage(@PathVariable String publicKey){
-        try {
-
-            SystemResourcePojo pojo = systemResourceService.getByPublicKey(publicKey);
-            if (pojo != null){
-                storageService.delete(properties.getSystemAnnouncementImagePath(), pojo.getName());
-            }
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 
     /**
@@ -170,63 +110,8 @@ public class StorageController {
     }
 
 
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Uploads image that is located in Course,
-     *
-     * @param file
-     * @return CourseResourcePojo
-     * @author emsal aynaci
-     */
-    @PostMapping(value = {"/course/store/image"})
-    public CourseResourcePojo courseUploadImage(@RequestParam MultipartFile file){
-
-        return courseUpload(properties.getCourseImagePath(),file);
-    }
 
 
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Serve image that is located in Course,
-     *
-     * @param
-     * @return ResponseEntity<Resource>
-     * @author emsal aynaci
-     */
-
-    @GetMapping(value = {"/course/stroge/image/{filename:.+}"})
-    @ResponseBody
-    public ResponseEntity<Resource> courseServeImage(@PathVariable String filename){
-
-        Resource file = storageService.loadAsResource(properties.getCourseImagePath(),filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
-
-
-    /**
-     * Not Used for now, because of the bug in frontend
-     * <p>
-     * Delete image that is located in Course,
-     *
-     * @param coursePublicKey
-     * @return
-     * @author emsal aynaci
-     */
-    @DeleteMapping(value = {"/course/storage/image/{coursePublicKey}"})
-    public void courseDeleteImage(@PathVariable String coursePublicKey){
-
-        try {
-            CourseResourcePojo pojo = courseResourceService.getByPublicKey(coursePublicKey);
-            if(pojo != null){
-                storageService.delete(properties.getCourseImagePath(), pojo.getName());
-            }
-        } catch (DataNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      *

@@ -14,14 +14,10 @@ public class StorageProperties {
     @Value("${storage.rootPath}")
     private String rootPath;
 
-    @Value("${storage.systemAnnouncement.image.path}")
-    private String systemAnnouncementImagePath;
 
     @Value("${storage.systemAnnouncement.file.path}")
     private String systemAnnouncementFilePath;
 
-    @Value("${storage.course.image.path}")
-    private String courseImagePath;
 
     @Value("${storage.course.file.path}")
     private String courseFilePath;
@@ -30,9 +26,7 @@ public class StorageProperties {
     public List<String> getAllPaths(){
         return new ArrayList<>(Arrays.
                 asList(rootPath,
-                        systemAnnouncementImagePath,
                         systemAnnouncementFilePath,
-                        courseImagePath,
                         courseFilePath));
     }
 
@@ -45,13 +39,7 @@ public class StorageProperties {
         this.rootPath = rootPath;
     }
 
-    public String getSystemAnnouncementImagePath() {
-        return systemAnnouncementImagePath;
-    }
 
-    public void setSystemAnnouncementImagePath(String systemAnnouncementImagePath) {
-        this.systemAnnouncementImagePath = systemAnnouncementImagePath;
-    }
 
     public String getSystemAnnouncementFilePath() {
         return systemAnnouncementFilePath;
@@ -59,14 +47,6 @@ public class StorageProperties {
 
     public void setSystemAnnouncementFilePath(String systemAnnouncementFilePath) {
         this.systemAnnouncementFilePath = systemAnnouncementFilePath;
-    }
-
-    public String getCourseImagePath() {
-        return courseImagePath;
-    }
-
-    public void setCourseImagePath(String courseImagePath) {
-        this.courseImagePath = courseImagePath;
     }
 
     public String getCourseFilePath() {

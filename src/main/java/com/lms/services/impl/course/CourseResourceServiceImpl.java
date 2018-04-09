@@ -9,7 +9,7 @@ import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseResourceService;
-import com.lms.services.interfaces.CourseService;
+import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

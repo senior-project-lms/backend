@@ -1,8 +1,11 @@
 package com.lms.controllers;
 
 
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.pojos.SystemResourcePojo;
+import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
+import com.lms.services.interfaces.CourseResourceService;
 import com.lms.services.interfaces.StorageService;
 import com.lms.services.interfaces.SystemResourceService;
 import org.apache.commons.io.FilenameUtils;
@@ -23,6 +26,9 @@ public class StorageController {
 
     private final String systemAnnouncementServeFileURLPath = "/api/system-announcement/storage/file";
 
+    private final String courseServeFileURLPath = "/api/course/storage/file";
+
+
     @Autowired
     private StorageService storageService;
 
@@ -31,6 +37,9 @@ public class StorageController {
 
     @Autowired
     private SystemResourceService systemResourceService;
+
+    @Autowired
+    private CourseResourceService courseResourceService;
 
 
     /**
@@ -70,6 +79,8 @@ public class StorageController {
     }
 
 
+
+
     /**
      * Not Used for now, because of the bug in frontend
      * <p>
@@ -94,6 +105,7 @@ public class StorageController {
             e.printStackTrace();
         }
     }
+
 
     /**
      *
@@ -129,6 +141,7 @@ public class StorageController {
     }
 
 
+
     /**
      *
      * Delete file that is added to the System Announcement,
@@ -156,6 +169,110 @@ public class StorageController {
 
     }
 
+
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Uploads image that is located in Course,
+     *
+     * @param file
+     * @return CourseResourcePojo
+     * @author emsal aynaci
+     */
+    @PostMapping(value = {"/course/store/image"})
+    public CourseResourcePojo courseUploadImage(@RequestParam MultipartFile file){
+
+        return courseUpload(properties.getCourseImagePath(),file);
+    }
+
+
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Serve image that is located in Course,
+     *
+     * @param
+     * @return ResponseEntity<Resource>
+     * @author emsal aynaci
+     */
+
+    @GetMapping(value = {"/course/stroge/image/{filename:.+}"})
+    @ResponseBody
+    public ResponseEntity<Resource> courseServeImage(@PathVariable String filename){
+
+        Resource file = storageService.loadAsResource(properties.getCourseImagePath(),filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+
+    /**
+     * Not Used for now, because of the bug in frontend
+     * <p>
+     * Delete image that is located in Course,
+     *
+     * @param coursePublicKey
+     * @return
+     * @author emsal aynaci
+     */
+    @DeleteMapping(value = {"/course/storage/image/{coursePublicKey}"})
+    public void courseDeleteImage(@PathVariable String coursePublicKey){
+
+        try {
+            CourseResourcePojo pojo = courseResourceService.getByPublicKey(coursePublicKey);
+            if(pojo != null){
+                storageService.delete(properties.getCourseImagePath(), pojo.getName());
+            }
+        } catch (DataNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * Upload file that is added the of Course,
+     *
+     * @param file
+     * @return CourseResourcePojo
+     * @author umit.kas
+     */
+    @PostMapping(value = {"/course/storage/file"})
+    public CourseResourcePojo courseUploadFile(@RequestParam MultipartFile file){
+
+        return courseUpload(properties.getCourseFilePath(), file);
+    }
+
+    /**
+     * Serve file that is added to the Course,
+     * Finds the file by filename, that comes with request
+     *
+     * @param filename
+     * @return CourseResourcePojo
+     * @author emsal aynaci
+     */
+    @GetMapping(value = {"/course/storage/file/{filename:.+}"})
+    @ResponseBody
+    public ResponseEntity<Resource> courseServeFile(@PathVariable String filename){
+        Resource file = storageService.loadAsResource(properties.getCourseFilePath(),filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+
+    @DeleteMapping(value = {"/system-announcement/storage/file/{coursePublicKey}"})
+    public boolean CourseDeleteFile(@PathVariable String coursePublicKey){
+        try {
+
+            CourseResourcePojo pojo = courseResourceService.getByPublicKey(coursePublicKey);
+            if(pojo != null && courseResourceService.delete(pojo.getPublicKey())){
+                storageService.delete(properties.getCourseFilePath(),pojo.getName());
+                return true;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      *
@@ -206,7 +323,53 @@ public class StorageController {
     }
 
 
+    /**
+     *
+     *  funtions for uploading, save file to given path,
+     * before saving, get the extention type, generates unique name, than saves to file system
+     * after savege, insert to record to database
+     *
+     * @param path
+     * @param file
+     * @return CourseResourcePojo
+     * @author emsal aynaci
+     */
+    private CourseResourcePojo courseUpload(String path, MultipartFile file){
+        try {
+            if (file != null){
 
+                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
+                String filename = String.format("%s.%s", UUID.randomUUID().toString(), extension);
+
+                String URL = String.format("%s/%s", courseServeFileURLPath, filename);
+
+                storageService.store(path, filename, file);
+
+                Path f = storageService.load(path, filename);
+
+                if (f != null){
+                    CourseResourcePojo pojo = new CourseResourcePojo();
+                    pojo.setPath(f.toString());
+                    pojo.setName(f.getFileName().toString());
+                    pojo.setOriginalFileName(file.getOriginalFilename());
+                    pojo.setUrl(URL);
+                    pojo.setType(extension);
+                    courseResourceService.save(pojo);
+                    pojo = courseResourceService.getByName(pojo.getName());
+
+
+                    return pojo;
+                }
+            }
+
+            return null;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
 }

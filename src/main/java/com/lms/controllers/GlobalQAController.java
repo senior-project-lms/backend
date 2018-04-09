@@ -5,6 +5,7 @@ import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQA;
 import com.lms.entities.GlobalQAComment;
+import com.lms.enums.VoteType;
 import com.lms.pojos.GlobalQACommentPojo;
 import com.lms.pojos.GlobalQAPojo;
 import com.lms.services.interfaces.GlobalQACommentService;
@@ -12,6 +13,7 @@ import com.lms.services.interfaces.GlobalQAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,7 @@ public class GlobalQAController {
      * @return
      * @author emsal.aynaci
      */
-    @PostMapping(value = "/global-qa-question")
+    @PostMapping(value = "/global-qa")
     public boolean save(@RequestBody GlobalQAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (!pojo.isAnswer() && (pojo.getTitle() == null || pojo.getTitle().isEmpty())) {
@@ -54,7 +56,7 @@ public class GlobalQAController {
      * @return
      * @author emsal aynaci
      */
-    @PutMapping(value = {"/global-qa-question/{publicKey}"})
+    @PutMapping(value = {"/global-qa/{publicKey}"})
     public boolean update(@PathVariable String publicKey, @RequestBody GlobalQAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (!pojo.isAnswer() && (pojo.getTitle() == null || pojo.getTitle().isEmpty())) {
@@ -75,7 +77,7 @@ public class GlobalQAController {
      * @author emsal.aynaci
      */
 
-    @DeleteMapping(value = {"/global-qa-question/{publicKey}"})
+    @DeleteMapping(value = {"/global-qa/{publicKey}"})
     public boolean delete(@PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (publicKey == null || publicKey.isEmpty()) {
@@ -97,8 +99,8 @@ public class GlobalQAController {
      * @author emsal.aynaci
      */
 
-    @GetMapping({"/global-qa-questions/{page}"})
-    public List<GlobalQAPojo> getQuestions(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
+    @GetMapping({"/global-qas/{page}"})
+    public List<GlobalQAPojo> getAll(@PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (page < 1){
             throw new EmptyFieldException("Page number cannot be negative");
@@ -108,7 +110,7 @@ public class GlobalQAController {
 
     }
 
-    @GetMapping({"/global-qa-question/{publicKey}"})
+    @GetMapping({"/global-qa/{publicKey}"})
     public GlobalQAPojo get(@PathVariable String publicKey) throws DataNotFoundException{
 
         return globalQAService.getByPublicKey(publicKey);
@@ -116,7 +118,7 @@ public class GlobalQAController {
     }
 
 
-    @PostMapping(value = "/global-qa-question/{publicKey}/comment")
+    @PostMapping(value = "/global-qa/{publicKey}/comment")
     public boolean saveComment(@PathVariable String publicKey, @RequestBody GlobalQACommentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
        if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
@@ -125,6 +127,26 @@ public class GlobalQAController {
             return globalQACommentService.save(publicKey, pojo);
         }
     }
+
+    @PostMapping(value = {"/global-qa/{publicKey}/up-vote"})
+    public boolean upVote(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, SerialException {
+        return globalQAService.vote(publicKey, VoteType.UP);
+    }
+
+    @PostMapping(value = {"/global-qa/{publicKey}/down-vote"})
+    public boolean downVote(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, SerialException {
+        return globalQAService.vote(publicKey, VoteType.DOWN);
+
+    }
+
+
+    @PostMapping(value = {"/global-qa/{publicKey}/star-vote"})
+    public boolean starVote(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, SerialException {
+        return globalQAService.vote(publicKey, VoteType.STAR);
+
+    }
+
+
 }
 
 

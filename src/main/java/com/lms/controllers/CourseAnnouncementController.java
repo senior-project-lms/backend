@@ -4,7 +4,7 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.course.AnnouncementPojo;
-import com.lms.services.interfaces.CourseAnnouncementService;
+import com.lms.services.interfaces.course.CourseAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

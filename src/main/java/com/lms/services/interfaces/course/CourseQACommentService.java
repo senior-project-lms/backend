@@ -1,16 +1,15 @@
 package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
-import com.lms.entities.course.QaComment;
-import com.lms.pojos.course.QaCommentPojo;
+import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.course.QAComment;
+import com.lms.pojos.course.QACommentPojo;
 
-import java.util.List;
+public interface CourseQACommentService {
 
-public interface QaAnswerService {
+    QACommentPojo entityToPojo(QAComment entity);
 
-    QaCommentPojo entityToPojo(QaComment entity);
+    QAComment pojoToEntity(QACommentPojo pojo);
 
-    QaComment pojoToEntity(QaCommentPojo pojo);
-
-    List<QaCommentPojo> getQuestionAnswersByQuestionPublicKey(String questionPublicKey) throws DataNotFoundException;
+    boolean save(String qaPublicKey, QACommentPojo pojo) throws DataNotFoundException, ExecutionFailException;
 }

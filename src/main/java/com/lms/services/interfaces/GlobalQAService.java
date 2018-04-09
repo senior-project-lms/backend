@@ -3,8 +3,10 @@ package com.lms.services.interfaces;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQA;
+import com.lms.enums.VoteType;
 import com.lms.pojos.GlobalQAPojo;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 
 public interface GlobalQAService {
@@ -24,6 +26,9 @@ public interface GlobalQAService {
     boolean delete(String publicKey) throws DataNotFoundException,ExecutionFailException;
 
     boolean update(String publicKey, GlobalQAPojo pojo)throws DataNotFoundException,ExecutionFailException;
+
+
+    boolean vote(String publicKey, VoteType vote) throws ExecutionFailException, DataNotFoundException;
 }
 
 //findBy entity

@@ -14,13 +14,13 @@ import java.util.List;
 @Entity
 @Table(name = "course_qa_comments")
 @Data
-public class QaComment extends BaseEntity {
+public class QAComment extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne
-    private GlobalQA qa;
+    private QA qa;
 
 
     private boolean anonymous;

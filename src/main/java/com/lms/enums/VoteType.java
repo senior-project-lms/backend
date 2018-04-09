@@ -1,4 +1,6 @@
 package com.lms.enums;
 
-public class VoteType {
+public enum VoteType {
+
+    UP, DOWN, STAR
 }

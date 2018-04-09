@@ -8,7 +8,7 @@ import com.lms.entities.course.Course;
 import com.lms.pojos.course.AnnouncementPojo;
 import com.lms.repositories.CourseAnnouncementRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseAnnouncementService;
+import com.lms.services.interfaces.course.CourseAnnouncementService;
 import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = {"/api"})
-public class QAController {
+public class CourseQAController {
 
     @Autowired
     private CourseQAService courseQAService;
@@ -32,18 +32,15 @@ public class QAController {
      * @author emsal.aynaci
      */
 
-    @PostMapping(value = "/course/{publicKey}/qa-question")
-    public boolean save(@PathVariable String publicKey, @RequestBody QAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
-        if(pojo == null) {
-            throw new EmptyFieldException("");
-        } else if (pojo.getCourse() == null ){
-            throw new EmptyFieldException("Course cannot be empty");
-        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
+    @PostMapping(value = "/course/{coursePublicKey}/qa")
+    public boolean save(@PathVariable String coursePublicKey, @RequestBody QAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+
+        if (!pojo.isAnswer() && (pojo.getTitle() == null || pojo.getTitle().isEmpty())) {
             throw new EmptyFieldException("Title field cannot be empty");
         } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException("Content field cannot be empty");
         } else {
-            return courseQAService.save(pojo);
+            return courseQAService.save(coursePublicKey, pojo);
         }
 
     }
@@ -57,19 +54,17 @@ public class QAController {
      * @author emsal aynaci
      */
 
-    @PutMapping(value = {"/course/{coursePublicKey}/qa-question"})
+    @PutMapping(value = {"/course/{coursePublicKey}/qa"})
     public boolean update(@PathVariable String coursePublicKey, @RequestBody QAPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
-        if(pojo == null){
-            throw new EmptyFieldException("");
-        }else if (pojo.getCourse() == null ) {
-            throw new EmptyFieldException("Course cannot be empty");
-        }else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
+        if (pojo.getPublicKey() == null || !pojo.getPublicKey().isEmpty()) {
+            throw new EmptyFieldException("Title field cannot be empty");
+        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
             throw new EmptyFieldException("Title field cannot be empty");
         } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException("Content field cannot be empty");
         } else {
-            return courseQAService.update(pojo);
+            return courseQAService.update(coursePublicKey, pojo);
         }
     }
 
@@ -81,14 +76,14 @@ public class QAController {
      * @author emsal.aynaci
      */
 
-    @DeleteMapping(value = {"/course/{coursePublicKey}/qa-question/{publicKey}"})
+    @DeleteMapping(value = {"/course/{coursePublicKey}/qa/{publicKey}"})
     public boolean delete(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (publicKey == null || publicKey.isEmpty()) {
             throw new EmptyFieldException("publicKey field cannot be empty");
         }
 
-        return courseQAService.delete(publicKey);
+        return courseQAService.delete(coursePublicKey, publicKey);
 
     }
 
@@ -102,18 +97,18 @@ public class QAController {
      * @author emsal.aynaci
      */
 
-    @GetMapping({"/course/{coursePublicKey}/qa-question/{page}"})
+    @GetMapping({"/course/{coursePublicKey}/qas/{page}"})
     public List<QAPojo> getAll(@PathVariable String coursePublicKey, @PathVariable int page) throws EmptyFieldException, ExecutionFailException, DataNotFoundException{
 
-        if (page < 0){
+        if (page < 1) {
             throw new EmptyFieldException("Page number cannot be negative");
         }
 
-        return courseQAService.getAll(coursePublicKey, page);
+        return courseQAService.getAll(coursePublicKey, --page);
 
     }
 
-    @GetMapping({"/course/{coursePublicKey}/qa-question/{publicKey}"})
+    @GetMapping({"/course/{coursePublicKey}/qa/{publicKey}"})
     public QAPojo get(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws DataNotFoundException{
 
         return courseQAService.getByPublicKey(publicKey);
@@ -121,7 +116,7 @@ public class QAController {
     }
 
 
-    @PostMapping(value = "/course/{coursePublicKey}/qa-question/{publicKey}/comment")
+    @PostMapping(value = "/course/{coursePublicKey}/qa/{publicKey}/comment")
     public boolean saveComment(@PathVariable String coursePublicKey, @PathVariable String publicKey, @RequestBody QACommentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
@@ -131,19 +126,19 @@ public class QAController {
         }
     }
 
-    @PostMapping(value = {"/course/{coursePublicKey}/qa-question/{publicKey}/up-vote"})
+    @PostMapping(value = {"/course/{coursePublicKey}/qa/{publicKey}/up-vote"})
     public boolean upVote(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
         return courseQAService.vote(publicKey, VoteType.UP);
     }
 
-    @PostMapping(value = {"/course/{coursePublicKey}/qa-question/{publicKey}/down-vote"})
+    @PostMapping(value = {"/course/{coursePublicKey}/qa/{publicKey}/down-vote"})
     public boolean downVote(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
         return courseQAService.vote(publicKey, VoteType.DOWN);
 
     }
 
 
-    @PostMapping(value = {"/course/{coursePublicKey}/qa-question/{publicKey}/star-vote"})
+    @PostMapping(value = {"/course/{coursePublicKey}/qa/{publicKey}/star-vote"})
     public boolean starVote(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
         return courseQAService.vote(publicKey, VoteType.STAR);
 

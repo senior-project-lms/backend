@@ -1,5 +1,6 @@
-package com.lms.entities;
+package com.lms.entities.course;
 
+import com.lms.entities.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -9,13 +10,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "g_qa_votes")
 @Data
-public class GlobalQAVote extends BaseEntity{
+public class QAVote extends BaseEntity {
 
     private boolean up;
     private boolean down;
     private boolean star;
 
     @OneToOne
-    private GlobalQA qa;
+    private QA qa;
 
 }

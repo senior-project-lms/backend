@@ -3,7 +3,9 @@ package com.lms.services.impl;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQA;
+import com.lms.entities.GlobalQAVote;
 import com.lms.entities.User;
+import com.lms.enums.VoteType;
 import com.lms.pojos.GlobalQACommentPojo;
 import com.lms.pojos.GlobalQAPojo;
 import com.lms.repositories.GlobalQARepository;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -116,7 +119,7 @@ public class GlobalQAServiceImpl implements GlobalQAService {
                     pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(e, true, true));
                     pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(e, true, true));
                     pojo.setAnswerCount(globalQARepository.countByParentAndVisible(e, true));
-
+                    pojo.setStarCount(globalQAVoteRepository.countByQaAndStarAndVisible(e, true, true));
                     return pojo;
                 })
                 .collect(Collectors.toList());
@@ -139,9 +142,11 @@ public class GlobalQAServiceImpl implements GlobalQAService {
 
         pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(entity, true, true));
         pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(entity, true, true));
+
         pojo.setStarred(globalQAVoteRepository.existsByQaAndStarAndVisibleAndCreatedBy(entity, true, true, authenticatedUser));
         pojo.setUpped(globalQAVoteRepository.existsByQaAndUpAndVisibleAndCreatedBy(entity, true, true, authenticatedUser));
         pojo.setDowned(globalQAVoteRepository.existsByQaAndDownAndVisibleAndCreatedBy(entity, true, true, authenticatedUser));
+        pojo.setStarCount(globalQAVoteRepository.countByQaAndStarAndVisible(entity, true, true));
 
         if (answersEntities != null){
 
@@ -154,6 +159,7 @@ public class GlobalQAServiceImpl implements GlobalQAService {
                         p.setStarred(globalQAVoteRepository.existsByQaAndStarAndVisibleAndCreatedBy(e, true, true, authenticatedUser));
                         p.setUpped(globalQAVoteRepository.existsByQaAndUpAndVisibleAndCreatedBy(e, true, true, authenticatedUser));
                         p.setDowned(globalQAVoteRepository.existsByQaAndDownAndVisibleAndCreatedBy(e, true, true, authenticatedUser));
+                        p.setStarCount(globalQAVoteRepository.countByQaAndStarAndVisible(e, true, true));
 
                         return p;
                     })
@@ -292,4 +298,46 @@ public class GlobalQAServiceImpl implements GlobalQAService {
     }
 
 
+    @Override
+    public boolean vote(String publicKey, VoteType vote) throws ExecutionFailException, DataNotFoundException {
+
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        GlobalQA qa = findByPublicKey(publicKey, true);
+
+        GlobalQAVote entity = null;
+        entity = globalQAVoteRepository.findByQaAndCreatedBy(qa, authenticatedUser);
+
+
+        if (entity == null) {
+            entity = new GlobalQAVote();
+            entity.setCreatedBy(authenticatedUser);
+            entity.generatePublicKey();
+        } else {
+            entity.setUpdatedBy(authenticatedUser);
+        }
+
+
+        entity.setQa(qa);
+
+        if (vote.equals(VoteType.UP)) {
+            entity.setUp(!entity.isUp());
+            entity.setDown(false);
+
+        } else if (vote.equals(VoteType.DOWN)) {
+            entity.setUp(false);
+            entity.setDown(!entity.isDown());
+
+        } else if (vote.equals(VoteType.STAR)) {
+            entity.setStar(!entity.isStar());
+        }
+
+        entity = globalQAVoteRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0) {
+            throw new ExecutionFailException("Not voted");
+        }
+
+        return true;
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "course_qas")
 @Data
-public class Qa extends BaseEntity {
+public class QA extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String title;
@@ -20,11 +20,17 @@ public class Qa extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+
+    @ManyToOne
+    private Course course;
+
     @OneToMany(mappedBy = "qa")
-    private List<QaComment> comments;
+    private List<QAComment> comments;
+
+
 
     @OneToOne
-    private Qa parent;
+    private QA parent;
 
     private boolean answer;
 

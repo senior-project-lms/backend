@@ -5,7 +5,7 @@ import com.lms.entities.course.QAVote;
 import com.lms.entities.course.QA;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QaVoteRepository  extends JpaRepository<QAVote, Long> {
+public interface QAVoteRepository extends JpaRepository<QAVote, Long> {
 
     long countByQaAndUpAndVisible(QA QA, boolean up, boolean visible);
     long countByQaAndDownAndVisible(QA qa, boolean down, boolean visible);

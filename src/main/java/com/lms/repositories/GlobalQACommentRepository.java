@@ -11,8 +11,6 @@ import java.util.List;
 @Transactional
 public interface GlobalQACommentRepository extends JpaRepository<GlobalQAComment,Long> {
 
-    List<GlobalQAComment> findAllByQa(GlobalQA qa);
-
     GlobalQAComment findByPublicKey(String publicKey);
 
 }

@@ -1,4 +1,4 @@
-package com.lms.services.interfaces;
+package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;

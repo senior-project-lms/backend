@@ -36,7 +36,7 @@ public enum CommonStudentPrivilege {
 
     UPDATE_GLOBAL_QA(1010000100),
     VOTE_GLOBAL_QA(1101110101),
-    STAR_COURSE_QA(1010101100),
+    STAR_COURSE_QA(1010101100)
     ;
 
 

@@ -10,13 +10,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "g_qa_votes")
 @Data
-public class QAVote extends BaseEntity {
+public class CourseQAVote extends BaseEntity {
 
     private boolean up;
     private boolean down;
     private boolean star;
 
     @OneToOne
-    private QA qa;
+    private CourseQA qa;
 
 }

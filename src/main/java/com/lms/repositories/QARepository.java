@@ -1,7 +1,7 @@
 package com.lms.repositories;
 
 import com.lms.entities.course.Course;
-import com.lms.entities.course.QA;
+import com.lms.entities.course.CourseQA;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 @Transactional
-public interface QARepository extends JpaRepository<QA, Long> {
+public interface QARepository extends JpaRepository<CourseQA, Long> {
 
-    List<QA> findAllByCourseAndAnswerAndVisible(Course course, boolean answer, boolean visible, Pageable pageable);
+    List<CourseQA> findAllByCourseAndAnswerAndVisible(Course course, boolean answer, boolean visible, Pageable pageable);
 
-    QA findByPublicKeyAndVisible(String publicKey, boolean visible);
+    CourseQA findByPublicKeyAndVisible(String publicKey, boolean visible);
 
 
-    List<QA> findAllByParentAndVisible(QA parent, boolean visible);
+    List<CourseQA> findAllByParentAndVisible(CourseQA parent, boolean visible);
 
-    long countByParentAndVisible(QA parent, boolean visible);
+    long countByParentAndVisible(CourseQA parent, boolean visible);
 }

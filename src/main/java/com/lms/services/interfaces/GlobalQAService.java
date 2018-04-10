@@ -29,6 +29,9 @@ public interface GlobalQAService {
 
 
     boolean vote(String publicKey, VoteType vote) throws ExecutionFailException, DataNotFoundException;
+
+    List<GlobalQAPojo> getTop10RelatedTopics(String publicKey) throws DataNotFoundException;
+
 }
 
 //findBy entity

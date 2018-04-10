@@ -19,6 +19,9 @@ public class GlobalQA extends BaseEntity {
     @OneToMany(mappedBy = "qa")
     private List<GlobalQAComment> comments;
 
+    @ManyToMany
+    private List<GlobalQATag> tags;
+
     @OneToOne
     private GlobalQA parent;
 

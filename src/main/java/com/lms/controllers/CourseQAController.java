@@ -47,7 +47,7 @@ public class CourseQAController {
 
     /**
      * Checks pojo parameter that will be saved, is null or not, if there is any null returns error else
-     * Update QA
+     * Update CourseQA
      *
      * @param pojo
      * @return

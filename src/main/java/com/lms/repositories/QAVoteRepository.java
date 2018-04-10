@@ -1,22 +1,26 @@
 package com.lms.repositories;
 
 import com.lms.entities.User;
-import com.lms.entities.course.QAVote;
-import com.lms.entities.course.QA;
+import com.lms.entities.course.CourseQAVote;
+import com.lms.entities.course.CourseQA;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QAVoteRepository extends JpaRepository<QAVote, Long> {
+public interface QAVoteRepository extends JpaRepository<CourseQAVote, Long> {
 
-    long countByQaAndUpAndVisible(QA QA, boolean up, boolean visible);
-    long countByQaAndDownAndVisible(QA qa, boolean down, boolean visible);
-    long countByQaAndStarAndVisible(QA qa, boolean star, boolean visible);
+    long countByQaAndUpAndVisible(CourseQA QA, boolean up, boolean visible);
 
-    boolean existsByQaAndUpAndVisibleAndCreatedBy(QA qa, boolean up, boolean visible, User user);
-    boolean existsByQaAndDownAndVisibleAndCreatedBy(QA qa, boolean down, boolean visible, User user);
-    boolean existsByQaAndStarAndVisibleAndCreatedBy(QA qa, boolean star, boolean visible, User user);
+    long countByQaAndDownAndVisible(CourseQA qa, boolean down, boolean visible);
+
+    long countByQaAndStarAndVisible(CourseQA qa, boolean star, boolean visible);
+
+    boolean existsByQaAndUpAndVisibleAndCreatedBy(CourseQA qa, boolean up, boolean visible, User user);
+
+    boolean existsByQaAndDownAndVisibleAndCreatedBy(CourseQA qa, boolean down, boolean visible, User user);
+
+    boolean existsByQaAndStarAndVisibleAndCreatedBy(CourseQA qa, boolean star, boolean visible, User user);
 
 
-    QAVote findByQaAndCreatedByAndStar(QA qa, User user, boolean star);
+    CourseQAVote findByQaAndCreatedByAndStar(CourseQA qa, User user, boolean star);
 
-    QAVote findByQaAndCreatedBy(QA qa, User user);
+    CourseQAVote findByQaAndCreatedBy(CourseQA qa, User user);
 }

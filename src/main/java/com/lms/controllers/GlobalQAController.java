@@ -8,8 +8,10 @@ import com.lms.entities.GlobalQAComment;
 import com.lms.enums.VoteType;
 import com.lms.pojos.GlobalQACommentPojo;
 import com.lms.pojos.GlobalQAPojo;
+import com.lms.pojos.GlobalQATagPojo;
 import com.lms.services.interfaces.GlobalQACommentService;
 import com.lms.services.interfaces.GlobalQAService;
+import com.lms.services.interfaces.GlobalQATagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,10 @@ public class GlobalQAController {
 
     @Autowired
     private GlobalQACommentService globalQACommentService;
+
+
+    @Autowired
+    private GlobalQATagService globalQATagService;
 
     /**
      * Checks pojo parameter that will be saved, is null or not, if there is any null returns error else
@@ -144,6 +150,16 @@ public class GlobalQAController {
     public boolean starVote(@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException, SerialException {
         return globalQAService.vote(publicKey, VoteType.STAR);
 
+    }
+
+    @GetMapping(value = {"/global-qa/{publicKey}/relateds"})
+    public List<GlobalQAPojo> getRelateds(@PathVariable String publicKey) throws DataNotFoundException {
+        return globalQAService.getTop10RelatedTopics(publicKey);
+    }
+
+    @GetMapping(value = {"/global-qa/tag/{name}"})
+    public List<GlobalQATagPojo> searchByTag(@PathVariable String name) {
+        return globalQATagService.searchByName(name);
     }
 
 

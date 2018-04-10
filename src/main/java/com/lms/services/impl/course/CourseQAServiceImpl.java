@@ -4,9 +4,8 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
-import com.lms.entities.course.QA;
-import com.lms.entities.course.QAComment;
-import com.lms.entities.course.QAVote;
+import com.lms.entities.course.CourseQA;
+import com.lms.entities.course.CourseQAVote;
 import com.lms.enums.VoteType;
 import com.lms.pojos.course.QACommentPojo;
 import com.lms.pojos.course.QAPojo;
@@ -48,23 +47,23 @@ public class CourseQAServiceImpl implements CourseQAService {
     private CourseQACommentService courseQACommentService;
 
     /**
-     * Converts QAPojo to QA according to values, if the value is null passes it,
+     * Converts QAPojo to CourseQA according to values, if the value is null passes it,
      *
      * @param pojo
-     * @return QA
+     * @return CourseQA
      * @author emsal aynaci
      */
 
-    public QA pojoToEntity(QAPojo pojo) {
+    public CourseQA pojoToEntity(QAPojo pojo) {
 
-        QA entity = new QA();
+        CourseQA entity = new CourseQA();
         entity.setContent(pojo.getContent());
         entity.setTitle(pojo.getTitle());
         return entity;
     }
 
     /**
-     * Converts QA entity to Question pojo according to boolean variables,
+     * Converts CourseQA entity to Question pojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
      *
      * @param entity
@@ -72,7 +71,7 @@ public class CourseQAServiceImpl implements CourseQAService {
      * @author emsal aynaci
      */
 
-    public QAPojo entityToPojo(QA entity) {
+    public QAPojo entityToPojo(CourseQA entity) {
 
         QAPojo pojo = new QAPojo();
         pojo.setPublicKey(entity.getPublicKey());
@@ -97,7 +96,7 @@ public class CourseQAServiceImpl implements CourseQAService {
     /**
      *
      * Returns a list of 10 QaQuestionPojos,
-     * Selects the visible QA and converts it to pojo than returns
+     * Selects the visible CourseQA and converts it to pojo than returns
      *
      * @author emsal aynaci
      * @param page
@@ -109,7 +108,7 @@ public class CourseQAServiceImpl implements CourseQAService {
 
         Course course = courseService.findByPublicKey(coursePublicKey);
 
-        List<QA> entities = qaRepository.findAllByCourseAndAnswerAndVisible(course, false, true, new PageRequest(page, 10));
+        List<CourseQA> entities = qaRepository.findAllByCourseAndAnswerAndVisible(course, false, true, new PageRequest(page, 10));
 
         if (entities == null){
             throw new DataNotFoundException("no such a question is found");
@@ -138,9 +137,9 @@ public class CourseQAServiceImpl implements CourseQAService {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
         QAPojo pojo;
-        QA entity = findByPublicKey(publicKey, true);
+        CourseQA entity = findByPublicKey(publicKey, true);
 
-        List<QA> answersEntities = qaRepository.findAllByParentAndVisible(entity, true);
+        List<CourseQA> answersEntities = qaRepository.findAllByParentAndVisible(entity, true);
 
         pojo = entityToPojo(entity);
 
@@ -178,17 +177,17 @@ public class CourseQAServiceImpl implements CourseQAService {
 
     /**
      *
-     * Return the QA,
+     * Return the CourseQA,
      * findBy Course publicKey
      * return entity
 
      * @author emsal aynaci
      * @param publicKey
-     * @return QA
+     * @return CourseQA
      */
     @Override
-    public QA findByPublicKey(String publicKey, boolean visible) throws DataNotFoundException {
-        QA entity = qaRepository.findByPublicKeyAndVisible(publicKey, visible);
+    public CourseQA findByPublicKey(String publicKey, boolean visible) throws DataNotFoundException {
+        CourseQA entity = qaRepository.findByPublicKeyAndVisible(publicKey, visible);
 
         if (entity == null) {
             throw new DataNotFoundException(String.format("No such a question is found for publicKey: %s", publicKey));
@@ -202,11 +201,11 @@ public class CourseQAServiceImpl implements CourseQAService {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
 
-        QA entity = pojoToEntity(pojo);
+        CourseQA entity = pojoToEntity(pojo);
 
 
         if (pojo.isAnswer()) {
-            QA parent = findByPublicKey(pojo.getPublicKey(), true);
+            CourseQA parent = findByPublicKey(pojo.getPublicKey(), true);
             entity.setParent(parent);
             entity.setAnswer(true);
         }
@@ -230,7 +229,7 @@ public class CourseQAServiceImpl implements CourseQAService {
 
     /**
      *
-     * Update the QA,
+     * Update the CourseQA,
      * add who updates it,
      * update values
      * then save it.
@@ -243,7 +242,7 @@ public class CourseQAServiceImpl implements CourseQAService {
     public boolean update(String coursePublicKey, QAPojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
-        QA entity = findByPublicKey(coursePublicKey, true);
+        CourseQA entity = findByPublicKey(coursePublicKey, true);
 
         if (entity == null){
             throw new DataNotFoundException(String.format("No such a question is found for publicKey: %s", coursePublicKey));
@@ -265,7 +264,7 @@ public class CourseQAServiceImpl implements CourseQAService {
 
     /**
      *
-     * Delete the QA,
+     * Delete the CourseQA,
      * Delete means set visible false to property of it.
      * update visibility false and then save it.
      *
@@ -275,7 +274,7 @@ public class CourseQAServiceImpl implements CourseQAService {
      */
     @Override
     public boolean delete(String coursePublicKey, String publicKey) throws DataNotFoundException, ExecutionFailException {
-        QA entity = findByPublicKey(publicKey, true);
+        CourseQA entity = findByPublicKey(publicKey, true);
         if (entity == null){
             throw new DataNotFoundException("No such a question is found publicKey");
         }
@@ -295,14 +294,14 @@ public class CourseQAServiceImpl implements CourseQAService {
 
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
-        QA qa = findByPublicKey(publicKey, true);
+        CourseQA qa = findByPublicKey(publicKey, true);
 
-        QAVote entity = null;
+        CourseQAVote entity = null;
         entity = qaVoteRepository.findByQaAndCreatedBy(qa, authenticatedUser);
 
 
         if (entity == null) {
-            entity = new QAVote();
+            entity = new CourseQAVote();
             entity.setCreatedBy(authenticatedUser);
             entity.generatePublicKey();
         } else {

@@ -3,8 +3,8 @@ package com.lms.services.impl.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
-import com.lms.entities.course.QA;
-import com.lms.entities.course.QAComment;
+import com.lms.entities.course.CourseQA;
+import com.lms.entities.course.CourseQAComment;
 import com.lms.pojos.course.QACommentPojo;
 import com.lms.repositories.QACommentRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -35,7 +35,7 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
 
 
     @Override
-    public QACommentPojo entityToPojo(QAComment entity) {
+    public QACommentPojo entityToPojo(CourseQAComment entity) {
         QACommentPojo pojo = new QACommentPojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
@@ -46,8 +46,8 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
     }
 
     @Override
-    public QAComment pojoToEntity(QACommentPojo pojo) {
-        QAComment entity = new QAComment();
+    public CourseQAComment pojoToEntity(QACommentPojo pojo) {
+        CourseQAComment entity = new CourseQAComment();
         entity.setContent(pojo.getContent());
         entity.setQa(entity.getQa());
         return entity;
@@ -58,9 +58,9 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
     public boolean save(String qaPublicKey, QACommentPojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = userDetailService.getAuthenticatedUser();
 
-        QA qa = courseQAService.findByPublicKey(qaPublicKey, true);
+        CourseQA qa = courseQAService.findByPublicKey(qaPublicKey, true);
 
-        QAComment entity = pojoToEntity(pojo);
+        CourseQAComment entity = pojoToEntity(pojo);
         entity.setCreatedBy(authenticatedUser);
         entity.setQa(qa);
 

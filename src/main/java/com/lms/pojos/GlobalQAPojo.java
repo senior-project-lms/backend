@@ -20,6 +20,8 @@ public class GlobalQAPojo extends BasePojo{
 
     private List<GlobalQACommentPojo> comments;
 
+    private List<GlobalQATagPojo> tags;
+
     private boolean answer;
 
     private long upCount;

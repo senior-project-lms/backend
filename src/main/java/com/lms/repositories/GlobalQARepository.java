@@ -1,6 +1,7 @@
 package com.lms.repositories;
 
 import com.lms.entities.GlobalQA;
+import com.lms.entities.GlobalQATag;
 import jdk.nashorn.internal.objects.Global;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,11 +13,14 @@ import java.util.List;
 @Transactional
 public interface GlobalQARepository extends JpaRepository<GlobalQA,Long>{
 
-    List<GlobalQA> findAllByVisibleAndAnswer(boolean visible, boolean answer, Pageable pageable);
+    List<GlobalQA> findAllByVisibleAndAnswerOrderByCreatedAtDesc(boolean visible, boolean answer, Pageable pageable);
 
      GlobalQA findByPublicKeyAndVisible(String publicKey, boolean visible);
 
      List<GlobalQA> findAllByParentAndVisible(GlobalQA parent, boolean visible);
 
     int countByParentAndVisible(GlobalQA parent, boolean visible);
+
+
+    List<GlobalQA> findTop10ByTagsInAndVisibleOrderByCreatedAtDesc(List<GlobalQATag> tags, boolean visible);
 }

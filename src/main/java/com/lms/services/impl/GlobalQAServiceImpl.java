@@ -3,22 +3,26 @@ package com.lms.services.impl;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQA;
+import com.lms.entities.GlobalQATag;
 import com.lms.entities.GlobalQAVote;
 import com.lms.entities.User;
 import com.lms.enums.VoteType;
 import com.lms.pojos.GlobalQACommentPojo;
 import com.lms.pojos.GlobalQAPojo;
+import com.lms.pojos.GlobalQATagPojo;
 import com.lms.repositories.GlobalQARepository;
 import com.lms.repositories.GlobalQAVoteRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.GlobalQACommentService;
 import com.lms.services.interfaces.GlobalQAService;
+import com.lms.services.interfaces.GlobalQATagService;
 import com.lms.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.serial.SerialException;
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +44,9 @@ public class GlobalQAServiceImpl implements GlobalQAService {
 
     @Autowired
     private GlobalQAVoteRepository globalQAVoteRepository;
+
+    @Autowired
+    private GlobalQATagService globalQATagService;
 
     /**
      * Converts GlobalQAPojo to GlobalQA according to values, if the value is null passes it,
@@ -86,6 +93,13 @@ public class GlobalQAServiceImpl implements GlobalQAService {
             pojo.setComments(comments);
 
         }
+        if (entity.getTags() != null) {
+            List<GlobalQATagPojo> tags = entity.getTags()
+                    .stream()
+                    .map(e -> globalQATagService.entityToPojo(e))
+                    .collect(Collectors.toList());
+            pojo.setTags(tags);
+        }
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setUpdatedAt(entity.getUpdatedAt());
         return pojo;
@@ -106,7 +120,7 @@ public class GlobalQAServiceImpl implements GlobalQAService {
     @Override
     public List<GlobalQAPojo> getAllByPage(int page) throws DataNotFoundException {
 
-        List<GlobalQA> entities = globalQARepository.findAllByVisibleAndAnswer(true, false, new PageRequest(page, 10));
+        List<GlobalQA> entities = globalQARepository.findAllByVisibleAndAnswerOrderByCreatedAtDesc(true, false, new PageRequest(page, 10));
 
         if (entities == null){
             throw new DataNotFoundException("no such a question is found");
@@ -116,6 +130,9 @@ public class GlobalQAServiceImpl implements GlobalQAService {
                 .map(e -> {
                     GlobalQAPojo pojo = entityToPojo(e);
                     pojo.setComments(null);
+                    pojo.setAnswers(null);
+                    pojo.setAnswers(null);
+
                     pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(e, true, true));
                     pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(e, true, true));
                     pojo.setAnswerCount(globalQARepository.countByParentAndVisible(e, true));
@@ -215,15 +232,42 @@ public class GlobalQAServiceImpl implements GlobalQAService {
         entity.setCreatedBy(authenticatedUser);
 
 
+
         if (pojo.isAnswer()){
             GlobalQA parent = findByPublicKey(pojo.getPublicKey(), true);
             entity.setParent(parent);
             entity.setAnswer(true);
         }
 
+        if (pojo.getTags() != null) {
+            List<String> publicKeys = pojo.getTags()
+                    .stream()
+                    .filter(pojoTag -> pojoTag.getPublicKey() != null)
+                    .map(pojoTag -> pojoTag.getPublicKey())
+                    .collect(Collectors.toList());
+
+
+            List<GlobalQATagPojo> notSavedTags = pojo.getTags()
+                    .stream()
+                    .filter(pojoTag -> pojoTag.getPublicKey() == null)
+                    .collect(Collectors.toList());
+
+            List<GlobalQATag> tagsEntities;
+
+            if (!notSavedTags.isEmpty()) {
+                tagsEntities = globalQATagService.save(notSavedTags);
+                entity.setTags(tagsEntities);
+
+            }
+            if (!publicKeys.isEmpty()) {
+                tagsEntities = globalQATagService.findAllByPublicKeys(publicKeys);
+                entity.setTags(tagsEntities);
+
+            }
+        }
+
 
         entity = globalQARepository.save(entity);
-
         if (entity == null || entity.getId() == 0) {
             if (pojo.isAnswer()){
                 throw new ExecutionFailException("No such a answer is saved");
@@ -339,5 +383,36 @@ public class GlobalQAServiceImpl implements GlobalQAService {
         }
 
         return true;
+    }
+
+
+    @Override
+    public List<GlobalQAPojo> getTop10RelatedTopics(String publicKey) throws DataNotFoundException {
+        GlobalQA entity = findByPublicKey(publicKey, true);
+
+
+        if (entity.getTags() != null) {
+            List<GlobalQA> entities = globalQARepository.findTop10ByTagsInAndVisibleOrderByCreatedAtDesc(entity.getTags(), true);
+            if (entities == null) {
+                throw new DataNotFoundException("no such a question is found");
+            }
+            List<GlobalQAPojo> pojos = entities
+                    .stream()
+                    .filter(e -> !e.getPublicKey().equals(publicKey))
+                    .map(e -> {
+                        GlobalQAPojo pojo = entityToPojo(e);
+                        pojo.setComments(null);
+                        pojo.setAnswers(null);
+                        pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(e, true, true));
+                        pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(e, true, true));
+                        return pojo;
+                    })
+
+                    .collect(Collectors.toList());
+            return pojos;
+        }
+
+
+        return new ArrayList<>();
     }
 }

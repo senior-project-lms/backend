@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AnnouncementPojo extends BasePojo {
+public class CourseAnnouncementPojo extends BasePojo {
 
     private String title;
 

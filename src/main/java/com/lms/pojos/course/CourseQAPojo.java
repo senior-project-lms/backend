@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class QAPojo extends BasePojo {
+public class CourseQAPojo extends BasePojo {
 
     private String title;
 
@@ -16,11 +16,13 @@ public class QAPojo extends BasePojo {
 
     private boolean anonymous;
 
-    private List<QAPojo> answers;
+    private List<CourseQAPojo> answers;
 
-    private List<QACommentPojo> comments;
+    private List<CourseQACommentPojo> comments;
 
     private CoursePojo course;
+
+    private List<CourseQATagPojo> tags;
 
     private boolean answer;
 

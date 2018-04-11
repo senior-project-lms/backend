@@ -4,28 +4,30 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.CourseQA;
 import com.lms.enums.VoteType;
-import com.lms.pojos.course.QAPojo;
+import com.lms.pojos.course.CourseQAPojo;
 
 import java.util.List;
 
 public interface CourseQAService {
 
-    QAPojo entityToPojo(CourseQA entity);
+    CourseQAPojo entityToPojo(CourseQA entity);
 
-    CourseQA pojoToEntity(QAPojo pojo);
+    CourseQA pojoToEntity(CourseQAPojo pojo);
 
-    List<QAPojo> getAll(String coursePublicKey, int page) throws DataNotFoundException;
+    List<CourseQAPojo> getAll(String coursePublicKey, int page) throws DataNotFoundException;
 
-    QAPojo getByPublicKey(String publicKey) throws DataNotFoundException;
+    CourseQAPojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
     CourseQA findByPublicKey(String publicKey, boolean visible) throws DataNotFoundException;
 
-    boolean save(String coursePublicKey, QAPojo pojo) throws DataNotFoundException, ExecutionFailException;
+    boolean save(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException;
 
-    boolean update(String coursePublicKey, QAPojo pojo) throws DataNotFoundException, ExecutionFailException;
+    boolean update(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException;
 
     boolean delete(String coursePublicKey, String publicKey) throws DataNotFoundException, ExecutionFailException;
 
     boolean vote(String publicKey, VoteType vote) throws ExecutionFailException, DataNotFoundException;
+
+    List<CourseQAPojo> getTop10RelatedTopics(String publicKey) throws DataNotFoundException;
 
 }

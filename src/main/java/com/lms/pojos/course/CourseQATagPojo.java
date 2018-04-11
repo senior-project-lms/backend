@@ -6,12 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class QACommentPojo extends BasePojo {
+public class CourseQATagPojo extends BasePojo {
 
-
-
-    private String content;
-
-    private boolean anonymous;
-
+    private String name;
 }

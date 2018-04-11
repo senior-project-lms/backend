@@ -24,9 +24,9 @@ public class CoursePojo extends BasePojo {
 
     private List<AssignmentPojo> assignments;
 
-    private List<AnnouncementPojo> announcements;
+    private List<CourseAnnouncementPojo> announcements;
 
-    private List<QAPojo> qaQuestions;
+    private List<CourseQAPojo> qaQuestions;
 
     private List<QuizTestPojo> quizTests;
 

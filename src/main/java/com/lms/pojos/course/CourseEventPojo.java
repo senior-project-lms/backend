@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class EventPojo {
+public class CourseEventPojo {
 
     private String publicKey;
 
@@ -16,5 +16,5 @@ public class EventPojo {
 
     private CoursePojo course;
 
-    private AnnouncementPojo announcement;
+    private CourseAnnouncementPojo announcement;
 }

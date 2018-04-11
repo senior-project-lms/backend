@@ -131,7 +131,6 @@ public class GlobalQAServiceImpl implements GlobalQAService {
                     GlobalQAPojo pojo = entityToPojo(e);
                     pojo.setComments(null);
                     pojo.setAnswers(null);
-                    pojo.setAnswers(null);
 
                     pojo.setUpCount(globalQAVoteRepository.countByQaAndUpAndVisible(e, true, true));
                     pojo.setDownCount(globalQAVoteRepository.countByQaAndDownAndVisible(e, true, true));
@@ -261,8 +260,11 @@ public class GlobalQAServiceImpl implements GlobalQAService {
             }
             if (!publicKeys.isEmpty()) {
                 tagsEntities = globalQATagService.findAllByPublicKeys(publicKeys);
-                entity.setTags(tagsEntities);
-
+                if (entity.getTags() != null) {
+                    entity.getTags().addAll(tagsEntities);
+                } else {
+                    entity.setTags(tagsEntities);
+                }
             }
         }
 

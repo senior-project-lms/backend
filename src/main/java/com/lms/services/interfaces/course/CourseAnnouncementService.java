@@ -3,18 +3,18 @@ package com.lms.services.interfaces.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Announcement;
-import com.lms.pojos.course.AnnouncementPojo;
+import com.lms.pojos.course.CourseAnnouncementPojo;
 
 import java.util.List;
 
 public interface CourseAnnouncementService {
-    AnnouncementPojo entityToPojo(Announcement entity);
+    CourseAnnouncementPojo entityToPojo(Announcement entity);
 
-    Announcement pojoToEntity(AnnouncementPojo pojo);
+    Announcement pojoToEntity(CourseAnnouncementPojo pojo);
 
-    List<AnnouncementPojo> getAllByPage(String publicKey,int page) throws DataNotFoundException;
+    List<CourseAnnouncementPojo> getAllByPage(String publicKey, int page) throws DataNotFoundException;
 
-    boolean save(String coursePublicKey,AnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException;
+    boolean save(String coursePublicKey, CourseAnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException;
 
     boolean delete(String coursePublicKey) throws DataNotFoundException, ExecutionFailException;
 

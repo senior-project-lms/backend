@@ -5,8 +5,8 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.CourseQA;
 import com.lms.entities.course.CourseQAComment;
-import com.lms.pojos.course.QACommentPojo;
-import com.lms.repositories.QACommentRepository;
+import com.lms.pojos.course.CourseQACommentPojo;
+import com.lms.repositories.CourseQACommentRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.course.CourseQAService;
 import com.lms.services.interfaces.course.CourseService;
@@ -25,7 +25,7 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
     private CustomUserDetailService userDetailService;
 
     @Autowired
-    private QACommentRepository qaCommentRepository;
+    private CourseQACommentRepository courseQaCommentRepository;
 
     @Autowired
     private CourseQAService courseQAService;
@@ -35,8 +35,8 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
 
 
     @Override
-    public QACommentPojo entityToPojo(CourseQAComment entity) {
-        QACommentPojo pojo = new QACommentPojo();
+    public CourseQACommentPojo entityToPojo(CourseQAComment entity) {
+        CourseQACommentPojo pojo = new CourseQACommentPojo();
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
         if (!entity.isAnonymous()) {
@@ -46,7 +46,7 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
     }
 
     @Override
-    public CourseQAComment pojoToEntity(QACommentPojo pojo) {
+    public CourseQAComment pojoToEntity(CourseQACommentPojo pojo) {
         CourseQAComment entity = new CourseQAComment();
         entity.setContent(pojo.getContent());
         entity.setQa(entity.getQa());
@@ -55,7 +55,7 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
 
 
     @Override
-    public boolean save(String qaPublicKey, QACommentPojo pojo) throws DataNotFoundException, ExecutionFailException {
+    public boolean save(String qaPublicKey, CourseQACommentPojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = userDetailService.getAuthenticatedUser();
 
         CourseQA qa = courseQAService.findByPublicKey(qaPublicKey, true);
@@ -64,7 +64,7 @@ public class CourseQACommentServiceImpl implements CourseQACommentService {
         entity.setCreatedBy(authenticatedUser);
         entity.setQa(qa);
 
-        entity = qaCommentRepository.save(entity);
+        entity = courseQaCommentRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("Comment is not saved");

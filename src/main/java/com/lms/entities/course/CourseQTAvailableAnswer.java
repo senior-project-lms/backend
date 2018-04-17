@@ -1,7 +1,6 @@
 package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
-import com.lms.enums.EAnswerChoice;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -14,15 +13,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "qt_available_answers")
 @Data
-public class QtAvailableAnswer extends BaseEntity {
+public class CourseQTAvailableAnswer extends BaseEntity {
 
     private String text;
 
-    private EAnswerChoice type;
+    private int type;
 
     private boolean correct;
 
     @ManyToOne
-    private QtQuestion question;
+    private CourseQTQuestion question;
 
 }

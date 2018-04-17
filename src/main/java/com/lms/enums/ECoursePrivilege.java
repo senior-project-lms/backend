@@ -61,6 +61,16 @@ public enum ECoursePrivilege {
     VERIFY_COURSE_QT(1110010010),
     JOIN_COURSE_QT(1111000101),
     READ_COURSE_QT(1101000011),
+    PUBLISH_COURSE_QT(1000100100),
+    READ_NOT_PUBLISHED_COURSE_QT(1000111000),
+
+
+//
+//
+//
+//
+//1000000100
+//1100010011
 
     // COURSE RESOURCE
     SAVE_COURSE_RESOURCE(1110011010),
@@ -117,13 +127,6 @@ public enum ECoursePrivilege {
 
     ;
 
-
-//
-//1100001000
-//1101110001
-//1101001110
-//
-//
 
     public long CODE;
 

@@ -14,14 +14,15 @@ import java.util.List;
 @Entity
 @Table(name = "qt_questions")
 @Data
-public class QtQuestion extends BaseEntity {
+public class CourseQTQuestion extends BaseEntity {
 
-    private String title;
+    private int order;
 
     private String content;
 
     @OneToMany
-    private List<QtAvailableAnswer> answers;
+    private List<CourseQTAvailableAnswer> answers;
+
 
 
 

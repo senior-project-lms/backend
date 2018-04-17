@@ -50,7 +50,7 @@ public class Course extends BaseEntity {
     private List<CourseQA> QAS;
 
     @OneToMany(mappedBy = "course")
-    private List<QuizTest> quizTests;
+    private List<CourseQuizTest> quizTests;
 
     @OneToMany(mappedBy = "course")
     private List<Event> events;

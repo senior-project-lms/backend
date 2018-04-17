@@ -16,18 +16,28 @@ import java.util.List;
 @Entity
 @Table(name = "course_quiz_tests")
 @Data
-public class QuizTest extends BaseEntity {
+public class CourseQuizTest extends BaseEntity {
 
     private String name;
+
+    private String detail;
 
     @ManyToOne
     private Course course;
 
     @OneToMany
-    private List<QtQuestion> questions;
+    private List<CourseQTQuestion> questions;
 
     private Date startAt;
 
     private Date endAt;
+
+    private boolean limitedDuration;
+
+    private boolean hasDueDate;
+
+    private boolean gradable;
+
+    private boolean published;
 
 }

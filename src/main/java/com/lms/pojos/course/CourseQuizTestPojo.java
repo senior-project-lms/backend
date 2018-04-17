@@ -9,17 +9,28 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class QuizTestPojo extends BasePojo {
+public class CourseQuizTestPojo extends BasePojo {
 
 
     private String name;
 
+    private String detail;
+
     private CoursePojo course;
 
-    private List<QtQuestionPojo> questions;
+    private List<CourseQTQuestionPojo> questions;
 
     private Date startAt;
 
     private Date endAt;
+
+
+    private boolean limitedDuration;
+
+    private boolean hasDueDate;
+
+    private boolean gradable;
+
+    private boolean published;
 
 }

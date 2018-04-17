@@ -8,11 +8,12 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class QtQuestionPojo extends BasePojo {
-    private String title;
+public class CourseQTQuestionPojo extends BasePojo {
+
+    private int order;
 
     private String content;
 
-    private List<QtAvailableAnswerPojo> answers;
+    private List<CourseQTAvailableAnswerPojo> answers;
 
 }

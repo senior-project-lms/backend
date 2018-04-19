@@ -25,7 +25,7 @@ public class CourseQuizTest extends BaseEntity {
     @ManyToOne
     private Course course;
 
-    @OneToMany
+    @OneToMany(mappedBy = "quizTest")
     private List<CourseQTQuestion> questions;
 
     private Date startAt;

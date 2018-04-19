@@ -13,13 +13,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "qt_question_user_answers")
 @Data
-public class CourseQTQuestionUserAnswer extends BaseEntity {
+public class CourseQTUserAnswer extends BaseEntity {
 
     @OneToOne
     private CourseQTQuestion question;
 
     @OneToOne
-    private CourseQTAvailableAnswer answer;
+    private CourseQTAnswer answer;
 
 
 

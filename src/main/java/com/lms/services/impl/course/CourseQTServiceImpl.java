@@ -6,12 +6,14 @@ import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseQuizTest;
 import com.lms.enums.ECoursePrivilege;
 import com.lms.pojos.SuccessPojo;
+import com.lms.pojos.course.CourseQTQuestionPojo;
 import com.lms.pojos.course.CourseQuizTestPojo;
 import com.lms.repositories.CourseQTRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
-import com.lms.services.interfaces.course.CourseQuizTestingService;
+import com.lms.services.interfaces.course.CourseQTQuestionService;
+import com.lms.services.interfaces.course.CourseQTService;
 import com.lms.services.interfaces.course.CourseService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
+public class CourseQTServiceImpl implements CourseQTService {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -39,6 +41,9 @@ public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
     @Autowired
     private UserCoursePrivilegeService userCoursePrivilegeService;
 
+    @Autowired
+    CourseQTQuestionService qtQuestionService;
+
 
     @Override
     public CourseQuizTestPojo entityToPojo(CourseQuizTest entity) {
@@ -51,7 +56,14 @@ public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
         pojo.setPublished(entity.isPublished());
         pojo.setHasDueDate(entity.isHasDueDate());
         pojo.setGradable(entity.isGradable());
-        pojo.setDetail(entity.getDetail());
+//        pojo.setDetail(entity.getDetail());
+//        if (entity.getQuestions() != null){
+//            List<CourseQTQuestionPojo> pojos = entity.getQuestions()
+//                    .stream()
+//                    .map(e -> qtQuestionService.entityToPojo(e))
+//                    .collect(Collectors.toList());
+//            pojo.setQuestions(pojos);
+//        }
         pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
         return pojo;
     }
@@ -116,8 +128,15 @@ public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
     }
 
     @Override
-    public SuccessPojo delete(String coursePublicKey, String publicKey) {
-        return null;
+    public SuccessPojo delete(String publicKey) throws DataNotFoundException {
+        User authUser = customUserDetailService.getAuthenticatedUser();
+        CourseQuizTest entity = findByPublicKey(publicKey);
+
+        entity.setVisible(false);
+        entity.setUpdatedBy(authUser);
+        entity = courseQTRepository.save(entity);
+
+        return new SuccessPojo(entity.getPublicKey());
     }
 
     @Override
@@ -178,8 +197,8 @@ public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
     }
 
     @Override
-    public CourseQuizTest findByPublicKey(String publicKey, boolean published) throws DataNotFoundException {
-        CourseQuizTest entity = courseQTRepository.findByPublicKeyAndVisibleAndPublished(publicKey, true, published);
+    public CourseQuizTest findByPublicKey(String publicKey) throws DataNotFoundException {
+        CourseQuizTest entity = courseQTRepository.findByPublicKeyAndVisible(publicKey, true);
 
         if (entity == null) {
             throw new ServiceException(String.format("No such a quiz-test is found by publicKey: %s", publicKey));
@@ -192,4 +211,5 @@ public class CourseQuizTestingServiceImpl implements CourseQuizTestingService {
 
         return entity;
     }
+
 }

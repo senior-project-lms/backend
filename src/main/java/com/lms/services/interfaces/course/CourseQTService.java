@@ -7,7 +7,7 @@ import com.lms.pojos.course.CourseQuizTestPojo;
 
 import java.util.List;
 
-public interface CourseQuizTestingService {
+public interface CourseQTService {
 
     CourseQuizTestPojo entityToPojo(CourseQuizTest entity);
 
@@ -17,7 +17,7 @@ public interface CourseQuizTestingService {
 
     SuccessPojo update(String publicKey, CourseQuizTestPojo pojo) throws DataNotFoundException;
 
-    SuccessPojo delete(String coursePublicKey, String publicKey);
+    SuccessPojo delete(String publicKey) throws DataNotFoundException;
 
     SuccessPojo publish(String coursePublicKey, String publicKey);
 
@@ -25,6 +25,6 @@ public interface CourseQuizTestingService {
 
     CourseQuizTestPojo get(String publicKey);
 
-    CourseQuizTest findByPublicKey(String publicKey, boolean published) throws DataNotFoundException;
+    CourseQuizTest findByPublicKey(String publicKey) throws DataNotFoundException;
 
 }

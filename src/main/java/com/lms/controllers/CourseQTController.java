@@ -3,8 +3,10 @@ package com.lms.controllers;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
 import com.lms.pojos.SuccessPojo;
+import com.lms.pojos.course.CourseQTQuestionPojo;
 import com.lms.pojos.course.CourseQuizTestPojo;
-import com.lms.services.interfaces.course.CourseQuizTestingService;
+import com.lms.services.interfaces.course.CourseQTQuestionService;
+import com.lms.services.interfaces.course.CourseQTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,10 @@ import java.util.List;
 public class CourseQTController {
 
     @Autowired
-    private CourseQuizTestingService quizTestingService;
+    private CourseQTService quizTestingService;
+
+    @Autowired
+    private CourseQTQuestionService questionService;
 
 
     @PostMapping("/course/{coursePublicKey}/quiz-test")
@@ -41,7 +46,7 @@ public class CourseQTController {
 
     @DeleteMapping("/course/{coursePublicKey}/quiz-test/{publicKey}")
     public SuccessPojo delete(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws EmptyFieldException, DataNotFoundException {
-        return quizTestingService.delete(coursePublicKey, publicKey);
+        return quizTestingService.delete(publicKey);
     }
 
     @GetMapping("/course/{coursePublicKey}/quiz-test/{publicKey}")
@@ -54,4 +59,15 @@ public class CourseQTController {
         return quizTestingService.getAll(coursePublicKey);
     }
 
+
+    @GetMapping("/course/{coursePublicKey}/quiz-test/{qtPublicKey}/question/{publicKey}")
+    public CourseQTQuestionPojo getQuestion(@PathVariable String coursePublicKey, @PathVariable String qtPublicKey, @PathVariable String publicKey) {
+        return questionService.get(publicKey);
+    }
+
+
+    @PostMapping("/course/{coursePublicKey}/quiz-test/{qtPublicKey}/question")
+    public SuccessPojo saveQuestion(@PathVariable String coursePublicKey, @PathVariable String qtPublicKey, @RequestBody CourseQTQuestionPojo pojo) throws DataNotFoundException {
+        return questionService.save(qtPublicKey, pojo);
+    }
 }

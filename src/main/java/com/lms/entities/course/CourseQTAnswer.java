@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "qt_available_answers")
 @Data
-public class CourseQTAvailableAnswer extends BaseEntity {
+public class CourseQTAnswer extends BaseEntity {
 
     private String text;
 

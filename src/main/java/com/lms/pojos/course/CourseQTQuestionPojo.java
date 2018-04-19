@@ -14,6 +14,6 @@ public class CourseQTQuestionPojo extends BasePojo {
 
     private String content;
 
-    private List<CourseQTAvailableAnswerPojo> answers;
+    private List<CourseQTAnswerPojo> answers;
 
 }

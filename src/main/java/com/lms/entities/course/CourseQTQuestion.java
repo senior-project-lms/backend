@@ -4,6 +4,7 @@ import com.lms.entities.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -21,8 +22,11 @@ public class CourseQTQuestion extends BaseEntity {
     private String content;
 
     @OneToMany
-    private List<CourseQTAvailableAnswer> answers;
+    private List<CourseQTAnswer> answers;
 
+
+    @ManyToOne
+    private CourseQuizTest quizTest;
 
 
 

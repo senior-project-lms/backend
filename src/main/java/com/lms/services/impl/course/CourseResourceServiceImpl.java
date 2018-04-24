@@ -9,6 +9,7 @@ import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseResourceService;
+import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     private CourseService courseService;
 
     @Autowired
+    private CourseAssignmentService courseAssignmentService;
+
+    @Autowired
     private CourseResourceRepository courseResourceRepository;
 
 
@@ -38,9 +42,9 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @return CourseResourcePojo
      */
 
+
     @Override
     public CourseResourcePojo entityToPojo(CourseResource entity) {
-
         CourseResourcePojo pojo = new CourseResourcePojo();
 
         pojo.setPublicKey(entity.getPublicKey());
@@ -58,9 +62,9 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @param pojo
      * @return SystemResource
      */
+
     @Override
     public CourseResource pojoToEntity(CourseResourcePojo pojo) {
-
         CourseResource entity = new CourseResource();
 
         entity.setName(pojo.getName());
@@ -77,10 +81,9 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     }
 
     @Override
-    public boolean save(CourseResourcePojo pojo) throws DataNotFoundException, ExecutionFailException {
-
+    public boolean save(String coursePublicKey, CourseResourcePojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
-        Course course = courseService.findByPublicKey(pojo.getCourse().getPublicKey());
+        Course course = courseService.findByPublicKey(coursePublicKey);
         CourseResource entity = pojoToEntity(pojo);
         entity.generatePublicKey();
 
@@ -115,6 +118,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
                 .collect(Collectors.toList());
 
         return pojos;
+
     }
 
 
@@ -125,6 +129,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @param name
      * @return CourseResourcePojo
      */
+
     @Override
     public CourseResourcePojo getByName(String name) throws DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByName(name);
@@ -156,7 +161,6 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         return this.entityToPojo(entity);
     }
 
-
     /**
      * finds the resource by publicKey
      * if it is not null then
@@ -167,20 +171,18 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @param publicKey
      * @return boolean
      */
-
     @Override
     public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
-
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
         if (entity == null){
-            throw new DataNotFoundException(String.format("No such a system resource is found publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No such a course resource is found publicKey: %s", publicKey));
         }
         entity.setVisible(false);
         entity = courseResourceRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ExecutionFailException(String.format("System resource is not deleted by publicKey: %s", publicKey));
+            throw new ExecutionFailException(String.format("Course resource is not deleted by publicKey: %s", publicKey));
         }
         return true;
 

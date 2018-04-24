@@ -8,14 +8,17 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AssignmentPojo extends BasePojo {
+public class CourseAssignmentPojo extends BasePojo {
 
     private String name;
 
     private CoursePojo course;
 
-
     private List<CourseResourcePojo> courseResources;
 
     private String content;
+
+    private GradePojo grade;
+
+    private List<StudentAssignmentPojo> studentAssignments;
 }

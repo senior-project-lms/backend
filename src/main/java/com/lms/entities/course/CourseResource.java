@@ -36,6 +36,12 @@ public class CourseResource extends BaseEntity {
     @ManyToOne
     private Announcement announcement;
 
+    @ManyToOne
+    private Assignment courseAssignment;
+
+    @ManyToOne
+    private StudentAssignment studentAssignment;
+
     @UpdateTimestamp
     private Date deletedAt;
 

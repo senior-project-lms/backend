@@ -1,7 +1,6 @@
 package com.lms.controllers;
 
 
-import com.lms.customExceptions.DataNotFoundException;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
@@ -119,9 +118,9 @@ public class StorageController {
      *
      * @param file
      * @return CourseResourcePojo
-     * @author umit.kas
+     * @author emsal aynaci
      */
-    @PostMapping(value = {"/course/storage/file"})
+    @PostMapping(value = {"/course/{coursePublicKey}/storage/file"})
     public CourseResourcePojo courseUploadFile(@RequestParam MultipartFile file){
 
         return courseUpload(properties.getCourseFilePath(), file);
@@ -212,7 +211,7 @@ public class StorageController {
      *
      *  funtions for uploading, save file to given path,
      * before saving, get the extention type, generates unique name, than saves to file system
-     * after savege, insert to record to database
+     * after save, insert to record to database
      *
      * @param path
      * @param file
@@ -240,7 +239,7 @@ public class StorageController {
                     pojo.setOriginalFileName(file.getOriginalFilename());
                     pojo.setUrl(URL);
                     pojo.setType(extension);
-                    courseResourceService.save(pojo);
+                    courseResourceService.save(pojo.getCourse().getPublicKey(),pojo);
                     pojo = courseResourceService.getByName(pojo.getName());
 
 

@@ -29,8 +29,9 @@ public class CourseResourcePojo extends BasePojo {
 
     private SystemAnnouncementPojo announcement;
 
-    private Date deletedAt;
+    private CourseAssignmentPojo courseAssignment;
 
+    private Date deletedAt;
 
     private UserPojo deletedBy;
 

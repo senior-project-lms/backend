@@ -22,7 +22,7 @@ public class CoursePojo extends BasePojo {
     private List<GradePojo> grades;
 
 
-    private List<AssignmentPojo> assignments;
+    private List<CourseAssignmentPojo> assignments;
 
     private List<AnnouncementPojo> announcements;
 

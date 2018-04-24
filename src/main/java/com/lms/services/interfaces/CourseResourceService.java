@@ -15,7 +15,7 @@ public interface CourseResourceService{
 
     boolean saveEntities(List<CourseResource> resources);
 
-    boolean save(CourseResourcePojo pojo) throws DataNotFoundException,ExecutionFailException;
+    boolean save(String coursePublicKey,CourseResourcePojo pojo) throws DataNotFoundException,ExecutionFailException;
 
     boolean save(List<CourseResourcePojo> pojos);
 

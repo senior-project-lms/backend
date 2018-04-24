@@ -23,4 +23,6 @@ public interface GlobalQARepository extends JpaRepository<GlobalQA,Long>{
 
 
     List<GlobalQA> findTop10ByTagsInAndVisibleOrderByCreatedAtDesc(List<GlobalQATag> tags, boolean visible);
+
+
 }

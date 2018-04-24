@@ -70,4 +70,11 @@ public class CourseQTController {
     public SuccessPojo saveQuestion(@PathVariable String coursePublicKey, @PathVariable String qtPublicKey, @RequestBody CourseQTQuestionPojo pojo) throws DataNotFoundException {
         return questionService.save(qtPublicKey, pojo);
     }
+
+
+    @DeleteMapping("/course/{coursePublicKey}/quiz-test/{qtPublicKey}/question/{questionPublicKey}")
+    public SuccessPojo deleteQuestion(@PathVariable String coursePublicKey, @PathVariable String qtPublicKey, @PathVariable String questionPublicKey) throws DataNotFoundException {
+        return questionService.delete(questionPublicKey);
+    }
+
 }

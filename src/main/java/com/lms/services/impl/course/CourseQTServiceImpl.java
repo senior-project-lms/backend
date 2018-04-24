@@ -3,6 +3,7 @@ package com.lms.services.impl.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
+import com.lms.entities.course.CourseQTAnswer;
 import com.lms.entities.course.CourseQuizTest;
 import com.lms.enums.ECoursePrivilege;
 import com.lms.pojos.SuccessPojo;
@@ -57,13 +58,14 @@ public class CourseQTServiceImpl implements CourseQTService {
         pojo.setHasDueDate(entity.isHasDueDate());
         pojo.setGradable(entity.isGradable());
 //        pojo.setDetail(entity.getDetail());
-//        if (entity.getQuestions() != null){
-//            List<CourseQTQuestionPojo> pojos = entity.getQuestions()
-//                    .stream()
-//                    .map(e -> qtQuestionService.entityToPojo(e))
-//                    .collect(Collectors.toList());
-//            pojo.setQuestions(pojos);
-//        }
+        if (entity.getQuestions() != null) {
+            List<CourseQTQuestionPojo> pojos = entity.getQuestions()
+                    .stream()
+                    .filter(e -> e.isVisible())
+                    .map(e -> qtQuestionService.entityToPojo(e))
+                    .collect(Collectors.toList());
+            pojo.setQuestions(pojos);
+        }
         pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
         return pojo;
     }
@@ -203,10 +205,21 @@ public class CourseQTServiceImpl implements CourseQTService {
         if (entity == null) {
             throw new ServiceException(String.format("No such a quiz-test is found by publicKey: %s", publicKey));
         }
+
         boolean hasPermission = userCoursePrivilegeService.hasPrivilege(entity.getCourse().getPublicKey(), ECoursePrivilege.READ_NOT_PUBLISHED_COURSE_QT);
         if (!hasPermission && !entity.isPublished()) {
             throw new ServiceException(String.format("No such a permission exist of quiz-test with publicKey: %s", publicKey));
+        } else if (!hasPermission && entity.isPublished()) {
+            entity.getQuestions()
+                    .stream()
+                    .map(e -> {
+                        for (CourseQTAnswer answer : e.getAnswers()) {
+                            answer.setCorrect(false);
+                        }
+                        return e;
+                    });
         }
+
 
 
         return entity;

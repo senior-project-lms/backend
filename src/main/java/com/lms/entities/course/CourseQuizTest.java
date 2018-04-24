@@ -2,6 +2,8 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -25,6 +27,7 @@ public class CourseQuizTest extends BaseEntity {
     @ManyToOne
     private Course course;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "quizTest")
     private List<CourseQTQuestion> questions;
 

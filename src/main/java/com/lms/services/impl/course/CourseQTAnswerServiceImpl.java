@@ -41,6 +41,7 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setText(entity.getText());
         pojo.setType(entity.getType());
+        pojo.setCorrect(entity.isCorrect());
 
         return pojo;
     }
@@ -52,6 +53,7 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
         entity.setPublicKey(pojo.getPublicKey());
         entity.setType(pojo.getType());
         entity.setText(pojo.getText());
+        entity.setCorrect(pojo.isCorrect());
         return entity;
     }
 
@@ -79,7 +81,7 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
             throw new ServiceException("No such a answer collection is saved");
         }
 
-        return false;
+        return true;
     }
 
     @Override
@@ -89,6 +91,25 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
 
     @Override
     public boolean delete(String questionPublicKey, String answerPublicKey) {
-        return false;
+//
+//        final User authUser = customUserDetailService.getAuthenticatedUser();
+//        final CourseQTQuestion question = qtQuestionService.findByPublicKey(questionPublicKey);
+//
+//        CourseQTAnswer entity = qtAnswerRepository.findByPublicKeyAndQuestionAndVisible(answerPublicKey, question, true);
+//
+//        if (entity == null){
+//            throw new ServiceException(String.format("No such a answer is found with publicKey: %s", answerPublicKey));
+//        }
+//
+//        entity.setVisible(false);
+//        entity.setUpdatedBy(authUser);
+//        entity = qtAnswerRepository.save(entity);
+//
+//        if (entity == null) {
+//            throw new ServiceException("No such a answer is deleted");
+//        }
+
+        return true;
+
     }
 }

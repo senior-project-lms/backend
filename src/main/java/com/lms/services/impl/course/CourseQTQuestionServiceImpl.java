@@ -46,7 +46,7 @@ public class CourseQTQuestionServiceImpl implements CourseQTQuestionService {
         pojo.setContent(entity.getContent());
         pojo.setOrder(entity.getOrder());
 
-        if (pojo.getAnswers() != null) {
+        if (entity.getAnswers() != null) {
             List<CourseQTAnswerPojo> pojos = entity.getAnswers()
                     .stream()
                     .map(e -> qtAnswerService.entityToPojo(e))
@@ -84,7 +84,7 @@ public class CourseQTQuestionServiceImpl implements CourseQTQuestionService {
             throw new ServiceException("No such a question is saved");
         }
 
-        if (qtAnswerService.save(entity.getPublicKey(), pojo.getAnswers())) {
+        if (!qtAnswerService.save(entity.getPublicKey(), pojo.getAnswers())) {
             throw new ServiceException("No such a answer set is saved");
         }
 
@@ -94,7 +94,24 @@ public class CourseQTQuestionServiceImpl implements CourseQTQuestionService {
 
     @Override
     public SuccessPojo delete(String publicKey) {
-        return null;
+        final User authUser = customUserDetailService.getAuthenticatedUser();
+        CourseQTQuestion entity = qtQuestionRepository.findByPublicKeyAndVisible(publicKey, true);
+
+        if (entity == null) {
+            throw new ServiceException("No such a question is found");
+        }
+
+        entity.setUpdatedBy(authUser);
+        entity.setVisible(false);
+
+        entity = qtQuestionRepository.save(entity);
+
+        if (entity == null) {
+            throw new ServiceException("No such a question is found");
+        }
+
+
+        return new SuccessPojo(entity.getPublicKey());
     }
 
     @Override
@@ -104,7 +121,12 @@ public class CourseQTQuestionServiceImpl implements CourseQTQuestionService {
 
     @Override
     public CourseQTQuestionPojo get(String publicKey) {
+
         CourseQTQuestion entity = findByPublicKey(publicKey);
+        if (entity == null) {
+            throw new ServiceException("No such a question is found");
+        }
+
         CourseQTQuestionPojo pojo = entityToPojo(entity);
         return pojo;
     }

@@ -2,10 +2,11 @@ package com.lms.entities.course;
 
 import com.lms.entities.BaseEntity;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by umit.kas on 05.12.2017.
@@ -16,11 +17,23 @@ import javax.persistence.Table;
 public class CourseQTUserAnswer extends BaseEntity {
 
     @OneToOne
-    private CourseQTQuestion question;
+    private CourseQuizTest qt;
 
     @OneToOne
-    private CourseQTAnswer answer;
+    private CourseQTQuestion question;
+//
+//    @OneToOne
+//    private CourseQTAnswer answer;
 
 
+    @ManyToMany
+    private List<CourseQTAnswer> answers;
+
+    @Column(columnDefinition = "TEXT")
+    private String text;
+
+
+    @ManyToOne
+    private CourseQTUser user;
 
 }

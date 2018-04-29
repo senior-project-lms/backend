@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,12 +36,34 @@ public class CourseQuizTest extends BaseEntity {
 
     private Date endAt;
 
+
     private boolean limitedDuration;
+
+    private int duration;
 
     private boolean hasDueDate;
 
     private boolean gradable;
 
     private boolean published;
+
+
+    public boolean isDueUp() {
+        if (hasDueDate) {
+            Calendar calendar = Calendar.getInstance();
+            long currentTime = calendar.getTimeInMillis();
+            long finished = endAt.getTime();
+            long due = finished - currentTime;
+
+            if (due <= 0) {
+                return true;
+            }
+            return false;
+        }
+
+        return false;
+
+
+    }
 
 }

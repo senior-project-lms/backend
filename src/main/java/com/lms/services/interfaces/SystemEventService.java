@@ -1,6 +1,7 @@
 package com.lms.services.interfaces;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemEvent;
 import com.lms.pojos.SystemEventPojo;
 
@@ -14,9 +15,9 @@ public interface SystemEventService {
     SystemEventPojo entityToPojo(SystemEvent entity);
 
 
-    boolean save(SystemEventPojo pojo);
+    boolean save(SystemEventPojo pojo) throws ExecutionFailException;
 
-    boolean delete(String publicKey) throws DataNotFoundException;
+    boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 
     List<SystemEventPojo> getAllEvents();
 }

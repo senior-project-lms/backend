@@ -1,12 +1,13 @@
 package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
-import com.lms.entities.course.CourseQTAnswer;
 import com.lms.entities.course.CourseQuizTest;
 import com.lms.enums.ECoursePrivilege;
 import com.lms.pojos.SuccessPojo;
+import com.lms.pojos.course.CourseQTAnswerPojo;
 import com.lms.pojos.course.CourseQTQuestionPojo;
 import com.lms.pojos.course.CourseQuizTestPojo;
 import com.lms.repositories.CourseQTRepository;
@@ -15,8 +16,8 @@ import com.lms.services.interfaces.UserCoursePrivilegeService;
 import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseQTQuestionService;
 import com.lms.services.interfaces.course.CourseQTService;
+import com.lms.services.interfaces.course.CourseQTUserService;
 import com.lms.services.interfaces.course.CourseService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,11 @@ public class CourseQTServiceImpl implements CourseQTService {
     private UserCoursePrivilegeService userCoursePrivilegeService;
 
     @Autowired
-    CourseQTQuestionService qtQuestionService;
+    private CourseQTQuestionService qtQuestionService;
+
+
+    @Autowired
+    private CourseQTUserService qtUserService;
 
 
     @Override
@@ -54,9 +59,14 @@ public class CourseQTServiceImpl implements CourseQTService {
         pojo.setStartAt(entity.getStartAt());
         pojo.setEndAt(entity.getEndAt());
         pojo.setName(entity.getName());
+        pojo.setDetail(entity.getDetail());
         pojo.setPublished(entity.isPublished());
         pojo.setHasDueDate(entity.isHasDueDate());
         pojo.setGradable(entity.isGradable());
+        pojo.setLimitedDuration(entity.isLimitedDuration());
+        pojo.setDuration(entity.getDuration());
+        pojo.setDueUp(entity.isDueUp());
+
 //        pojo.setDetail(entity.getDetail());
         if (entity.getQuestions() != null) {
             List<CourseQTQuestionPojo> pojos = entity.getQuestions()
@@ -80,13 +90,14 @@ public class CourseQTServiceImpl implements CourseQTService {
         entity.setEndAt(pojo.getEndAt());
         entity.setHasDueDate(pojo.isHasDueDate());
         entity.setGradable(pojo.isGradable());
-        entity.setPublished(entity.isPublished());
-
+        entity.setPublished(pojo.isPublished());
+        entity.setLimitedDuration(pojo.isLimitedDuration());
+        entity.setDuration(pojo.getDuration());
         return entity;
     }
 
     @Override
-    public SuccessPojo save(String coursePublicKey, CourseQuizTestPojo pojo) throws DataNotFoundException {
+    public SuccessPojo save(String coursePublicKey, CourseQuizTestPojo pojo) throws DataNotFoundException, ExecutionFailException {
 
         User authUser = customUserDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
@@ -100,7 +111,7 @@ public class CourseQTServiceImpl implements CourseQTService {
         entity = courseQTRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
-            throw new ServiceException("No such a quiz-test is saved");
+            throw new ExecutionFailException("No such a quiz-test is saved");
         }
 
         return new SuccessPojo(entity.getPublicKey());
@@ -108,7 +119,7 @@ public class CourseQTServiceImpl implements CourseQTService {
     }
 
     @Override
-    public SuccessPojo update(String publicKey, CourseQuizTestPojo pojo) throws DataNotFoundException {
+    public SuccessPojo update(String publicKey, CourseQuizTestPojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authUser = customUserDetailService.getAuthenticatedUser();
 
         CourseQuizTest entity = courseQTRepository.findByPublicKeyAndVisible(publicKey, true);
@@ -116,13 +127,28 @@ public class CourseQTServiceImpl implements CourseQTService {
         entity.setName(pojo.getName());
         entity.setGradable(pojo.isGradable());
         entity.setHasDueDate(pojo.isHasDueDate());
+        entity.setDetail(pojo.getDetail());
+        entity.setLimitedDuration(pojo.isLimitedDuration());
+
+        if (entity.isLimitedDuration()) {
+            entity.setDuration(pojo.getDuration());
+        } else {
+            entity.setDuration(0);
+
+        }
+
+        if (entity.isHasDueDate()) {
+            entity.setEndAt(pojo.getEndAt());
+        } else {
+            entity.setEndAt(null);
+        }
 
         entity.setUpdatedBy(authUser);
 
         entity = courseQTRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
-            throw new ServiceException("No such a quiz-test is saved");
+            throw new ExecutionFailException("No such a quiz-test is saved");
         }
 
         return new SuccessPojo(entity.getPublicKey());
@@ -130,7 +156,7 @@ public class CourseQTServiceImpl implements CourseQTService {
     }
 
     @Override
-    public SuccessPojo delete(String publicKey) throws DataNotFoundException {
+    public SuccessPojo delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
         User authUser = customUserDetailService.getAuthenticatedUser();
         CourseQuizTest entity = findByPublicKey(publicKey);
 
@@ -138,12 +164,39 @@ public class CourseQTServiceImpl implements CourseQTService {
         entity.setUpdatedBy(authUser);
         entity = courseQTRepository.save(entity);
 
+        if (entity == null) {
+            throw new ExecutionFailException("No such a quiz-test is deleted");
+
+        }
+
+        return new SuccessPojo(entity.getPublicKey());
+    }
+
+
+    private SuccessPojo publishDisable(String publicKey, boolean status) throws DataNotFoundException, ExecutionFailException {
+        User authUser = customUserDetailService.getAuthenticatedUser();
+        CourseQuizTest entity = findByPublicKey(publicKey);
+
+        entity.setPublished(status);
+        entity.setUpdatedBy(authUser);
+        entity = courseQTRepository.save(entity);
+
+        if (entity == null) {
+            throw new ExecutionFailException("No such a quiz-test is published");
+
+        }
+
         return new SuccessPojo(entity.getPublicKey());
     }
 
     @Override
-    public SuccessPojo publish(String coursePublicKey, String publicKey) {
-        return null;
+    public SuccessPojo publish(String publicKey) throws DataNotFoundException, ExecutionFailException {
+        return publishDisable(publicKey, true);
+    }
+
+    @Override
+    public SuccessPojo disable(String publicKey) throws DataNotFoundException, ExecutionFailException {
+        return publishDisable(publicKey, false);
     }
 
     @Override
@@ -166,15 +219,25 @@ public class CourseQTServiceImpl implements CourseQTService {
                     .map(entity -> {
                         CourseQuizTestPojo pojo = entityToPojo(entity);
                         pojo.setQuestions(null);
+                        pojo.setDetail(null);
+                        //pojo.setAvailable(qtUserService.available(entity.getPublicKey()));
                         return pojo;
                     })
                     .collect(Collectors.toList());
-        } else {
+        } else {// for students
             pojos = entities
                     .stream()
                     .map(entity -> {
                         CourseQuizTestPojo pojo = entityToPojo(entity);
                         pojo.setQuestions(null);
+                        pojo.setAvailable(qtUserService.available(entity.getPublicKey()));
+                        try {
+                            boolean timeUp = qtUserService.isTimeUp(entity.getPublicKey());
+                            pojo.setTimeUp(timeUp);
+                        } catch (DataNotFoundException e) {
+
+                        }
+
                         return pojo;
                     })
                     .filter(entity -> entity.isPublished())
@@ -186,14 +249,44 @@ public class CourseQTServiceImpl implements CourseQTService {
     }
 
     @Override
-    public CourseQuizTestPojo get(String publicKey) {
-        CourseQuizTest entity = courseQTRepository.findByPublicKeyAndVisible(publicKey, true);
+    public CourseQuizTestPojo get(String publicKey) throws DataNotFoundException {
+        CourseQuizTest entity = findByPublicKey(publicKey);
 
-        if (entity == null) {
-            throw new ServiceException(String.format("No such a quiz-test is found by publicKey: %s", publicKey));
-        }
         CourseQuizTestPojo pojo = entityToPojo(entity);
+        pojo.setAvailable(qtUserService.available(entity.getPublicKey()));
+        if (!userCoursePrivilegeService.hasPrivilege(entity.getCourse().getPublicKey(), ECoursePrivilege.READ_NOT_PUBLISHED_COURSE_QT)) {
 
+            try {
+                boolean timeUp = qtUserService.isTimeUp(entity.getPublicKey());
+                pojo.setTimeUp(timeUp);
+            } catch (DataNotFoundException e) {
+
+            }
+
+        }
+        return pojo;
+    }
+
+    @Override
+    public CourseQuizTestPojo getForExam(String publicKey) throws DataNotFoundException {
+
+        CourseQuizTestPojo pojo = get(publicKey);
+
+        List<CourseQTQuestionPojo> questions = pojo.getQuestions()
+                .stream()
+                .map(p -> {
+                    List<CourseQTAnswerPojo> pojos = new ArrayList<>();
+                    for (CourseQTAnswerPojo ans : p.getAnswers()) {
+                        ans.setCorrect(false);
+                        pojo.setAvailable(qtUserService.available(pojo.getPublicKey()));
+                        pojos.add(ans);
+                    }
+                    p.setAnswers(pojos);
+                    return p;
+
+                })
+                .collect(Collectors.toList());
+        pojo.setQuestions(questions);
 
         return pojo;
     }
@@ -203,26 +296,24 @@ public class CourseQTServiceImpl implements CourseQTService {
         CourseQuizTest entity = courseQTRepository.findByPublicKeyAndVisible(publicKey, true);
 
         if (entity == null) {
-            throw new ServiceException(String.format("No such a quiz-test is found by publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No such a quiz-test is found by publicKey: %s", publicKey));
         }
 
         boolean hasPermission = userCoursePrivilegeService.hasPrivilege(entity.getCourse().getPublicKey(), ECoursePrivilege.READ_NOT_PUBLISHED_COURSE_QT);
         if (!hasPermission && !entity.isPublished()) {
-            throw new ServiceException(String.format("No such a permission exist of quiz-test with publicKey: %s", publicKey));
-        } else if (!hasPermission && entity.isPublished()) {
-            entity.getQuestions()
-                    .stream()
-                    .map(e -> {
-                        for (CourseQTAnswer answer : e.getAnswers()) {
-                            answer.setCorrect(false);
-                        }
-                        return e;
-                    });
+            throw new DataNotFoundException(String.format("No such a permission exist of quiz-test with publicKey: %s", publicKey));
         }
-
 
 
         return entity;
     }
 
+
+    @Override
+    public CourseQuizTestPojo getBeforeStartTheExam(String publicKey) throws DataNotFoundException {
+        CourseQuizTestPojo pojo = get(publicKey);
+        pojo.setQuestions(new ArrayList<>());
+        pojo.setAvailable(qtUserService.available(pojo.getPublicKey()));
+        return pojo;
+    }
 }

@@ -1,5 +1,7 @@
 package com.lms.services.impl.course;
 
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.CourseQTAnswer;
 import com.lms.entities.course.CourseQTQuestion;
@@ -10,7 +12,6 @@ import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.course.CourseQTAnswerService;
 
 import com.lms.services.interfaces.course.CourseQTQuestionService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
 
 
     @Override
-    public boolean save(String questionPublicKey, List<CourseQTAnswerPojo> pojos) {
+    public boolean save(String questionPublicKey, List<CourseQTAnswerPojo> pojos) throws ExecutionFailException, DataNotFoundException {
         final User authUser = customUserDetailService.getAuthenticatedUser();
         final CourseQTQuestion question = qtQuestionService.findByPublicKey(questionPublicKey);
 
@@ -78,7 +79,7 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
         entites = qtAnswerRepository.save(entites);
 
         if (entites == null || entites.size() == 0) {
-            throw new ServiceException("No such a answer collection is saved");
+            throw new ExecutionFailException("No such a answer collection is saved");
         }
 
         return true;
@@ -98,7 +99,6 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
 //        CourseQTAnswer entity = qtAnswerRepository.findByPublicKeyAndQuestionAndVisible(answerPublicKey, question, true);
 //
 //        if (entity == null){
-//            throw new ServiceException(String.format("No such a answer is found with publicKey: %s", answerPublicKey));
 //        }
 //
 //        entity.setVisible(false);
@@ -106,10 +106,37 @@ public class CourseQTAnswerServiceImpl implements CourseQTAnswerService {
 //        entity = qtAnswerRepository.save(entity);
 //
 //        if (entity == null) {
-//            throw new ServiceException("No such a answer is deleted");
 //        }
 
         return true;
 
     }
+
+
+    @Override
+    public CourseQTAnswer findByPublicKey(String publicKey) throws DataNotFoundException {
+
+        CourseQTAnswer entity = qtAnswerRepository.findByPublicKeyAndVisible(publicKey, true);
+
+        if (entity == null) {
+            throw new DataNotFoundException(String.format("No such a answer is found by publicKey: %s", publicKey));
+        }
+
+        return entity;
+    }
+
+    @Override
+    public List<CourseQTAnswer> findByPublicKeyIn(List<String> publicKeys) throws DataNotFoundException {
+
+        List<CourseQTAnswer> entities = qtAnswerRepository.findByPublicKeyInAndVisible(publicKeys, true);
+
+        if (entities == null) {
+            throw new DataNotFoundException(String.format("No such a answer collection is found"));
+        }
+
+        return entities;
+    }
+
+
+
 }

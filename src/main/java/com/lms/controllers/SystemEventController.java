@@ -2,6 +2,7 @@ package com.lms.controllers;
 
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.SystemEventPojo;
 import com.lms.services.interfaces.SystemEventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,13 @@ public class SystemEventController {
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).SAVE_GLOBAL_CALENDAR.CODE)")
     @PostMapping(value = {"/system-event"})
-    public boolean saveEvent(@RequestBody SystemEventPojo pojo) {
+    public boolean saveEvent(@RequestBody SystemEventPojo pojo) throws ExecutionFailException {
         return systemEventService.save(pojo);
     }
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).DELETE_GLOBAL_CALENDAR.CODE)")
     @DeleteMapping(value = {"/system-event/{publicKey}"})
-    public boolean deleteEvent(@PathVariable String publicKey) throws DataNotFoundException {
+    public boolean deleteEvent(@PathVariable String publicKey) throws DataNotFoundException, ExecutionFailException {
         return systemEventService.delete(publicKey);
     }
 

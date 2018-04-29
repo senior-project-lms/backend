@@ -1,6 +1,7 @@
 package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
@@ -212,7 +213,7 @@ public class CourseQAServiceImpl implements CourseQAService {
     }
 
     @Override
-    public boolean save(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException {
+    public boolean save(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException, EmptyFieldException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
 

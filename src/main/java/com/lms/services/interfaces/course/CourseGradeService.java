@@ -1,6 +1,7 @@
 package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Grade;
 import com.lms.pojos.course.GradePojo;
 
@@ -17,7 +18,7 @@ public interface CourseGradeService {
 
     GradePojo getGradeOfCourse(String coursePublicKey, String gradePublicKey) throws DataNotFoundException;
 
-    boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException;
+    boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException;
 
     boolean updateWeight(String coursePublicKey, GradePojo pojo);
 

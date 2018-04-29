@@ -1,6 +1,7 @@
 package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.Grade;
@@ -12,7 +13,6 @@ import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseGradeService;
 import com.lms.services.interfaces.course.CourseScoreService;
 import com.lms.services.interfaces.course.CourseService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -66,7 +66,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
     }
 
     @Override
-    public boolean save(String coursePublicKey, String gradePublicKey, List<ScorePojo> pojos) throws DataNotFoundException {
+    public boolean save(String coursePublicKey, String gradePublicKey, List<ScorePojo> pojos) throws DataNotFoundException, ExecutionFailException {
         User authUser = userDetailsService.getAuthenticatedUser();
 
         Grade grade = courseGradeService.findByPublicKeyAndCoursePublicKey(gradePublicKey, coursePublicKey);
@@ -101,7 +101,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         scores = courseScoreRepository.save(scores);
 
         if (scores == null || (scores != null && scores.size() == 0)){
-            throw new ServiceException("No such a grade collection is saved");
+            throw new ExecutionFailException("No such a grade collection is saved");
         }
 
 
@@ -109,7 +109,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
     }
 
     @Override
-    public boolean updateScore(String scorePublicKey, ScorePojo pojo) throws DataNotFoundException {
+    public boolean updateScore(String scorePublicKey, ScorePojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authUser = userDetailsService.getAuthenticatedUser();
 
         User student = userService.findByPublicKey(pojo.getStudent().getPublicKey());
@@ -127,7 +127,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         entity = courseScoreRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException("No such a grade is updated");
+            throw new ExecutionFailException("No such a grade is updated");
 
         }
 

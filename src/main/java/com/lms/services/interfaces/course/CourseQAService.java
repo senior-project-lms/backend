@@ -1,6 +1,7 @@
 package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.CourseQA;
 import com.lms.enums.VoteType;
@@ -20,7 +21,7 @@ public interface CourseQAService {
 
     CourseQA findByPublicKey(String publicKey, boolean visible) throws DataNotFoundException;
 
-    boolean save(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException;
+    boolean save(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException, EmptyFieldException;
 
     boolean update(String coursePublicKey, CourseQAPojo pojo) throws DataNotFoundException, ExecutionFailException;
 

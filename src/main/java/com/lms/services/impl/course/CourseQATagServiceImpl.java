@@ -1,5 +1,6 @@
 package com.lms.services.impl.course;
 
+import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.CourseQATag;
@@ -7,7 +8,6 @@ import com.lms.pojos.course.CourseQATagPojo;
 import com.lms.repositories.CourseQATagRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.course.CourseQATagService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +44,10 @@ public class CourseQATagServiceImpl implements CourseQATagService {
     }
 
     @Override
-    public List<CourseQATag> save(List<CourseQATagPojo> pojos) throws ExecutionFailException {
+    public List<CourseQATag> save(List<CourseQATagPojo> pojos) throws ExecutionFailException, EmptyFieldException {
 
         if (pojos == null) {
-            throw new ServiceException("pojo list cannot be empty");
+            throw new EmptyFieldException("pojo list cannot be empty");
 
         }
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();

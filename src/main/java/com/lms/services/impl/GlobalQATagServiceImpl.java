@@ -1,5 +1,6 @@
 package com.lms.services.impl;
 
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQATag;
 import com.lms.entities.User;
@@ -7,7 +8,6 @@ import com.lms.pojos.GlobalQATagPojo;
 import com.lms.repositories.GlobalQATagRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.GlobalQATagService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +44,10 @@ public class GlobalQATagServiceImpl implements GlobalQATagService {
     }
 
     @Override
-    public List<GlobalQATag> save(List<GlobalQATagPojo> pojos) throws ExecutionFailException {
+    public List<GlobalQATag> save(List<GlobalQATagPojo> pojos) throws ExecutionFailException, DataNotFoundException {
 
         if (pojos == null) {
-            throw new ServiceException("pojo list cannot be empty");
+            throw new DataNotFoundException("pojo list cannot be empty");
 
         }
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();

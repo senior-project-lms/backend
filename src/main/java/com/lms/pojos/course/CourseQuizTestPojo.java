@@ -27,10 +27,23 @@ public class CourseQuizTestPojo extends BasePojo {
 
     private boolean limitedDuration;
 
+    private int duration;
+
     private boolean hasDueDate;
 
     private boolean gradable;
 
     private boolean published;
+
+
+    private boolean available;
+
+    private boolean timeUp;
+
+    private boolean dueUp;
+
+    private boolean started;
+
+    protected boolean finished;
 
 }

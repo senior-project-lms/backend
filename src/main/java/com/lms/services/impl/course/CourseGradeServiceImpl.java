@@ -1,6 +1,7 @@
 package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.Grade;
@@ -13,7 +14,6 @@ import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.course.CourseGradeService;
 import com.lms.services.interfaces.course.CourseScoreService;
 import com.lms.services.interfaces.course.CourseService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
     }
 
     @Override
-    public boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException {
+    public boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException {
 
         User authUser = userDetailService.getAuthenticatedUser();
 
@@ -108,7 +108,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
         entity = courseGradeRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ServiceException("No such a grade is saved");
+            throw new ExecutionFailException("No such a grade is saved");
         }
 
         return true;

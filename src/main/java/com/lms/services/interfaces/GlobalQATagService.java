@@ -1,5 +1,6 @@
 package com.lms.services.interfaces;
 
+import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.GlobalQATag;
 import com.lms.pojos.GlobalQATagPojo;
@@ -13,7 +14,7 @@ public interface GlobalQATagService {
 
     GlobalQATag pojoToEntity(GlobalQATagPojo pojo);
 
-    List<GlobalQATag> save(List<GlobalQATagPojo> pojos) throws ExecutionFailException;
+    List<GlobalQATag> save(List<GlobalQATagPojo> pojos) throws ExecutionFailException, DataNotFoundException;
 
     List<GlobalQATag> findAllByPublicKeys(List<String> publicKeys);
 

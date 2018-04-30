@@ -17,4 +17,6 @@ public interface CourseQTUserAnswerService {
     SuccessPojo setAnswer(String qtPublicKey, CourseQTUserAnswerPojo pojo) throws DataNotFoundException, ExecutionFailException;
 
     List<CourseQTUserAnswerPojo> getAnswers(String qtPublicKey, String userPublicKey) throws DataNotFoundException;
+
+
 }

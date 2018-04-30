@@ -11,6 +11,7 @@ import com.lms.pojos.course.CourseQTUserPojo;
 import com.lms.pojos.SuccessPojo;
 import com.lms.repositories.CourseQTUserRepository;
 import com.lms.services.custom.CustomUserDetailService;
+import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseQTUserAnswerService;
 import com.lms.services.interfaces.course.CourseQTUserService;
 import com.lms.services.interfaces.course.CourseQTService;
@@ -46,6 +47,9 @@ public class CourseQTUserServiceImpl implements CourseQTUserService {
     private CourseQTUserAnswerService courseQTUserAnswerService;
 
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public CourseQTUserPojo entityToPojo(CourseQTUser entity) {
         CourseQTUserPojo pojo = new CourseQTUserPojo();
@@ -56,6 +60,7 @@ public class CourseQTUserServiceImpl implements CourseQTUserService {
         pojo.setStartedAt(entity.getStartedAt());
         pojo.setFinishedAt(entity.getFinishedAt());
         pojo.setFinishesAt(entity.getFinishesAt());
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
         if (entity.getAnswers() != null) {
             List<CourseQTUserAnswerPojo> answers = entity.getAnswers()
                     .stream()
@@ -258,5 +263,23 @@ public class CourseQTUserServiceImpl implements CourseQTUserService {
 //        }
 
         return false;
+    }
+
+    @Override
+    public List<CourseQTUserPojo> getAllQTUsers(String qtPublicKey) throws DataNotFoundException {
+
+        CourseQuizTest qt = courseQTService.findByPublicKey(qtPublicKey);
+        List<CourseQTUser> entites = courseQTUserRepository.findByQtAndVisible(qt, true);
+
+        if (entites == null){
+            return new ArrayList<>();
+        }
+
+        List<CourseQTUserPojo> pojos = entites
+                .stream()
+                .map(e -> entityToPojo(e))
+                .collect(Collectors.toList());
+
+        return pojos;
     }
 }

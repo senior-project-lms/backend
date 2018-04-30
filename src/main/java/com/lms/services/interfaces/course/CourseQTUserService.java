@@ -7,6 +7,8 @@ import com.lms.entities.course.CourseQTUser;
 import com.lms.pojos.course.CourseQTUserPojo;
 import com.lms.pojos.SuccessPojo;
 
+import java.util.List;
+
 public interface CourseQTUserService {
 
 
@@ -31,5 +33,5 @@ public interface CourseQTUserService {
 
     boolean isTimeUp(String qtPublicKey) throws DataNotFoundException;
 
-
+    List<CourseQTUserPojo> getAllQTUsers(String qtPublicKey) throws DataNotFoundException;
 }

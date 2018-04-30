@@ -16,6 +16,4 @@ public interface CourseQTUserAnswerRepository extends JpaRepository<CourseQTUser
     CourseQTUserAnswer findByQuestionAndCreatedByAndVisible(CourseQTQuestion question, User user, boolean visible);
 
     List<CourseQTUserAnswer> findByQtAndCreatedByAndVisible(CourseQuizTest qt, User user, boolean visible);
-
-
 }

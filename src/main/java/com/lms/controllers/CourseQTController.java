@@ -137,5 +137,9 @@ public class CourseQTController {
     }
 
 
+    @GetMapping(value = {"/course/{coursePublicKey}/quiz-test/{qtPublicKey}/qt-users"})
+    public List<CourseQTUserPojo> getCourseQTUsers(@PathVariable String coursePublicKey, @PathVariable String qtPublicKey) throws DataNotFoundException {
+        return qtUserService.getAllQTUsers(qtPublicKey);
+    }
 
 }

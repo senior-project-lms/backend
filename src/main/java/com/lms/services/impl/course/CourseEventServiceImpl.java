@@ -5,7 +5,7 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.Event;
-import com.lms.pojos.course.EventPojo;
+import com.lms.pojos.course.CourseEventPojo;
 import com.lms.repositories.CourseEventRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.course.CourseEventService;
@@ -35,7 +35,7 @@ public class CourseEventServiceImpl implements CourseEventService {
 
 
     @Override
-    public Event pojoToEntity(EventPojo pojo) {
+    public Event pojoToEntity(CourseEventPojo pojo) {
         Event entity = new Event();
         entity.setTitle(pojo.getTitle());
         entity.setStart(pojo.getStart());
@@ -45,8 +45,8 @@ public class CourseEventServiceImpl implements CourseEventService {
     }
 
     @Override
-    public EventPojo entityToPojo(Event entity) {
-        EventPojo pojo = new EventPojo();
+    public CourseEventPojo entityToPojo(Event entity) {
+        CourseEventPojo pojo = new CourseEventPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setTitle(entity.getTitle());
@@ -56,7 +56,7 @@ public class CourseEventServiceImpl implements CourseEventService {
     }
 
     @Override
-    public boolean save(String coursePublicKey, EventPojo pojo) throws DataNotFoundException, ExecutionFailException {
+    public boolean save(String coursePublicKey, CourseEventPojo pojo) throws DataNotFoundException, ExecutionFailException {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
@@ -98,12 +98,12 @@ public class CourseEventServiceImpl implements CourseEventService {
     }
 
     @Override
-    public boolean update(String coursePublicKey, EventPojo pojo) {
+    public boolean update(String coursePublicKey, CourseEventPojo pojo) {
         return false;
     }
 
     @Override
-    public List<EventPojo> getAllEventsOfCourse(String coursePublicKey) throws DataNotFoundException {
+    public List<CourseEventPojo> getAllEventsOfCourse(String coursePublicKey) throws DataNotFoundException {
         Course course = courseService.findByPublicKey(coursePublicKey);
         List<Event> entities = courseEventRepository.findAllByCourseAndVisible(course, true);
 
@@ -112,7 +112,7 @@ public class CourseEventServiceImpl implements CourseEventService {
         }
 
 
-        List<EventPojo> pojos = entities
+        List<CourseEventPojo> pojos = entities
                 .stream()
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
@@ -123,15 +123,15 @@ public class CourseEventServiceImpl implements CourseEventService {
 
 
     @Override
-    public List<EventPojo> getAllEventsOfRegisteredCoursesOfAuthUser() {
+    public List<CourseEventPojo> getAllEventsOfRegisteredCoursesOfAuthUser() {
 
         List<Course> courses = courseService.findAllCoursesOfAutUser();
         List<Event> events = courseEventRepository.findAllByCourseInAndVisible(courses, true);
 
-        List<EventPojo> pojos = events
+        List<CourseEventPojo> pojos = events
                 .stream()
                 .map(entity -> {
-                    EventPojo pojo = entityToPojo(entity);
+                    CourseEventPojo pojo = entityToPojo(entity);
                     pojo.setCourse(courseService.entityToPojo(entity.getCourse()));
                     return pojo;
                 })

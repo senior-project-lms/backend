@@ -1,13 +1,13 @@
 package com.lms.services.impl;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.SystemEvent;
 import com.lms.entities.User;
 import com.lms.pojos.SystemEventPojo;
 import com.lms.repositories.SystemEventRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.SystemEventService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,7 @@ public class SystemEventAnnouncementImpl implements SystemEventService {
     }
 
     @Override
-    public boolean save(SystemEventPojo pojo) {
+    public boolean save(SystemEventPojo pojo) throws ExecutionFailException {
         User authUser = userDetailService.getAuthenticatedUser();
 
         SystemEvent entity = pojoToEntity(pojo);
@@ -63,14 +63,14 @@ public class SystemEventAnnouncementImpl implements SystemEventService {
         entity = systemEventRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
-            throw new ServiceException("No such a system event is saved");
+            throw new ExecutionFailException("No such a system event is saved");
         }
 
         return true;
     }
 
     @Override
-    public boolean delete(String publicKey) throws DataNotFoundException, ServiceException {
+    public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
 
         SystemEvent entity = systemEventRepository.findByPublicKey(publicKey);
 
@@ -83,7 +83,7 @@ public class SystemEventAnnouncementImpl implements SystemEventService {
         entity = systemEventRepository.save(entity);
 
         if (entity == null || entity.getId() == 0) {
-            throw new ServiceException(String.format("No such a system event is deleted by publicKey: %s", publicKey));
+            throw new ExecutionFailException(String.format("No such a system event is deleted by publicKey: %s", publicKey));
         }
         return true;
     }

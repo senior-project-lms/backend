@@ -1,5 +1,7 @@
 package com.lms.services.interfaces.course;
 
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Score;
 import com.lms.pojos.course.ScorePojo;
 
@@ -12,9 +14,13 @@ public interface CourseScoreService {
     Score pojoToEntity(ScorePojo pojo);
 
 
-    boolean save(String coursePublicKey, String gradePublicKey, List<ScorePojo> pojos);
+    boolean save(String coursePublicKey, String gradePublicKey, List<ScorePojo> pojos) throws DataNotFoundException, ExecutionFailException;
 
-    boolean update(ScorePojo pojo);
+    boolean updateScore(String scorePublicKey, ScorePojo pojo) throws DataNotFoundException, ExecutionFailException;
 
+
+    List<ScorePojo> getCourseScoresOfAuthUser(String coursePublicKey) throws DataNotFoundException;
+
+    List<ScorePojo> getCourseScoresOfStudent(String coursePublicKey, String userPublicKey) throws DataNotFoundException;
 
 }

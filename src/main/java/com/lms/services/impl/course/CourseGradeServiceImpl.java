@@ -1,6 +1,7 @@
 package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.Grade;
@@ -58,7 +59,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
 
         entity.setPublicKey(pojo.getPublicKey());
         entity.setName(pojo.getName());
-        entity.setCourse(courseService.pojoToEntity(pojo.getCourse()));
+        //entity.setCourse(courseService.pojoToEntity(pojo.getCourse()));
         entity.setWeight(pojo.getWeight());
 
         return entity;
@@ -67,11 +68,8 @@ public class CourseGradeServiceImpl implements CourseGradeService {
     @Override
     public List<GradePojo> getAllGradesOfCourse(String coursePublicKey) throws DataNotFoundException {
 
-        final Course course = courseService.findByPublicKey(coursePublicKey);
-        List<Grade> entities = courseGradeRepository.findAllByCourseAndVisible(course, true);
-        if (entities == null) {
-            return new ArrayList<>();
-        }
+        List<Grade> entities = findAllGradesOfCourse(coursePublicKey);
+
         List<GradePojo> pojos = entities
                 .stream()
                 .map(entity -> {
@@ -94,22 +92,35 @@ public class CourseGradeServiceImpl implements CourseGradeService {
     }
 
     @Override
-    public boolean save(GradePojo pojo) {
+    public boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException {
 
         User authUser = userDetailService.getAuthenticatedUser();
 
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
         Grade entity = pojoToEntity(pojo);
 
+        entity.generatePublicKey();
+        entity.setCreatedBy(authUser);
+        entity.setCourse(course);
+
+
+        entity = courseGradeRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new ExecutionFailException("No such a grade is saved");
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean updateWeight(String coursePublicKey, GradePojo pojo) {
         return false;
     }
 
     @Override
-    public boolean updateWeight(GradePojo pojo) {
-        return false;
-    }
-
-    @Override
-    public boolean updateName(GradePojo pojo) {
+    public boolean updateName(String coursePublicKey, GradePojo pojo) {
         return false;
     }
 
@@ -127,5 +138,20 @@ public class CourseGradeServiceImpl implements CourseGradeService {
         }
 
         return entity;
+    }
+
+
+    @Override
+    public List<Grade> findAllGradesOfCourse(String coursePublicKey) throws DataNotFoundException {
+
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
+        List<Grade> entities = courseGradeRepository.findAllByCourseAndVisible(course, true);
+
+        if (entities == null){
+            new ArrayList<>();
+        }
+
+        return entities;
     }
 }

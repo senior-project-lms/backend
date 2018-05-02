@@ -11,4 +11,6 @@ public interface CourseGradeRepository extends JpaRepository<Grade, Long> {
     Grade findByPublicKeyAndCourseAndVisible(String publicKey, Course course, boolean visible);
 
     List<Grade> findAllByCourseAndVisible(Course course, boolean visible);
+
+    Grade findByPublicKeyAndVisible(String publicKey, boolean visible);
 }

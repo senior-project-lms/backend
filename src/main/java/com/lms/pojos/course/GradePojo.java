@@ -13,6 +13,8 @@ public class GradePojo extends BasePojo{
 
     private String name;
 
+    private float maxScore;
+
     private float weight;
 
     private List<ScorePojo> scores;

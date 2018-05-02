@@ -24,5 +24,7 @@ public class UserPojo extends BasePojo {
 
     private List<Long> accessPrivileges;
 
+    private boolean observer;
+
 }
 

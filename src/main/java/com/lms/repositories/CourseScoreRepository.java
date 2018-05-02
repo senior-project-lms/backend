@@ -13,5 +13,9 @@ public interface CourseScoreRepository extends JpaRepository<Score, Long> {
 
     List<Score> findAllByGradeInAndStudentAndVisible(List<Grade> grades, User student, boolean visible);
 
+    boolean existsByGradeAndStudentAndVisible(Grade grade, User student, boolean visible);
+
+    Score findByGradeAndStudentAndVisible(Grade grade, User student, boolean visible);
+
     Score findByPublicKeyAndStudentAndVisible(String publicKey, User student, boolean visible);
 }

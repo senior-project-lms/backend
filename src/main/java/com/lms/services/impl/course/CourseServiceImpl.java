@@ -543,4 +543,22 @@ public class CourseServiceImpl implements CourseService{
     }
 
 
+    @Override
+    public List<UserPojo> getAllRegisteredUsers(String publicKey) throws DataNotFoundException {
+        List<UserPojo> enrolledUsers = new ArrayList<>();
+        List<UserPojo> students = getEnrolledUsers(publicKey);
+        List<UserPojo> observes = getEnrolledObserverUsers(publicKey);
+
+        observes
+                .stream()
+                .map(o -> {
+                    o.setObserver(true);
+                    return o;
+                })
+                .collect(Collectors.toList());
+
+        enrolledUsers.addAll(students);
+        enrolledUsers.addAll(observes);
+        return enrolledUsers;
+    }
 }

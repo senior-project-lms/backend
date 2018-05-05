@@ -10,5 +10,5 @@ public class UserScorePojo extends BaseEntity {
 
     private String userPublicKey;
 
-    private float score;
+    private double score;
 }

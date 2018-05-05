@@ -17,6 +17,8 @@ public interface CourseGradeService {
 
     List<GradePojo> getAll(String coursePublicKey) throws DataNotFoundException;
 
+    List<GradePojo> getAllForAuthStudent(String coursePublicKey) throws DataNotFoundException;
+
     GradePojo get(String publicKey) throws DataNotFoundException;
 
     GradePojo getForView(String publicKey) throws DataNotFoundException;

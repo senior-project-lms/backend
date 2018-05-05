@@ -45,6 +45,8 @@ public class CourseGradeServiceImpl implements CourseGradeService {
         pojo.setName(entity.getName());
         pojo.setWeight(entity.getWeight());
         pojo.setMaxScore(entity.getMaxScore());
+        pojo.setPublished(entity.isPublished());
+
         if (entity.getScores() != null) {
             List<ScorePojo> scores = entity.getScores()
                     .stream()
@@ -79,9 +81,35 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                 .map(entity -> {
                     GradePojo pojo = entityToPojo(entity);
                     pojo.setScores(null);
+
+                    double average = entity
+                            .getScores()
+                            .stream()
+                            .mapToDouble(Score::getScore)
+                            .average()
+                            .orElse(Double.NaN);
+                    pojo.setAverage(average);
                     return pojo;
                 })
                 .collect(Collectors.toList());
+
+        GradePojo gradePojo = new GradePojo();
+        gradePojo.setName("Over all");
+        gradePojo.setPublicKey("over-all");
+        gradePojo.setMenu(false);
+        gradePojo.setPublished(true);
+
+        double overAllAverage = pojos
+                .stream()
+                .mapToDouble(GradePojo::getWeightedAverage)
+                .sum();
+
+        gradePojo.setOverAllAverage(overAllAverage);
+        gradePojo.setMaxScore(100);
+
+        pojos.add(gradePojo);
+
+
         return pojos;
     }
 
@@ -94,7 +122,72 @@ public class CourseGradeServiceImpl implements CourseGradeService {
 
         GradePojo pojo = entityToPojo(entity);
 
+        double average = entity
+                .getScores()
+                .stream()
+                .mapToDouble(Score::getScore)
+                .average()
+                .orElse(Double.NaN);
+        pojo.setAverage(average);
+
+
+
         return pojo;
+    }
+
+
+    @Override
+    public List<GradePojo> getAllForAuthStudent(String coursePublicKey) throws DataNotFoundException {
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
+        List<Grade> entities = courseGradeRepository.findAllByCourseAndVisibleAndPublished(course, true, true);
+        User authUser = userDetailService.getAuthenticatedUser();
+
+        List<GradePojo> pojos = entities
+                .stream()
+                .map(entity -> {
+                    GradePojo pojo = entityToPojo(entity);
+                    pojo.setScores(null);
+
+                    double average = entity
+                            .getScores()
+                            .stream()
+                            .mapToDouble(Score::getScore)
+                            .average()
+                            .orElse(Double.NaN);
+                    pojo.setAverage(average);
+
+                    double score = entity.getScores()
+                            .stream()
+                            .filter(s -> s.getStudent().getPublicKey().equals(authUser.getPublicKey()))
+                            .mapToDouble(Score::getScore).sum();
+                    pojo.setScore(score);
+
+                    return pojo;
+                })
+                .collect(Collectors.toList());
+
+        GradePojo gradePojo = new GradePojo();
+        gradePojo.setName("Over all");
+        gradePojo.setPublicKey("over-all");
+        gradePojo.setMenu(false);
+
+        double overAll = pojos
+                .stream()
+                .mapToDouble(GradePojo::getWeightedScore)
+                .sum();
+
+        double overAllAverage = pojos
+                .stream()
+                .mapToDouble(GradePojo::getWeightedAverage)
+                .sum();
+
+        gradePojo.setOverAllAverage(overAllAverage);
+        gradePojo.setOverAllGrade(overAll);
+        gradePojo.setMaxScore(100);
+        pojos.add(gradePojo);
+
+        return pojos;
     }
 
     @Override
@@ -202,7 +295,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
     public boolean publish(String publicKey, boolean status) throws DataNotFoundException, ExecutionFailException {
         Grade entity = findByPublicKey(publicKey);
 
-        entity.setPublished(true);
+        entity.setPublished(status);
 
         entity = courseGradeRepository.save(entity);
 

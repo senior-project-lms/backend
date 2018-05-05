@@ -55,7 +55,6 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setScore(entity.getScore());
         pojo.setStudent(userService.entityToPojo(entity.getStudent()));
-        pojo.setGrade(courseGradeService.entityToPojo(entity.getGrade()));
 
         return pojo;
     }

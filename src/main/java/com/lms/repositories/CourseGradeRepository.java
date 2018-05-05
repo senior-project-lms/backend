@@ -8,9 +8,16 @@ import java.util.List;
 
 public interface CourseGradeRepository extends JpaRepository<Grade, Long> {
 
+
     Grade findByPublicKeyAndCourseAndVisible(String publicKey, Course course, boolean visible);
+
 
     List<Grade> findAllByCourseAndVisible(Course course, boolean visible);
 
+    List<Grade> findAllByCourseAndVisibleAndPublished(Course course, boolean visible, boolean published);
+
+
     Grade findByPublicKeyAndVisible(String publicKey, boolean visible);
+
+
 }

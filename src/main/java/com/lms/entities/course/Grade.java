@@ -18,9 +18,9 @@ public class Grade extends BaseEntity {
 
     private String name;
 
-    private float maxScore;
+    private double maxScore;
 
-    private float weight;
+    private double weight;
 
     @ManyToOne
     private Course course;
@@ -30,4 +30,5 @@ public class Grade extends BaseEntity {
 
 
     private boolean published;
+
 }

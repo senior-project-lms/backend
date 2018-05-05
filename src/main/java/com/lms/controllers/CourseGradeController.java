@@ -39,9 +39,15 @@ public class CourseGradeController {
     }
 
     @GetMapping(value = {"/course/{coursePublicKey}/grades"})
-    public List<GradePojo> getAll(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
+    public List<GradePojo> getAll(@PathVariable String coursePublicKey) throws ExecutionFailException, DataNotFoundException {
         return courseGradeService.getAll(coursePublicKey);
     }
+
+    @GetMapping(value = {"/course/{coursePublicKey}/student-grades"})
+    public List<GradePojo> getAllForStudents(@PathVariable String coursePublicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseGradeService.getAllForAuthStudent(coursePublicKey);
+    }
+
 
     @GetMapping(value = {"/course/{coursePublicKey}/grade/{publicKey}"})
     public GradePojo get(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {

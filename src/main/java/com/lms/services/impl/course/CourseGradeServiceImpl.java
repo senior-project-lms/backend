@@ -88,7 +88,9 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                             .mapToDouble(Score::getScore)
                             .average()
                             .orElse(Double.NaN);
+
                     pojo.setAverage(average);
+
                     return pojo;
                 })
                 .collect(Collectors.toList());
@@ -99,14 +101,32 @@ public class CourseGradeServiceImpl implements CourseGradeService {
         gradePojo.setMenu(false);
         gradePojo.setPublished(true);
 
+
         double overAllAverage = pojos
                 .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getAverage()))
                 .mapToDouble(GradePojo::getWeightedAverage)
                 .sum();
 
-        gradePojo.setOverAllAverage(overAllAverage);
-        gradePojo.setMaxScore(100);
+        double totalMaxScore = pojos
+                .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getMaxScore()))
+                .mapToDouble(GradePojo::getWeighedMaxScore)
+                .sum();
 
+        double totalAffect = pojos
+                .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getWeight()))
+                .mapToDouble(GradePojo::getWeight)
+                .sum();
+
+
+
+
+
+        gradePojo.setAverage(overAllAverage);
+        gradePojo.setMaxScore(totalMaxScore);
+        gradePojo.setWeight(totalAffect);
         pojos.add(gradePojo);
 
 
@@ -160,7 +180,9 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                     double score = entity.getScores()
                             .stream()
                             .filter(s -> s.getStudent().getPublicKey().equals(authUser.getPublicKey()))
-                            .mapToDouble(Score::getScore).sum();
+                            .mapToDouble(Score::getScore)
+                            .average()
+                            .orElse(Double.NaN);
                     pojo.setScore(score);
 
                     return pojo;
@@ -174,17 +196,34 @@ public class CourseGradeServiceImpl implements CourseGradeService {
 
         double overAll = pojos
                 .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getScore()))
                 .mapToDouble(GradePojo::getWeightedScore)
                 .sum();
 
         double overAllAverage = pojos
                 .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getAverage()))
                 .mapToDouble(GradePojo::getWeightedAverage)
                 .sum();
 
-        gradePojo.setOverAllAverage(overAllAverage);
-        gradePojo.setOverAllGrade(overAll);
-        gradePojo.setMaxScore(100);
+        double totalMaxScore = pojos
+                .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getMaxScore()))
+                .mapToDouble(GradePojo::getWeighedMaxScore)
+                .sum();
+
+        double totalAffect = pojos
+                .stream()
+                .filter(pojo -> !Double.isNaN(pojo.getWeight()))
+                .mapToDouble(GradePojo::getWeight)
+                .sum();
+
+
+
+        gradePojo.setAverage(overAllAverage);
+        gradePojo.setScore(overAll);
+        gradePojo.setMaxScore(totalMaxScore);
+        gradePojo.setWeight(totalAffect);
         pojos.add(gradePojo);
 
         return pojos;

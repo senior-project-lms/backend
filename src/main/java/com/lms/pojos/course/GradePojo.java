@@ -25,10 +25,6 @@ public class GradePojo extends BasePojo{
 
     private double score;
 
-    private double overAllAverage;
-
-    private double overAllGrade;
-
     private boolean menu = true;
 
     private boolean published;
@@ -40,5 +36,9 @@ public class GradePojo extends BasePojo{
 
     public double getWeightedAverage(){
         return average * (weight / 100);
+    }
+
+    public double getWeighedMaxScore(){
+        return  maxScore * (weight / 100);
     }
 }

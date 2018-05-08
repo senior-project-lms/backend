@@ -1,6 +1,8 @@
 package com.lms.controllers;
 
 
+import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -110,6 +113,11 @@ public class StorageController {
 
 
 
+    @GetMapping({"/course/{coursePublicKey/resources"})
+    public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
+
+        return courseResourceService.getCourseResources(coursePublicKey);
+    }
 
 
     /**

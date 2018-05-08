@@ -75,4 +75,22 @@ public class CourseGradeController {
     }
 
 
+    @PostMapping(value = {"/course/{coursePublicKey}/grade/save-all"})
+    public boolean saveAll(@PathVariable String coursePublicKey,@RequestBody List<GradePojo> pojos) throws ExecutionFailException, DataNotFoundException {
+
+        for(GradePojo grade : pojos){
+            SuccessPojo success = courseGradeService.save(coursePublicKey, grade);
+            if (grade.getUserScores() != null){
+
+                for (UserScorePojo score : grade.getUserScores()){
+                    courseScoreService.save(success.getPublicKey(), score);
+                }
+            }
+
+        }
+        return true;
+
+
+    }
+
 }

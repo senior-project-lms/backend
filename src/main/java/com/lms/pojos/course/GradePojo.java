@@ -19,6 +19,8 @@ public class GradePojo extends BasePojo{
 
     private List<ScorePojo> scores;
 
+    private List<UserScorePojo> userScores;
+
     private CoursePojo course;
 
     private double average;

@@ -10,13 +10,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseAssignmentPojo extends BasePojo {
 
-    private String name;
+    private String title;
 
     private CoursePojo course;
 
     private List<CourseResourcePojo> courseResources;
 
     private String content;
+
+    private String originalFileName;
 
     private GradePojo grade;
 

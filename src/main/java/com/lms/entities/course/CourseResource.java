@@ -27,6 +27,10 @@ public class CourseResource extends BaseEntity {
 
     private String type;
 
+    private String originalFileName;
+
+    private String url;
+
     @ManyToOne
     private Course course;
 

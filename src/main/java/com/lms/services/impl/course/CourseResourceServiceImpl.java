@@ -50,6 +50,8 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
         pojo.setType(entity.getType());
+        pojo.setUrl(entity.getUrl());
+        pojo.setOriginalFileName(entity.getOriginalFileName());
         return pojo;
 
     }
@@ -60,7 +62,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
      * @author emsal aynaci
      * @param pojo
-     * @return SystemResource
+     * @return CourseResource
      */
 
     @Override
@@ -70,16 +72,41 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         entity.setName(pojo.getName());
         entity.setPath(pojo.getPath());
         entity.setType(pojo.getType());
+        entity.setOriginalFileName(pojo.getOriginalFileName());
+        entity.setUrl(pojo.getUrl());
         entity.setPublicKey(pojo.getPublicKey());
+
         return  entity;
 
     }
 
+    /**
+     * Save entity list to database.
+
+     * @author emsal aynaci
+     * @param resources
+     * @return boolean
+     */
     @Override
     public boolean saveEntities(List<CourseResource> resources) {
-        return false;
+        resources.stream().map(resource -> {
+            resource.generatePublicKey();
+            return resource;
+        });
+
+        courseResourceRepository.save(resources);
+        return true;
     }
 
+
+    /**
+     * Saves the resource to db,
+     * convert pojo to entity, generates publicKey, set visible,
+     *
+     * @param pojo
+     * @return boolean
+     * @author emsal aynaci
+     */
     @Override
     public boolean save(String coursePublicKey, CourseResourcePojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();

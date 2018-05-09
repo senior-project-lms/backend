@@ -41,6 +41,9 @@ public class Course extends BaseEntity {
     private List<Grade> grades;
 
     @OneToMany(mappedBy = "course")
+    private List<CourseResource> resources;
+
+    @OneToMany(mappedBy = "course")
     private List<Assignment> assignments;
 
     @OneToMany(mappedBy = "course")

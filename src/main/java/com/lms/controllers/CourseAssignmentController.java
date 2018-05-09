@@ -30,12 +30,12 @@ public class CourseAssignmentController {
     }
 
 
-    @PostMapping(value = {"/courses/{coursePublicKey}/assignment"})
+    @PostMapping(value = {"/courses/{coursePublicKey}/assignments"})
     public boolean save(@PathVariable String coursePublicKey, @RequestBody CourseAssignmentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo == null) {
             throw new EmptyFieldException("Course Assignment object cannot be empty");
-        } else if (pojo.getName() == null || pojo.getName().isEmpty()) {
+        } else if (pojo.getTitle() == null || pojo.getTitle().isEmpty()) {
             throw new EmptyFieldException("Name cannot be empty");
         } else if (pojo.getContent() == null || pojo.getContent().isEmpty()) {
             throw new EmptyFieldException(" Content field cannot be empty");
@@ -44,7 +44,7 @@ public class CourseAssignmentController {
         }
     }
 
-    @DeleteMapping(value = {"/courses/{coursePublicKey}/assignment"})
+    @DeleteMapping(value = {"/courses/{coursePublicKey}/assignments"})
     public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         if (coursePublicKey == null || coursePublicKey.isEmpty()) {
             throw new EmptyFieldException("field cannot be empty");

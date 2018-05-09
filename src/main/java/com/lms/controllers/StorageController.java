@@ -3,6 +3,7 @@ package com.lms.controllers;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
@@ -42,9 +43,6 @@ public class StorageController {
 
     @Autowired
     private CourseResourceService courseResourceService;
-
-
-
 
 
 
@@ -113,12 +111,26 @@ public class StorageController {
 
 
 
-    @GetMapping({"/course/{coursePublicKey/resources"})
+    @GetMapping({"/courses/{coursePublicKey/resources"})
     public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
 
         return courseResourceService.getCourseResources(coursePublicKey);
     }
 
+
+    @PostMapping(value = {"/courses/{coursePublicKey}/resources"})
+    public boolean save(@PathVariable String coursePublicKey, @RequestBody CourseResourcePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+
+        if (pojo == null) {
+            throw new EmptyFieldException("Course Resource object cannot be empty");
+        } else if (pojo.getName() == null || pojo.getName().isEmpty()) {
+            throw new EmptyFieldException("Title field cannot be empty");
+        } else if (pojo.getOriginalFileName() == null || pojo.getOriginalFileName().isEmpty()) {
+            throw new EmptyFieldException(" Content field cannot be empty");
+        } else {
+            return courseResourceService.save(coursePublicKey, pojo);
+        }
+    }
 
     /**
      *
@@ -128,7 +140,7 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @PostMapping(value = {"/course/{coursePublicKey}/storage/file"})
+    @PostMapping(value = {"/courses/{coursePublicKey}/storage/file"})
     public CourseResourcePojo courseUploadFile(@RequestParam MultipartFile file){
 
         return courseUpload(properties.getCourseFilePath(), file);
@@ -151,7 +163,7 @@ public class StorageController {
     }
 
 
-    @DeleteMapping(value = {"/system-announcement/storage/file/{coursePublicKey}"})
+    @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/"})
     public boolean CourseDeleteFile(@PathVariable String coursePublicKey){
         try {
 

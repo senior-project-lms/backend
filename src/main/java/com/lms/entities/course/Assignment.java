@@ -15,9 +15,11 @@ import java.util.List;
 @Data
 public class Assignment extends BaseEntity {
 
-    private String name;
+    private String title;
 
     private String content;
+
+    private String originalFileName;
 
     @ManyToOne
     private Course course;

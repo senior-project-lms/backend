@@ -45,8 +45,9 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
         CourseAssignmentPojo pojo = new CourseAssignmentPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
-        pojo.setName(entity.getName());
+        pojo.setTitle(entity.getTitle());
         pojo.setContent(entity.getContent());
+        pojo.setOriginalFileName(entity.getOriginalFileName());
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
 
@@ -58,8 +59,9 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
     public Assignment pojoToEntity(CourseAssignmentPojo pojo) {
         Assignment entity = new Assignment();
         entity.setPublicKey(pojo.getPublicKey());
-        entity.setName(pojo.getName());
+        entity.setTitle(pojo.getTitle());
         entity.setContent(pojo.getContent());
+        entity.setOriginalFileName(pojo.getOriginalFileName());
 
         return entity;
 

@@ -20,6 +20,8 @@ public class CourseAssignmentPojo extends BasePojo {
 
     private String originalFileName;
 
+    private List<String> resourceKeys;
+
     private GradePojo grade;
 
     private List<StudentAssignmentPojo> studentAssignments;

@@ -111,7 +111,7 @@ public class StorageController {
 
 
 
-    @GetMapping({"/courses/{coursePublicKey/resources"})
+    @GetMapping({"/courses/{coursePublicKey}/resources"})
     public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
 
         return courseResourceService.getCourseResources(coursePublicKey);
@@ -132,6 +132,15 @@ public class StorageController {
         }
     }
 
+
+    @DeleteMapping(value = {"/courses/{coursePublicKey}/resources"})
+    public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+        if (coursePublicKey == null || coursePublicKey.isEmpty()) {
+            throw new EmptyFieldException("field cannot be empty");
+        }
+        return courseResourceService.delete(coursePublicKey);
+
+    }
     /**
      *
      * Upload file that is added the of Course,

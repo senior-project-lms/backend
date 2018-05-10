@@ -2,6 +2,7 @@ package com.lms.services.interfaces;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.course.Assignment;
 import com.lms.entities.course.CourseResource;
 import com.lms.pojos.course.CourseResourcePojo;
 
@@ -20,6 +21,8 @@ public interface CourseResourceService{
     boolean save(List<CourseResourcePojo> pojos);
 
     List<CourseResourcePojo> getCourseResources(String publicKey)throws DataNotFoundException;
+
+    boolean setResourceAssignment(String publicKey,Assignment assignment) throws ExecutionFailException,DataNotFoundException;
 
     CourseResourcePojo getByName(String name) throws DataNotFoundException;
 

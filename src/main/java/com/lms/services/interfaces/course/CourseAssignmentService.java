@@ -15,8 +15,6 @@ public interface CourseAssignmentService {
 
     List<CourseAssignmentPojo> getAllAssignmentsOfCourse(String publicKey) throws DataNotFoundException;
 
-    boolean setResourceAssignment(String publicKey,Assignment assignment) throws ExecutionFailException,DataNotFoundException;
-
     CourseAssignmentPojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
     Assignment findByPublicKey(String publicKey) throws DataNotFoundException;

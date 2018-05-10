@@ -3,6 +3,7 @@ package com.lms.services.impl.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
+import com.lms.entities.course.Assignment;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseResource;
 import com.lms.pojos.course.CourseResourcePojo;
@@ -146,6 +147,24 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
         return pojos;
 
+    }
+
+    @Override
+    public boolean setResourceAssignment(String publicKey, Assignment assignment) throws ExecutionFailException, DataNotFoundException {
+        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+
+        if (entity == null){
+            throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
+        }
+
+        entity.setCourseAssignment(assignment);
+        entity = courseResourceRepository.save(entity);
+
+        if (entity != null && entity.getId() == 0){
+            throw new ExecutionFailException("No such a course assignment of course resource is saved");
+        }
+
+        return true;
     }
 
 

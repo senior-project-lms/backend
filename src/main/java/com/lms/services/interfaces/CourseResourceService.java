@@ -18,7 +18,7 @@ public interface CourseResourceService{
 
     boolean save(String coursePublicKey,CourseResourcePojo pojo) throws DataNotFoundException,ExecutionFailException;
 
-    boolean save(List<CourseResourcePojo> pojos);
+    boolean save(List<CourseResourcePojo> pojos) throws DataNotFoundException,ExecutionFailException;
 
     List<CourseResourcePojo> getCourseResources(String publicKey)throws DataNotFoundException;
 
@@ -27,6 +27,8 @@ public interface CourseResourceService{
     CourseResourcePojo getByName(String name) throws DataNotFoundException;
 
     CourseResourcePojo getByPublicKey(String publicKey) throws DataNotFoundException;
+
+    boolean publiclyShared(String publicKey,boolean status) throws DataNotFoundException,ExecutionFailException;
 
     boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 

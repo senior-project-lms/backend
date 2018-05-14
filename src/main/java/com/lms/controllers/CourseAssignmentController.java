@@ -23,14 +23,14 @@ public class CourseAssignmentController {
    @Autowired
     private StudentAssignmentService studentAssignmentService;
 
-    @GetMapping({"/courses/{coursePublicKey}/assignments"})
+    @GetMapping({"/course/{coursePublicKey}/assignments"})
     public List<CourseAssignmentPojo> getCourseAssignments(@PathVariable String coursePublicKey) throws EmptyFieldException, DataNotFoundException {
 
         return courseAssignmentService.getAllAssignmentsOfCourse(coursePublicKey);
     }
 
 
-    @PostMapping(value = {"/courses/{coursePublicKey}/assignments"})
+    @PostMapping(value = {"/course/{coursePublicKey}/assignments"})
     public boolean save(@PathVariable String coursePublicKey, @RequestBody CourseAssignmentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo == null) {
@@ -44,7 +44,7 @@ public class CourseAssignmentController {
         }
     }
 
-    @DeleteMapping(value = {"/courses/{coursePublicKey}/assignments"})
+    @DeleteMapping(value = {"/course/{coursePublicKey}/assignments"})
     public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         if (coursePublicKey == null || coursePublicKey.isEmpty()) {
             throw new EmptyFieldException("field cannot be empty");
@@ -53,7 +53,7 @@ public class CourseAssignmentController {
 
     }
 
-    @GetMapping({"/courses/{coursePublicKey}/studentAssignments"})
+    @GetMapping({"/course/{coursePublicKey}/studentAssignments"})
     public List<StudentAssignmentPojo> getStudentAssignments(@PathVariable String assignmentPublicKey)throws EmptyFieldException, DataNotFoundException{
 
         return studentAssignmentService.getStudentAssignmentsByAssignmentPublicKey(assignmentPublicKey);

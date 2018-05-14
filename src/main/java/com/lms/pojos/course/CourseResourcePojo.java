@@ -35,4 +35,5 @@ public class CourseResourcePojo extends BasePojo {
 
     private UserPojo deletedBy;
 
+    private boolean publicShared;
 }

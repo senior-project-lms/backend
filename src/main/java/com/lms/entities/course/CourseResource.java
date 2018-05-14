@@ -52,5 +52,6 @@ public class CourseResource extends BaseEntity {
     @OneToOne
     private User deletedBy;
 
+    private boolean publicShared;
 
 }

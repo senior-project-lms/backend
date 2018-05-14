@@ -10,16 +10,21 @@ import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseResourceService;
+import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CourseResourceServiceImpl implements CourseResourceService {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -53,6 +58,9 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         pojo.setType(entity.getType());
         pojo.setUrl(entity.getUrl());
         pojo.setOriginalFileName(entity.getOriginalFileName());
+        pojo.setCreatedAt(entity.getCreatedAt());
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
+
         return pojo;
 
     }
@@ -83,7 +91,6 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
     /**
      * Save entity list to database.
-
      * @author emsal aynaci
      * @param resources
      * @return boolean
@@ -129,9 +136,38 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
     }
 
+
+    /**
+     * save course resource collections
+     *
+     * @param pojos
+     * @return List<CourseResourcePojo>
+     * @author emsal aynaci
+     */
     @Override
-    public boolean save(List<CourseResourcePojo> pojos) {
-        return false;
+    public boolean save(List<CourseResourcePojo> pojos) throws DataNotFoundException,ExecutionFailException {
+
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        List<CourseResource> entities = new ArrayList<>();
+
+        CourseResource entity;
+        for (CourseResourcePojo pojo : pojos) {
+
+            entity = pojoToEntity(pojo);
+            entity.setCreatedBy(authenticatedUser);
+            entity.generatePublicKey();
+            entities.add(entity);
+        }
+
+        entities = courseResourceRepository.save(entities);
+
+        if (entities == null || entities.size() == 0) {
+            throw new ExecutionFailException("No such a list of course resources is saved");
+        }
+
+        return true;
+
     }
 
     @Override
@@ -206,6 +242,22 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
         return this.entityToPojo(entity);
     }
+
+    @Override
+    public boolean publiclyShared(String publicKey, boolean status) throws DataNotFoundException, ExecutionFailException {
+        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+
+        entity.setPublicShared(status);
+
+        entity = courseResourceRepository.save(entity);
+
+        if(entity == null || entity.getId() ==0){
+            throw new ExecutionFailException("No such a course resource is shared");
+        }
+
+        return true;
+    }
+
 
     /**
      * finds the resource by publicKey

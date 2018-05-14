@@ -111,29 +111,24 @@ public class StorageController {
 
 
 
-    @GetMapping({"/courses/{coursePublicKey}/resources"})
+    @GetMapping({"/course/{coursePublicKey}/resource/{resourcePublicKey"})
     public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
 
         return courseResourceService.getCourseResources(coursePublicKey);
     }
 
+    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/public"})
+    public boolean publiclyShared(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(publicKey, true);
+    }
 
-    @PostMapping(value = {"/courses/{coursePublicKey}/resources"})
-    public boolean save(@PathVariable String coursePublicKey, @RequestBody CourseResourcePojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
-
-        if (pojo == null) {
-            throw new EmptyFieldException("Course Resource object cannot be empty");
-        } else if (pojo.getName() == null || pojo.getName().isEmpty()) {
-            throw new EmptyFieldException("Title field cannot be empty");
-        } else if (pojo.getOriginalFileName() == null || pojo.getOriginalFileName().isEmpty()) {
-            throw new EmptyFieldException(" Content field cannot be empty");
-        } else {
-            return courseResourceService.save(coursePublicKey, pojo);
-        }
+    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/notPublic"})
+    public boolean publiclyUnShared(@PathVariable String coursePublicKey,@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(publicKey, false);
     }
 
 
-    @DeleteMapping(value = {"/courses/{coursePublicKey}/resources"})
+    @DeleteMapping(value = {"/course/{coursePublicKey}/resource"})
     public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         if (coursePublicKey == null || coursePublicKey.isEmpty()) {
             throw new EmptyFieldException("field cannot be empty");
@@ -149,10 +144,10 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @PostMapping(value = {"/courses/{coursePublicKey}/storage/file"})
-    public CourseResourcePojo courseUploadFile(@RequestParam MultipartFile file){
+    @PostMapping(value = {"/courses/{coursePublicKey}/storage/file/"})
+    public CourseResourcePojo courseUploadFile(@PathVariable String coursePublicKey,@RequestParam MultipartFile file){
 
-        return courseUpload(properties.getCourseFilePath(), file);
+        return courseUpload(coursePublicKey,properties.getCourseFilePath(), file);
     }
 
     /**
@@ -172,19 +167,19 @@ public class StorageController {
     }
 
 
-    @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/"})
-    public boolean CourseDeleteFile(@PathVariable String coursePublicKey){
-        try {
+    @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/{resourcePublicKey}"})
+    public boolean CourseDeleteFile(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException{
 
-            CourseResourcePojo pojo = courseResourceService.getByPublicKey(coursePublicKey);
-            if(pojo != null && courseResourceService.delete(pojo.getPublicKey())){
+        CourseResourcePojo pojo = courseResourceService.getByPublicKey(resourcePublicKey);
+        if( courseResourceService.delete(pojo.getPublicKey())){
+            try {
                 storageService.delete(properties.getCourseFilePath(),pojo.getName());
-                return true;
             }
-        } catch (Exception e){
-            e.printStackTrace();
+            catch (Exception e){
+
+            }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -238,7 +233,7 @@ public class StorageController {
 
     /**
      *
-     *  funtions for uploading, save file to given path,
+     *  functions for uploading, save file to given path,
      * before saving, get the extention type, generates unique name, than saves to file system
      * after save, insert to record to database
      *
@@ -247,7 +242,7 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    private CourseResourcePojo courseUpload(String path, MultipartFile file){
+    private CourseResourcePojo courseUpload(String coursePublicKey,String path, MultipartFile file){
         try {
             if (file != null){
 
@@ -262,13 +257,14 @@ public class StorageController {
                 Path f = storageService.load(path, filename);
 
                 if (f != null){
+
                     CourseResourcePojo pojo = new CourseResourcePojo();
                     pojo.setPath(f.toString());
                     pojo.setName(f.getFileName().toString());
                     pojo.setOriginalFileName(file.getOriginalFilename());
                     pojo.setUrl(URL);
                     pojo.setType(extension);
-                    courseResourceService.save(pojo.getCourse().getPublicKey(),pojo);
+                    courseResourceService.save(coursePublicKey,pojo);
                     pojo = courseResourceService.getByName(pojo.getName());
 
 

@@ -5,10 +5,10 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Announcement;
 import com.lms.entities.course.Course;
-import com.lms.pojos.course.AnnouncementPojo;
+import com.lms.pojos.course.CourseAnnouncementPojo;
 import com.lms.repositories.CourseAnnouncementRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseAnnouncementService;
+import com.lms.services.interfaces.course.CourseAnnouncementService;
 import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,8 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
 
 
     @Override
-    public AnnouncementPojo entityToPojo(Announcement entity) {
-        AnnouncementPojo pojo = new AnnouncementPojo();
+    public CourseAnnouncementPojo entityToPojo(Announcement entity) {
+        CourseAnnouncementPojo pojo = new CourseAnnouncementPojo();
 
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setContent(entity.getContent());
@@ -51,7 +51,7 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
     }
 
     @Override
-    public Announcement pojoToEntity(AnnouncementPojo pojo) {
+    public Announcement pojoToEntity(CourseAnnouncementPojo pojo) {
         Announcement entity = new Announcement();
         entity.setPublicKey(pojo.getPublicKey());
         entity.setTitle(pojo.getTitle());
@@ -63,8 +63,8 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
     }
 
     @Override
-    public List<AnnouncementPojo> getAllByPage(String publicKey, int page) throws DataNotFoundException {
-        List<AnnouncementPojo> pojos = new ArrayList<>();
+    public List<CourseAnnouncementPojo> getAllByPage(String publicKey, int page) throws DataNotFoundException {
+        List<CourseAnnouncementPojo> pojos = new ArrayList<>();
 
         Course course = courseService.findByPublicKey(publicKey);
 
@@ -82,7 +82,7 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
     }
 
     @Override
-    public boolean save(String coursePublicKey, AnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException {
+    public boolean save(String coursePublicKey, CourseAnnouncementPojo pojo) throws ExecutionFailException, DataNotFoundException {
         User createdBy = customUserDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(coursePublicKey);
 

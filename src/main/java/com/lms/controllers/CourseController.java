@@ -128,11 +128,16 @@ public class CourseController {
         return courseService.getEnrolledUsers(publicKey);
     }
 
-
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
     @GetMapping(value = {"/course/{publicKey}/observer-users"})
     public List<UserPojo> getEnrolledObserverUsers(@PathVariable String publicKey) throws DataNotFoundException {
         return courseService.getEnrolledObserverUsers(publicKey);
+    }
+
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @GetMapping(value = {"/course/{publicKey}/all-registered-users"})
+    public List<UserPojo> getAllRegisteredUsers(@PathVariable String publicKey) throws DataNotFoundException {
+        return courseService.getAllRegisteredUsers(publicKey);
     }
 
 
@@ -154,6 +159,8 @@ public class CourseController {
     public boolean deleteCourseAssistant(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws DataNotFoundException, ExecutionFailException {
         return courseService.deleteAssistantUser(coursePublicKey, userPublicKey);
     }
+
+
 
 
     private boolean isValidPojo(CoursePojo pojo) throws EmptyFieldException, ExistRecordException {

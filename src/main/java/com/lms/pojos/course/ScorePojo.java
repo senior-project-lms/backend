@@ -14,6 +14,6 @@ public class ScorePojo extends BasePojo{
 
     private UserPojo student;
 
-    private float score;
+    private double score;
 
 }

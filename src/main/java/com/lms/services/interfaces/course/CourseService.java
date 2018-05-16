@@ -59,4 +59,6 @@ public interface CourseService {
 
     List<Course> findAllCoursesOfAutUser();
 
+    List<UserPojo> getAllRegisteredUsers(String publicKey) throws DataNotFoundException;
+
 }

@@ -3,8 +3,8 @@ package com.lms.controllers;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
-import com.lms.pojos.course.AnnouncementPojo;
-import com.lms.services.interfaces.CourseAnnouncementService;
+import com.lms.pojos.course.CourseAnnouncementPojo;
+import com.lms.services.interfaces.course.CourseAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +19,7 @@ public class CourseAnnouncementController {
 
     @PostMapping(value = {"/course/{coursePublicKey}/announcements"})
     public boolean save(@PathVariable String coursePublicKey, @RequestBody AnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+
 
         if (pojo == null) {
             throw new EmptyFieldException("Course Announcement object cannot be empty");
@@ -42,6 +43,7 @@ public class CourseAnnouncementController {
 
     @GetMapping({"/course/{coursePublicKey}/announcements/{page}"})
     public List<AnnouncementPojo> getAnnouncements(@PathVariable String coursePublicKey, @PathVariable int page) throws EmptyFieldException, DataNotFoundException {
+
         if (page < 1) {
             throw new EmptyFieldException("Page number cannot be negative");
         }

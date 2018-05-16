@@ -2,7 +2,7 @@ package com.lms.controllers;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
-import com.lms.pojos.course.EventPojo;
+import com.lms.pojos.course.CourseEventPojo;
 import com.lms.services.interfaces.course.CourseEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +19,7 @@ public class CourseEventController {
 
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).READ_COURSE_CALENDAR)")
     @GetMapping("/course/{coursePublicKey}/calendar")
-    public List<EventPojo> getAllEventsOfCourse(@PathVariable String coursePublicKey) throws DataNotFoundException {
+    public List<CourseEventPojo> getAllEventsOfCourse(@PathVariable String coursePublicKey) throws DataNotFoundException {
         return courseEventService.getAllEventsOfCourse(coursePublicKey);
     }
 
@@ -32,13 +32,13 @@ public class CourseEventController {
 
     @PreAuthorize("@methodSecurity.hasCoursePrivilege(#coursePublicKey, T(com.lms.enums.ECoursePrivilege).SAVE_COURSE_CALENDAR)")
     @PostMapping("/course/{coursePublicKey}/calendar")
-    public boolean saveCourseEvent(@PathVariable String coursePublicKey, @RequestBody EventPojo eventPojo) throws DataNotFoundException, ExecutionFailException {
+    public boolean saveCourseEvent(@PathVariable String coursePublicKey, @RequestBody CourseEventPojo eventPojo) throws DataNotFoundException, ExecutionFailException {
         return courseEventService.save(coursePublicKey, eventPojo);
     }
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_GLOBAL_CALENDAR.CODE)")
     @GetMapping("/course/all/calendar")
-    public List<EventPojo> getAllEventsOfRegisteredCourses() {
+    public List<CourseEventPojo> getAllEventsOfRegisteredCourses() {
         return courseEventService.getAllEventsOfRegisteredCoursesOfAuthUser();
     }
 

@@ -33,14 +33,25 @@ public class GradePojo extends BasePojo{
 
 
     public double getWeightedScore(){
+        if (maxScore != 100){
+            double rate = score / maxScore;
+            return score * rate * (weight / 100);
+        }
         return score * (weight / 100);
     }
 
     public double getWeightedAverage(){
+        if (maxScore != 100){
+            double rate = average / maxScore;
+            return average * rate * (weight / 100);
+        }
+
         return average * (weight / 100);
     }
 
+
     public double getWeighedMaxScore(){
+
         return  maxScore * (weight / 100);
     }
 }

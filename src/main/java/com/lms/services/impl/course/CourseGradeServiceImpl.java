@@ -75,7 +75,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
     public List<GradePojo> getAll(String coursePublicKey) throws DataNotFoundException {
 
         List<Grade> entities = findAll(coursePublicKey);
-
+        Course course = courseService.findByPublicKey(coursePublicKey);
         List<GradePojo> pojos = entities
                 .stream()
                 .map(entity -> {
@@ -85,7 +85,9 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                     double average = entity
                             .getScores()
                             .stream()
+                            .filter(score-> !course.getObserverUsers().contains(score.getStudent()))
                             .mapToDouble(Score::getScore)
+
                             .average()
                             .orElse(Double.NaN);
 
@@ -125,7 +127,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
 
 
         gradePojo.setAverage(overAllAverage);
-        gradePojo.setMaxScore(totalMaxScore);
+        gradePojo.setMaxScore(totalAffect);
         gradePojo.setWeight(totalAffect);
         pojos.add(gradePojo);
 
@@ -169,13 +171,19 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                     GradePojo pojo = entityToPojo(entity);
                     pojo.setScores(null);
 
+
+
                     double average = entity
                             .getScores()
                             .stream()
                             .mapToDouble(Score::getScore)
                             .average()
                             .orElse(Double.NaN);
+
+
                     pojo.setAverage(average);
+
+
 
                     double score = entity.getScores()
                             .stream()
@@ -183,6 +191,7 @@ public class CourseGradeServiceImpl implements CourseGradeService {
                             .mapToDouble(Score::getScore)
                             .average()
                             .orElse(Double.NaN);
+
                     pojo.setScore(score);
 
                     return pojo;
@@ -220,9 +229,12 @@ public class CourseGradeServiceImpl implements CourseGradeService {
 
 
 
+
+
+
         gradePojo.setAverage(overAllAverage);
         gradePojo.setScore(overAll);
-        gradePojo.setMaxScore(totalMaxScore);
+        gradePojo.setMaxScore(totalAffect);
         gradePojo.setWeight(totalAffect);
         pojos.add(gradePojo);
 

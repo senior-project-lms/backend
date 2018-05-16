@@ -3,16 +3,20 @@ package com.lms.services.impl.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
+import com.lms.entities.course.Assignment;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseResource;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.CourseResourceService;
+import com.lms.services.interfaces.UserService;
+import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +24,16 @@ import java.util.stream.Collectors;
 public class CourseResourceServiceImpl implements CourseResourceService {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private CustomUserDetailService customUserDetailService;
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private CourseAssignmentService courseAssignmentService;
 
     @Autowired
     private CourseResourceRepository courseResourceRepository;
@@ -38,14 +48,19 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @return CourseResourcePojo
      */
 
+
     @Override
     public CourseResourcePojo entityToPojo(CourseResource entity) {
-
         CourseResourcePojo pojo = new CourseResourcePojo();
 
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setName(entity.getName());
         pojo.setType(entity.getType());
+        pojo.setUrl(entity.getUrl());
+        pojo.setOriginalFileName(entity.getOriginalFileName());
+        pojo.setCreatedAt(entity.getCreatedAt());
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
+
         return pojo;
 
     }
@@ -56,31 +71,54 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
      * @author emsal aynaci
      * @param pojo
-     * @return SystemResource
+     * @return CourseResource
      */
+
     @Override
     public CourseResource pojoToEntity(CourseResourcePojo pojo) {
-
         CourseResource entity = new CourseResource();
 
         entity.setName(pojo.getName());
         entity.setPath(pojo.getPath());
         entity.setType(pojo.getType());
+        entity.setOriginalFileName(pojo.getOriginalFileName());
+        entity.setUrl(pojo.getUrl());
         entity.setPublicKey(pojo.getPublicKey());
+
         return  entity;
 
     }
 
+    /**
+     * Save entity list to database.
+     * @author emsal aynaci
+     * @param resources
+     * @return boolean
+     */
     @Override
     public boolean saveEntities(List<CourseResource> resources) {
-        return false;
+        resources.stream().map(resource -> {
+            resource.generatePublicKey();
+            return resource;
+        });
+
+        courseResourceRepository.save(resources);
+        return true;
     }
 
-    @Override
-    public boolean save(CourseResourcePojo pojo) throws DataNotFoundException, ExecutionFailException {
 
+    /**
+     * Saves the resource to db,
+     * convert pojo to entity, generates publicKey, set visible,
+     *
+     * @param pojo
+     * @return boolean
+     * @author emsal aynaci
+     */
+    @Override
+    public boolean save(String coursePublicKey, CourseResourcePojo pojo) throws DataNotFoundException, ExecutionFailException {
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
-        Course course = courseService.findByPublicKey(pojo.getCourse().getPublicKey());
+        Course course = courseService.findByPublicKey(coursePublicKey);
         CourseResource entity = pojoToEntity(pojo);
         entity.generatePublicKey();
 
@@ -98,9 +136,38 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
     }
 
+
+    /**
+     * save course resource collections
+     *
+     * @param pojos
+     * @return List<CourseResourcePojo>
+     * @author emsal aynaci
+     */
     @Override
-    public boolean save(List<CourseResourcePojo> pojos) {
-        return false;
+    public boolean save(List<CourseResourcePojo> pojos) throws DataNotFoundException,ExecutionFailException {
+
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+
+        List<CourseResource> entities = new ArrayList<>();
+
+        CourseResource entity;
+        for (CourseResourcePojo pojo : pojos) {
+
+            entity = pojoToEntity(pojo);
+            entity.setCreatedBy(authenticatedUser);
+            entity.generatePublicKey();
+            entities.add(entity);
+        }
+
+        entities = courseResourceRepository.save(entities);
+
+        if (entities == null || entities.size() == 0) {
+            throw new ExecutionFailException("No such a list of course resources is saved");
+        }
+
+        return true;
+
     }
 
     @Override
@@ -115,6 +182,25 @@ public class CourseResourceServiceImpl implements CourseResourceService {
                 .collect(Collectors.toList());
 
         return pojos;
+
+    }
+
+    @Override
+    public boolean setResourceAssignment(String publicKey, Assignment assignment) throws ExecutionFailException, DataNotFoundException {
+        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+
+        if (entity == null){
+            throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
+        }
+
+        entity.setCourseAssignment(assignment);
+        entity = courseResourceRepository.save(entity);
+
+        if (entity != null && entity.getId() == 0){
+            throw new ExecutionFailException("No such a course assignment of course resource is saved");
+        }
+
+        return true;
     }
 
 
@@ -125,6 +211,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @param name
      * @return CourseResourcePojo
      */
+
     @Override
     public CourseResourcePojo getByName(String name) throws DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByName(name);
@@ -156,6 +243,21 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         return this.entityToPojo(entity);
     }
 
+    @Override
+    public boolean publiclyShared(String publicKey, boolean status) throws DataNotFoundException, ExecutionFailException {
+        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+
+        entity.setPublicShared(status);
+
+        entity = courseResourceRepository.save(entity);
+
+        if(entity == null || entity.getId() ==0){
+            throw new ExecutionFailException("No such a course resource is shared");
+        }
+
+        return true;
+    }
+
 
     /**
      * finds the resource by publicKey
@@ -167,20 +269,18 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @param publicKey
      * @return boolean
      */
-
     @Override
     public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
-
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
         if (entity == null){
-            throw new DataNotFoundException(String.format("No such a system resource is found publicKey: %s", publicKey));
+            throw new DataNotFoundException(String.format("No such a course resource is found publicKey: %s", publicKey));
         }
         entity.setVisible(false);
         entity = courseResourceRepository.save(entity);
 
         if (entity == null || entity.getId() == 0){
-            throw new ExecutionFailException(String.format("System resource is not deleted by publicKey: %s", publicKey));
+            throw new ExecutionFailException(String.format("Course resource is not deleted by publicKey: %s", publicKey));
         }
         return true;
 

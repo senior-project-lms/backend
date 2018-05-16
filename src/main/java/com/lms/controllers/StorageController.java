@@ -2,6 +2,8 @@ package com.lms.controllers;
 
 
 import com.lms.customExceptions.DataNotFoundException;
+import com.lms.customExceptions.EmptyFieldException;
+import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,7 +29,9 @@ public class StorageController {
 
     private final String systemAnnouncementServeFileURLPath = "/api/system-announcement/storage/file";
 
-    private final String courseServeFileURLPath = "/api/course/storage/file";
+    private String getCourseServeFileURLPath(String coursePublicKey){
+        return String.format("/api/course/%s/storage/file", coursePublicKey);
+    }
 
 
     @Autowired
@@ -40,9 +45,6 @@ public class StorageController {
 
     @Autowired
     private CourseResourceService courseResourceService;
-
-
-
 
 
 
@@ -111,20 +113,43 @@ public class StorageController {
 
 
 
+    @GetMapping({"/course/{coursePublicKey}/resources"})
+    public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
+
+        return courseResourceService.getCourseResources(coursePublicKey);
+    }
+
+    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/public"})
+    public boolean publiclyShared(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(resourcePublicKey, true);
+    }
+
+    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/private"})
+    public boolean publiclyUnShared(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(resourcePublicKey, false);
+    }
 
 
+    @DeleteMapping(value = {"/course/{coursePublicKey}/resource/{resourcePublicKey}"})
+    public boolean deleteCourseResource(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+        if (coursePublicKey == null || coursePublicKey.isEmpty()) {
+            throw new EmptyFieldException("field cannot be empty");
+        }
+        return courseResourceService.delete(resourcePublicKey);
+
+    }
     /**
      *
      * Upload file that is added the of Course,
      *
      * @param file
      * @return CourseResourcePojo
-     * @author umit.kas
+     * @author emsal aynaci
      */
-    @PostMapping(value = {"/course/storage/file"})
-    public CourseResourcePojo courseUploadFile(@RequestParam MultipartFile file){
+    @PostMapping(value = {"/course/{coursePublicKey}/storage/file"})
+    public CourseResourcePojo courseUploadFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file){
 
-        return courseUpload(properties.getCourseFilePath(), file);
+        return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file);
     }
 
     /**
@@ -135,28 +160,29 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @GetMapping(value = {"/course/storage/file/{filename:.+}"})
+    @GetMapping(value = {"/course/{coursePublicKey}/storage/file/{filename:.+}"})
     @ResponseBody
-    public ResponseEntity<Resource> courseServeFile(@PathVariable String filename){
-        Resource file = storageService.loadAsResource(properties.getCourseFilePath(),filename);
+    public ResponseEntity<Resource> courseServeFile(@PathVariable String coursePublicKey, @PathVariable String filename){
+        Resource file = storageService.loadAsResource(properties.getCourseFilePath(coursePublicKey), filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 
-    @DeleteMapping(value = {"/system-announcement/storage/file/{coursePublicKey}"})
-    public boolean CourseDeleteFile(@PathVariable String coursePublicKey){
-        try {
+    @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/{resourcePublicKey}"})
+    public boolean courseDeleteFile(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException{
 
-            CourseResourcePojo pojo = courseResourceService.getByPublicKey(coursePublicKey);
-            if(pojo != null && courseResourceService.delete(pojo.getPublicKey())){
-                storageService.delete(properties.getCourseFilePath(),pojo.getName());
-                return true;
+        CourseResourcePojo pojo = courseResourceService.getByPublicKey(resourcePublicKey);
+        if( courseResourceService.delete(pojo.getPublicKey())){
+            try {
+                storageService.delete(properties.getCourseFilePath(coursePublicKey), pojo.getName());
             }
-        } catch (Exception e){
-            e.printStackTrace();
+            catch (Exception e){
+                return false;
+
+            }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -210,16 +236,16 @@ public class StorageController {
 
     /**
      *
-     *  funtions for uploading, save file to given path,
+     *  functions for uploading, save file to given path,
      * before saving, get the extention type, generates unique name, than saves to file system
-     * after savege, insert to record to database
+     * after save, insert to record to database
      *
      * @param path
      * @param file
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    private CourseResourcePojo courseUpload(String path, MultipartFile file){
+    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file){
         try {
             if (file != null){
 
@@ -227,20 +253,21 @@ public class StorageController {
 
                 String filename = String.format("%s.%s", UUID.randomUUID().toString(), extension);
 
-                String URL = String.format("%s/%s", courseServeFileURLPath, filename);
+                String URL = String.format("%s/%s", getCourseServeFileURLPath(coursePublicKey), filename);
 
                 storageService.store(path, filename, file);
 
                 Path f = storageService.load(path, filename);
 
                 if (f != null){
+
                     CourseResourcePojo pojo = new CourseResourcePojo();
                     pojo.setPath(f.toString());
                     pojo.setName(f.getFileName().toString());
                     pojo.setOriginalFileName(file.getOriginalFilename());
                     pojo.setUrl(URL);
                     pojo.setType(extension);
-                    courseResourceService.save(pojo);
+                    courseResourceService.save(coursePublicKey,pojo);
                     pojo = courseResourceService.getByName(pojo.getName());
 
 

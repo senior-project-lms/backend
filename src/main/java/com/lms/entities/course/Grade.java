@@ -18,11 +18,17 @@ public class Grade extends BaseEntity {
 
     private String name;
 
-    private float weight;
+    private double maxScore;
+
+    private double weight;
 
     @ManyToOne
     private Course course;
 
     @OneToMany(mappedBy = "grade")
     private List<Score> scores;
+
+
+    private boolean published;
+
 }

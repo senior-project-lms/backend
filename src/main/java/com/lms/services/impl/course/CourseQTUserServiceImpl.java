@@ -85,7 +85,7 @@ public class CourseQTUserServiceImpl implements CourseQTUserService {
         Course course = courseService.findByPublicKey(coursePublicKey);
 
 
-        if (!course.getRegisteredUsers().contains(authUser)) {
+        if (!course.getRegisteredUsers().contains(authUser) && !course.getObserverUsers().contains(authUser)) {
             throw new ExecutionFailException("Authenticated user is not registered to course");
         }
 

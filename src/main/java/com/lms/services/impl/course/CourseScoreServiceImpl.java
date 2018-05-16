@@ -6,7 +6,9 @@ import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.Grade;
 import com.lms.entities.course.Score;
+import com.lms.pojos.SuccessPojo;
 import com.lms.pojos.course.ScorePojo;
+import com.lms.pojos.course.UserScorePojo;
 import com.lms.repositories.CourseScoreRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.UserService;
@@ -15,14 +17,18 @@ import com.lms.services.interfaces.course.CourseScoreService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
 
+import javax.xml.ws.ServiceMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+@Service
 public class CourseScoreServiceImpl implements CourseScoreService {
 
 
@@ -49,7 +55,6 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         pojo.setPublicKey(entity.getPublicKey());
         pojo.setScore(entity.getScore());
         pojo.setStudent(userService.entityToPojo(entity.getStudent()));
-        pojo.setGrade(courseGradeService.entityToPojo(entity.getGrade()));
 
         return pojo;
     }
@@ -65,74 +70,46 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         return entity;
     }
 
-    @Override
-    public boolean save(String coursePublicKey, String gradePublicKey, List<ScorePojo> pojos) throws DataNotFoundException, ExecutionFailException {
+    public SuccessPojo save(String gradePublicKey, UserScorePojo pojo) throws DataNotFoundException, ExecutionFailException {
+
         User authUser = userDetailsService.getAuthenticatedUser();
 
-        Grade grade = courseGradeService.findByPublicKeyAndCoursePublicKey(gradePublicKey, coursePublicKey);
+        User user = userService.findByPublicKey(pojo.getUserPublicKey());
 
-        Map<String, User> userMap =  new HashMap<>();
-
-        List<String> studentPublicKeys = pojos
-                .stream()
-                .map(pojo -> pojo.getStudent().getPublicKey())
-                .collect(Collectors.toList());
+        Grade grade = courseGradeService.findByPublicKey(gradePublicKey);
 
 
-        List<User> users = userService.findAllByPublicKeyIn(studentPublicKeys);
 
-        users
-                .stream()
-                .map(user -> userMap.put(user.getPublicKey(), user));
+        Score entity = null;
+        if (courseScoreRepository.existsByGradeAndStudentAndVisible(grade, user, true)){
+            entity = courseScoreRepository.findByGradeAndStudentAndVisible(grade, user, true);
+            entity.setUpdatedBy(authUser);
+        }
+        else{
+            entity = new Score();
+            entity.generatePublicKey();
 
+            entity.setStudent(user);
+            entity.setGrade(grade);
 
-        List<Score> scores = pojos
-                .stream()
-                .map(pojo -> {
-                    Score score = pojoToEntity(pojo);
-                    score.setGrade(grade);
-                    score.setStudent(userMap.get(pojo.getStudent().getPublicKey()));
-                    score.setCreatedBy(authUser);
-                    return score;
-                })
-                .collect(Collectors.toList());
-
-
-        scores = courseScoreRepository.save(scores);
-
-        if (scores == null || (scores != null && scores.size() == 0)){
-            throw new ExecutionFailException("No such a grade collection is saved");
+            entity.setCreatedBy(authUser);
         }
 
-
-        return true;
-    }
-
-    @Override
-    public boolean updateScore(String scorePublicKey, ScorePojo pojo) throws DataNotFoundException, ExecutionFailException {
-        User authUser = userDetailsService.getAuthenticatedUser();
-
-        User student = userService.findByPublicKey(pojo.getStudent().getPublicKey());
-
-        Score entity = courseScoreRepository.findByPublicKeyAndStudentAndVisible(scorePublicKey, student, true );
-
-        if (entity == null){
-            throw new DataNotFoundException(String.format("No such a score is found by publicKey: %s", scorePublicKey));
-        }
 
         entity.setScore(pojo.getScore());
 
-        entity.setUpdatedBy(authUser);
+
+
 
         entity = courseScoreRepository.save(entity);
 
-        if (entity == null || entity.getId() == 0){
-            throw new ExecutionFailException("No such a grade is updated");
-
+        if (entity == null){
+            throw new ExecutionFailException("No such a score is saved");
         }
 
-        return true;
+        return new SuccessPojo(entity.getPublicKey());
     }
+
 
 
     @Override
@@ -140,7 +117,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
         User authUser = userDetailsService.getAuthenticatedUser();
 
-        List<Grade> grades = courseGradeService.findAllGradesOfCourse(coursePublicKey);
+        List<Grade> grades = courseGradeService.findAll(coursePublicKey);
 
         List<Score> entities = courseScoreRepository.findAllByGradeInAndStudentAndVisible(grades, authUser, true);
 
@@ -167,7 +144,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
     public List<ScorePojo> getCourseScoresOfStudent(String coursePublicKey, String userPublicKey) throws DataNotFoundException {
 
         User user = userService.findByPublicKey(userPublicKey);
-        List<Grade> grades = courseGradeService.findAllGradesOfCourse(coursePublicKey);
+        List<Grade> grades = courseGradeService.findAll(coursePublicKey);
         List<Score> entities = courseScoreRepository.findAllByGradeInAndStudentAndVisible(grades, user, true);
 
         if (entities == null){

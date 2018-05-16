@@ -3,6 +3,7 @@ package com.lms.services.interfaces.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Grade;
+import com.lms.pojos.SuccessPojo;
 import com.lms.pojos.course.GradePojo;
 
 import java.util.List;
@@ -14,20 +15,25 @@ public interface CourseGradeService {
 
     Grade pojoToEntity(GradePojo pojo);
 
-    List<GradePojo> getAllGradesOfCourse(String coursePublicKey) throws DataNotFoundException;
+    List<GradePojo> getAll(String coursePublicKey) throws DataNotFoundException;
 
-    GradePojo getGradeOfCourse(String coursePublicKey, String gradePublicKey) throws DataNotFoundException;
+    List<GradePojo> getAllForAuthStudent(String coursePublicKey) throws DataNotFoundException;
 
-    boolean save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException;
+    GradePojo get(String publicKey) throws DataNotFoundException;
 
-    boolean updateWeight(String coursePublicKey, GradePojo pojo);
+    GradePojo getForView(String publicKey) throws DataNotFoundException;
 
-    boolean updateName(String coursePublicKey, GradePojo pojo);
+    SuccessPojo save(String coursePublicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException;
 
-    boolean delete(String coursePublicKey, String gradePublicKey);
+    SuccessPojo update(String publicKey, GradePojo pojo) throws DataNotFoundException, ExecutionFailException;
 
-    Grade findByPublicKeyAndCoursePublicKey(String publicKey, String coursePublicKey) throws DataNotFoundException;
+    SuccessPojo delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 
-    List<Grade> findAllGradesOfCourse(String coursePublicKey) throws DataNotFoundException;
+    Grade findByPublicKey(String publicKey) throws DataNotFoundException;
+
+    List<Grade> findAll(String coursePublicKey) throws DataNotFoundException;
+
+
+    boolean publish(String publicKey, boolean status) throws DataNotFoundException, ExecutionFailException;
 
 }

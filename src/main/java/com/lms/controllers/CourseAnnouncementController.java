@@ -17,7 +17,7 @@ public class CourseAnnouncementController {
     @Autowired
     private CourseAnnouncementService courseAnnouncementService;
 
-    @PostMapping(value = {"/courses/{coursePublicKey}/announcements"})
+    @PostMapping(value = {"/course/{coursePublicKey}/announcements"})
     public boolean save(@PathVariable String coursePublicKey, @RequestBody AnnouncementPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo == null) {
@@ -31,7 +31,7 @@ public class CourseAnnouncementController {
         }
     }
 
-    @DeleteMapping(value = {"/courses/{coursePublicKey}/announcements"})
+    @DeleteMapping(value = {"/course/{coursePublicKey}/announcements"})
     public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         if (coursePublicKey == null || coursePublicKey.isEmpty()) {
             throw new EmptyFieldException("field cannot be empty");
@@ -40,7 +40,7 @@ public class CourseAnnouncementController {
 
     }
 
-    @GetMapping({"/courses/{coursePublicKey}/announcements/{page}"})
+    @GetMapping({"/course/{coursePublicKey}/announcements/{page}"})
     public List<AnnouncementPojo> getAnnouncements(@PathVariable String coursePublicKey, @PathVariable int page) throws EmptyFieldException, DataNotFoundException {
         if (page < 1) {
             throw new EmptyFieldException("Page number cannot be negative");

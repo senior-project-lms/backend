@@ -12,6 +12,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -62,7 +63,17 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void store(String path, String filename, MultipartFile file) {
 
-        Path p = Paths.get(path);
+        final Path p = Paths.get(path);
+
+
+        if (Files.notExists(p)){
+            try {
+                Files.createFile(Files.createDirectories(p)).toFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         try {
             if (file.isEmpty()) {

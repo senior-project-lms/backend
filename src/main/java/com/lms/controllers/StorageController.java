@@ -29,7 +29,9 @@ public class StorageController {
 
     private final String systemAnnouncementServeFileURLPath = "/api/system-announcement/storage/file";
 
-    private final String courseServeFileURLPath = "/api/course/storage/file";
+    private String getCourseServeFileURLPath(String coursePublicKey){
+        return String.format("/api/course/%s/storage/file", coursePublicKey);
+    }
 
 
     @Autowired
@@ -111,29 +113,29 @@ public class StorageController {
 
 
 
-    @GetMapping({"/course/{coursePublicKey}/resource/{resourcePublicKey"})
+    @GetMapping({"/course/{coursePublicKey}/resources"})
     public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
 
         return courseResourceService.getCourseResources(coursePublicKey);
     }
 
     @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/public"})
-    public boolean publiclyShared(@PathVariable String coursePublicKey, @PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
-        return courseResourceService.publiclyShared(publicKey, true);
+    public boolean publiclyShared(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(resourcePublicKey, true);
     }
 
-    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/notPublic"})
-    public boolean publiclyUnShared(@PathVariable String coursePublicKey,@PathVariable String publicKey) throws ExecutionFailException, DataNotFoundException {
-        return courseResourceService.publiclyShared(publicKey, false);
+    @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/private"})
+    public boolean publiclyUnShared(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
+        return courseResourceService.publiclyShared(resourcePublicKey, false);
     }
 
 
-    @DeleteMapping(value = {"/course/{coursePublicKey}/resource"})
-    public boolean delete(@PathVariable String coursePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+    @DeleteMapping(value = {"/course/{coursePublicKey}/resource/{resourcePublicKey}"})
+    public boolean deleteCourseResource(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
         if (coursePublicKey == null || coursePublicKey.isEmpty()) {
             throw new EmptyFieldException("field cannot be empty");
         }
-        return courseResourceService.delete(coursePublicKey);
+        return courseResourceService.delete(resourcePublicKey);
 
     }
     /**
@@ -144,10 +146,10 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @PostMapping(value = {"/courses/{coursePublicKey}/storage/file/"})
-    public CourseResourcePojo courseUploadFile(@PathVariable String coursePublicKey,@RequestParam MultipartFile file){
+    @PostMapping(value = {"/course/{coursePublicKey}/storage/file"})
+    public CourseResourcePojo courseUploadFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file){
 
-        return courseUpload(coursePublicKey,properties.getCourseFilePath(), file);
+        return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file);
     }
 
     /**
@@ -158,24 +160,25 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @GetMapping(value = {"/course/storage/file/{filename:.+}"})
+    @GetMapping(value = {"/course/{coursePublicKey}/storage/file/{filename:.+}"})
     @ResponseBody
-    public ResponseEntity<Resource> courseServeFile(@PathVariable String filename){
-        Resource file = storageService.loadAsResource(properties.getCourseFilePath(),filename);
+    public ResponseEntity<Resource> courseServeFile(@PathVariable String coursePublicKey, @PathVariable String filename){
+        Resource file = storageService.loadAsResource(properties.getCourseFilePath(coursePublicKey), filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 
     @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/{resourcePublicKey}"})
-    public boolean CourseDeleteFile(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException{
+    public boolean courseDeleteFile(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException{
 
         CourseResourcePojo pojo = courseResourceService.getByPublicKey(resourcePublicKey);
         if( courseResourceService.delete(pojo.getPublicKey())){
             try {
-                storageService.delete(properties.getCourseFilePath(),pojo.getName());
+                storageService.delete(properties.getCourseFilePath(coursePublicKey), pojo.getName());
             }
             catch (Exception e){
+                return false;
 
             }
         }
@@ -242,7 +245,7 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    private CourseResourcePojo courseUpload(String coursePublicKey,String path, MultipartFile file){
+    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file){
         try {
             if (file != null){
 
@@ -250,7 +253,7 @@ public class StorageController {
 
                 String filename = String.format("%s.%s", UUID.randomUUID().toString(), extension);
 
-                String URL = String.format("%s/%s", courseServeFileURLPath, filename);
+                String URL = String.format("%s/%s", getCourseServeFileURLPath(coursePublicKey), filename);
 
                 storageService.store(path, filename, file);
 

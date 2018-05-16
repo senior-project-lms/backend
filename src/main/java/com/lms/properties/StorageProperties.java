@@ -49,8 +49,8 @@ public class StorageProperties {
         this.systemAnnouncementFilePath = systemAnnouncementFilePath;
     }
 
-    public String getCourseFilePath() {
-        return courseFilePath;
+    public String getCourseFilePath(String coursePublicKey) {
+        return String.format("%s/%s", courseFilePath, coursePublicKey);
     }
 
     public void setCourseFilePath(String courseFilePath) {

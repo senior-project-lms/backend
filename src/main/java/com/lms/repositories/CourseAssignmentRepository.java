@@ -10,5 +10,8 @@ public interface CourseAssignmentRepository extends JpaRepository<Assignment,Lon
 
     List<Assignment> findAllByCourseAndVisible(Course course, boolean visible);
 
+    List<Assignment> findAllByCourseAndVisibleAndPublished(Course course, boolean visible, boolean published);
+
+
     Assignment findByPublicKey(String publicKey);
 }

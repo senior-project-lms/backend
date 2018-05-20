@@ -7,7 +7,7 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.pojos.SystemResourcePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
-import com.lms.services.interfaces.CourseResourceService;
+import com.lms.services.interfaces.course.CourseResourceService;
 import com.lms.services.interfaces.StorageService;
 import com.lms.services.interfaces.SystemResourceService;
 import org.apache.commons.io.FilenameUtils;
@@ -146,20 +146,26 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    @PostMapping(value = {"/course/{coursePublicKey}/storage/file"})
-    public CourseResourcePojo courseUploadFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file){
+    @PostMapping(value = {"/course/{coursePublicKey}/storage/resource/file"})
+    public CourseResourcePojo courseUploadResourceFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file){
 
-        return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file);
+        return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file, true);
     }
 
-    /**
-     * Serve file that is added to the Course,
-     * Finds the file by filename, that comes with request
-     *
-     * @param filename
-     * @return CourseResourcePojo
-     * @author emsal aynaci
-     */
+    @PostMapping(value = {"/course/{coursePublicKey}/storage/assignment/file"})
+    public CourseResourcePojo courseUploadAssignmentFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file) {
+
+        return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file, false);
+    }
+
+        /**
+         * Serve file that is added to the Course,
+         * Finds the file by filename, that comes with request
+         *
+         * @param filename
+         * @return CourseResourcePojo
+         * @author emsal aynaci
+         */
     @GetMapping(value = {"/course/{coursePublicKey}/storage/file/{filename:.+}"})
     @ResponseBody
     public ResponseEntity<Resource> courseServeFile(@PathVariable String coursePublicKey, @PathVariable String filename){
@@ -245,7 +251,7 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file){
+    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file, boolean resource){
         try {
             if (file != null){
 
@@ -267,6 +273,7 @@ public class StorageController {
                     pojo.setOriginalFileName(file.getOriginalFilename());
                     pojo.setUrl(URL);
                     pojo.setType(extension);
+                    pojo.setResource(resource);
                     courseResourceService.save(coursePublicKey,pojo);
                     pojo = courseResourceService.getByName(pojo.getName());
 

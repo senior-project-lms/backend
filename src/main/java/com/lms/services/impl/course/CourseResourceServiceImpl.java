@@ -6,17 +6,20 @@ import com.lms.entities.User;
 import com.lms.entities.course.Assignment;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseResource;
+import com.lms.entities.course.StudentAssignment;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.CourseResourceService;
+import com.lms.services.interfaces.course.CourseResourceService;
 import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseService;
+import org.modelmapper.internal.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,6 +87,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         entity.setOriginalFileName(pojo.getOriginalFileName());
         entity.setUrl(pojo.getUrl());
         entity.setPublicKey(pojo.getPublicKey());
+        entity.setResource(pojo.isResource());
 
         return  entity;
 
@@ -178,9 +182,10 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
         List<CourseResourcePojo> pojos = courseResources
                 .stream()
+                .filter(entity -> entity.isResource())
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
-
+        Collections.reverse(pojos);
         return pojos;
 
     }
@@ -203,6 +208,23 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         return true;
     }
 
+    @Override
+    public boolean setResourceStudentAssignment(String publicKey, StudentAssignment assignment) throws ExecutionFailException, DataNotFoundException {
+        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+
+        if (entity == null){
+            throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
+        }
+
+        entity.setStudentAssignment(assignment);
+        entity = courseResourceRepository.save(entity);
+
+        if (entity != null && entity.getId() == 0){
+            throw new ExecutionFailException("No such a course assignment of course resource is saved");
+        }
+
+        return true;
+    }
 
     /**
      * finds the resource by name, if it is not null then converts it to pojo, and returns it.
@@ -283,6 +305,18 @@ public class CourseResourceServiceImpl implements CourseResourceService {
             throw new ExecutionFailException(String.format("Course resource is not deleted by publicKey: %s", publicKey));
         }
         return true;
+    }
+
+
+    @Override
+    public List<CourseResource> findByPublicKeys(List<String> publicKeys) {
+        List<CourseResource> entities = courseResourceRepository.findAllByPublicKeyInAndVisible(publicKeys, true);
+
+        if (entities == null){
+            return new ArrayList<>();
+        }
+
+        return entities;
 
     }
 }

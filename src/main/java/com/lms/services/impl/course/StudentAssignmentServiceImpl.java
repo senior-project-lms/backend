@@ -2,19 +2,25 @@ package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.User;
 import com.lms.entities.course.Assignment;
 import com.lms.entities.course.CourseResource;
 import com.lms.entities.course.StudentAssignment;
+import com.lms.pojos.SuccessPojo;
+import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.pojos.course.StudentAssignmentPojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.repositories.StudentAssignmentRepository;
+import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.UserService;
 import com.lms.services.interfaces.course.CourseAssignmentService;
+import com.lms.services.interfaces.course.CourseResourceService;
 import com.lms.services.interfaces.course.CourseService;
 import com.lms.services.interfaces.course.StudentAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,16 +40,35 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
     private CourseService courseService;
 
     @Autowired
-    private CourseResourceRepository courseResourceRepository;
+    private CourseResourceService resourceService;
 
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
 
     @Override
     public StudentAssignmentPojo entityToPojo(StudentAssignment entity) {
         StudentAssignmentPojo pojo = new StudentAssignmentPojo();
+        pojo.setPublicKey(entity.getPublicKey());
 
         pojo.setContent(entity.getContent());
 
+        pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
+        pojo.setCreatedAt(entity.getCreatedAt());
+
+        List<CourseResourcePojo> resourcePojos = new ArrayList<>();
+        List<String> resourceKeys = new ArrayList<>();
+        if (entity.getCourseResources() != null){
+            for (CourseResource resource : entity.getCourseResources()){
+                if (resource.isVisible()){
+                    resourcePojos.add(resourceService.entityToPojo(resource));
+                    resourceKeys.add(resource.getPublicKey());
+                }
+            }
+        }
+        pojo.setResourceKeys(resourceKeys);
+        pojo.setResources(resourcePojos);
         return pojo;
 
     }
@@ -58,7 +83,7 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
     }
 
     @Override
-    public List<StudentAssignmentPojo> getStudentAssignmentsByAssignmentPublicKey(String assignmentPublicKey) throws DataNotFoundException {
+    public List<StudentAssignmentPojo> getAllStudentAssignments(String assignmentPublicKey) throws DataNotFoundException {
 
         Assignment assignment = courseAssignmentService.findByPublicKey(assignmentPublicKey);
 
@@ -73,6 +98,24 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
     }
 
     @Override
+    public StudentAssignmentPojo getAuthStudentAssignment(String assignmentPublicKey) throws DataNotFoundException {
+        Assignment assignment = courseAssignmentService.findByPublicKey(assignmentPublicKey);
+        User authUser = customUserDetailService.getAuthenticatedUser();
+
+        StudentAssignment entity = studentAssignmentRepository.findByAssignmentAndCreatedBy(assignment, authUser);
+        if (entity == null){
+            StudentAssignmentPojo p = new StudentAssignmentPojo();
+
+            p.setContent("");
+            p.setPublicKey("");
+            p.setResourceKeys(new ArrayList<>());
+            p.setResources(new ArrayList<>());
+            return p;
+        }
+        return entityToPojo(entity);
+    }
+
+    @Override
     public StudentAssignmentPojo getByPublicKey(String publicKey) throws DataNotFoundException {
 
         StudentAssignment entity = studentAssignmentRepository.findByPublicKey(publicKey);
@@ -84,33 +127,69 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
         return this.entityToPojo(entity);
     }
 
-    /**
-     * map the paramater student assignment with course resource
-     * finds the resource by publicKey then adds the student assignment as paramater
-     * then call repository save method to update
 
-     * @author emsal aynaci
-     * @param publicKey
-     * @param studentAssignment
-     * @return boolean
-     */
+
 
     @Override
-    public boolean setResourceStudentAssignment(String publicKey, StudentAssignment studentAssignment) throws ExecutionFailException, DataNotFoundException {
-        CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
+    public SuccessPojo save(String assignmentPublicKey, StudentAssignmentPojo pojo) throws ExecutionFailException, DataNotFoundException {
+        User authUser = customUserDetailService.getAuthenticatedUser();
+        Assignment assignment = courseAssignmentService.findByPublicKey(assignmentPublicKey);
 
-        if (entity == null) {
-            throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
+        StudentAssignment entity = pojoToEntity(pojo);
+
+        entity.generatePublicKey();
+        entity.setCreatedBy(authUser);
+        entity.setAssignment(assignment);
+        entity = studentAssignmentRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new  ExecutionFailException("No such a assignment asnswer is posted");
         }
 
-        entity.setStudentAssignment(studentAssignment);
-        entity = courseResourceRepository.save(entity);
-
-        if (entity != null && entity.getId() == 0) {
-            throw new ExecutionFailException("No such a course assignment of course resource is saved");
+        if (pojo.getResourceKeys() != null){
+            for (String s : pojo.getResourceKeys()){
+                resourceService.setResourceStudentAssignment(s, entity);
+            }
         }
 
-        return true;
+        return new SuccessPojo(entity.getPublicKey());
+    }
+
+    @Override
+    public SuccessPojo update(String publicKey, StudentAssignmentPojo pojo) throws ExecutionFailException, DataNotFoundException {
+
+        User authUser = customUserDetailService.getAuthenticatedUser();
+        StudentAssignment entity = studentAssignmentRepository.findByPublicKey(publicKey);
+
+        entity.setContent(pojo.getContent());
+        entity.setUpdatedBy(authUser);
+
+        entity = studentAssignmentRepository.save(entity);
+
+        if (entity == null || entity.getId() == 0){
+            throw new  ExecutionFailException("No such a assignment asnswer is posted");
+        }
+
+        List<String> notIn = entity.getCourseResources()
+                .stream()
+                .filter(e -> e.isVisible() && !pojo.getResourceKeys().contains(e.getPublicKey()))
+                .map(e -> e.getPublicKey())
+                .collect(Collectors.toList());
+
+
+
+        if (pojo.getResourceKeys() != null){
+
+            for (String s: pojo.getResourceKeys()) {
+                resourceService.setResourceStudentAssignment(s, entity);
+            }
+        }
+
+        for (String s : notIn){
+            resourceService.delete(s);
+        }
+        return new SuccessPojo(entity.getPublicKey());
+
     }
 }
 

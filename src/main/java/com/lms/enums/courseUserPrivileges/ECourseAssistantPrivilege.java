@@ -33,7 +33,6 @@ public enum ECourseAssistantPrivilege {
     READ_ALL_COURSE_ASSIGNMENTS(1110000011),
 
 
-
     // COURSE QT
     SAVE_COURSE_QT(1111111111),
     DELETE_COURSE_QT(1110111010),

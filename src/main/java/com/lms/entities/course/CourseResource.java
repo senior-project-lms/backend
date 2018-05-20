@@ -54,4 +54,6 @@ public class CourseResource extends BaseEntity {
 
     private boolean publicShared;
 
+    private boolean resource;
+
 }

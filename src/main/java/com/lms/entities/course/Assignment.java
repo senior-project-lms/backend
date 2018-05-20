@@ -4,6 +4,7 @@ import com.lms.entities.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,10 +17,15 @@ import java.util.List;
 public class Assignment extends BaseEntity {
 
     private String title;
-
+    
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String originalFileName;
+    private Date dueDate;
+
+    private Date lastDate;
+
+
 
     @ManyToOne
     private Course course;
@@ -30,8 +36,12 @@ public class Assignment extends BaseEntity {
     @OneToMany(mappedBy = "assignment")
     private List<StudentAssignment> studentAssignments;
 
+    private boolean gradable;
+
     @OneToOne
     private Grade grade;
+
+    private boolean published;
 
 
 }

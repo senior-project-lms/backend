@@ -1,10 +1,12 @@
-package com.lms.services.interfaces;
+package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Assignment;
 import com.lms.entities.course.CourseResource;
+import com.lms.entities.course.StudentAssignment;
 import com.lms.pojos.course.CourseResourcePojo;
+import org.modelmapper.internal.util.Lists;
 
 import java.util.List;
 
@@ -23,6 +25,10 @@ public interface CourseResourceService{
     List<CourseResourcePojo> getCourseResources(String publicKey)throws DataNotFoundException;
 
     boolean setResourceAssignment(String publicKey,Assignment assignment) throws ExecutionFailException,DataNotFoundException;
+
+    boolean setResourceStudentAssignment(String publicKey,StudentAssignment assignment) throws ExecutionFailException,DataNotFoundException;
+
+    List<CourseResource> findByPublicKeys(List<String> publicKeys);
 
     CourseResourcePojo getByName(String name) throws DataNotFoundException;
 

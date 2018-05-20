@@ -3,10 +3,8 @@ package com.lms.entities.course;
 import com.lms.entities.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,15 +16,32 @@ import java.util.List;
 @Data
 public class Assignment extends BaseEntity {
 
-    private String name;
+    private String title;
+    
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    private Date dueDate;
+
+    private Date lastDate;
+
+
 
     @ManyToOne
     private Course course;
 
-    @OneToMany
+    @OneToMany(mappedBy = "courseAssignment")
     private List<CourseResource> courseResources;
 
-    private String content;
+    @OneToMany(mappedBy = "assignment")
+    private List<StudentAssignment> studentAssignments;
+
+    private boolean gradable;
+
+    @OneToOne
+    private Grade grade;
+
+    private boolean published;
 
 
 }

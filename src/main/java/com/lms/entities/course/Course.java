@@ -41,19 +41,25 @@ public class Course extends BaseEntity {
     private List<Grade> grades;
 
     @OneToMany(mappedBy = "course")
+    private List<CourseResource> resources;
+
+    @OneToMany(mappedBy = "course")
     private List<Assignment> assignments;
 
     @OneToMany(mappedBy = "course")
     private List<Announcement> announcements;
 
     @OneToMany(mappedBy = "course")
-    private List<QaQuestion> qaQuestions;
+    private List<CourseQA> QAS;
 
     @OneToMany(mappedBy = "course")
-    private List<QuizTest> quizTests;
+    private List<CourseQuizTest> quizTests;
 
     @OneToMany(mappedBy = "course")
     private List<Event> events;
+
+    @OneToMany(mappedBy = "course")
+    private List<CourseQA> qas;
 
     @NotNull
     @ManyToOne

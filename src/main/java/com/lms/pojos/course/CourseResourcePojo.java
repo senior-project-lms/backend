@@ -19,15 +19,23 @@ public class CourseResourcePojo extends BasePojo {
 
     private String type;
 
+    private String originalFileName;
+
+    private String url;
+
     private CoursePojo course;
 
     private ResourcePackagePojo resourcePackage;
 
     private SystemAnnouncementPojo announcement;
 
-    private Date deletedAt;
+    private CourseAssignmentPojo courseAssignment;
 
+    private Date deletedAt;
 
     private UserPojo deletedBy;
 
+    private boolean publicShared;
+
+    private boolean resource;
 }

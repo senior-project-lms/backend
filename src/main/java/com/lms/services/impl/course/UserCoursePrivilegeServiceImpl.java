@@ -251,6 +251,7 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
                 .stream()
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
+
         return pojos;
     }
 
@@ -449,7 +450,7 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
     public List<PrivilegePojo> getAssistantPrivileges(String coursePublicKey, String userPublicKey) throws DataNotFoundException {
 
         User user = userService.findByPublicKey(userPublicKey);
-        Course course = courseService.findByPublicKey(userPublicKey);
+        Course course = courseService.findByPublicKey(coursePublicKey);
 
         UserCoursePrivilege entity = userCoursePrivilegeRepository.findByCourseAndUser(course, user);
 

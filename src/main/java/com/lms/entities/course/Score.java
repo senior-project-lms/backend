@@ -24,7 +24,7 @@ public class Score extends BaseEntity {
     @OneToOne
     private User student;
 
-    private float score;
+    private double score;
 
 
 }

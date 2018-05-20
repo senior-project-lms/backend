@@ -3,8 +3,6 @@ package com.lms.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,18 +14,20 @@ public class StorageProperties {
     @Value("${storage.rootPath}")
     private String rootPath;
 
-    @Value("${storage.systemAnnouncement.image.path}")
-    private String systemAnnouncementImagePath;
 
     @Value("${storage.systemAnnouncement.file.path}")
     private String systemAnnouncementFilePath;
 
 
+    @Value("${storage.course.file.path}")
+    private String courseFilePath;
+
+
     public List<String> getAllPaths(){
         return new ArrayList<>(Arrays.
                 asList(rootPath,
-                        systemAnnouncementImagePath,
-                        systemAnnouncementFilePath));
+                        systemAnnouncementFilePath,
+                        courseFilePath));
     }
 
 
@@ -39,13 +39,7 @@ public class StorageProperties {
         this.rootPath = rootPath;
     }
 
-    public String getSystemAnnouncementImagePath() {
-        return systemAnnouncementImagePath;
-    }
 
-    public void setSystemAnnouncementImagePath(String systemAnnouncementImagePath) {
-        this.systemAnnouncementImagePath = systemAnnouncementImagePath;
-    }
 
     public String getSystemAnnouncementFilePath() {
         return systemAnnouncementFilePath;
@@ -55,7 +49,11 @@ public class StorageProperties {
         this.systemAnnouncementFilePath = systemAnnouncementFilePath;
     }
 
+    public String getCourseFilePath(String coursePublicKey) {
+        return String.format("%s/%s", courseFilePath, coursePublicKey);
+    }
 
-
-
+    public void setCourseFilePath(String courseFilePath) {
+        this.courseFilePath = courseFilePath;
+    }
 }

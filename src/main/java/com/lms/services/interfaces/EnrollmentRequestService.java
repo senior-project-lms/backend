@@ -46,4 +46,6 @@ public interface EnrollmentRequestService {
     boolean updateVisibilityByCourse(Course course, boolean visibility) throws DataNotFoundException;
 
     Map<String, Integer> getRequestCountsOfCourse(String publicKey);
+
+    EnrollmentRequest findByCourseAndUserPublicKeys(String coursePublicKey, String userPublicKeys) throws DataNotFoundException;
 }

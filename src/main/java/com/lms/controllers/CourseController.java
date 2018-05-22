@@ -9,6 +9,7 @@ import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseQTService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -196,5 +197,10 @@ public class CourseController {
         return response;
     }
 
+
+   @PostMapping("/course/{coursePublicKey}/user/{userPublicKey}")
+    public boolean deleteUser(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+        return courseService.deleteStudent(coursePublicKey, userPublicKey);
+   }
 
 }

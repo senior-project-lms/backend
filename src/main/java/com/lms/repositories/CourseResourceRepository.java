@@ -20,4 +20,7 @@ public interface CourseResourceRepository extends JpaRepository<CourseResource, 
     CourseResource findByPublicKey(String publicKey);
 
     List<CourseResource> findAllByPublicKeyInAndVisible(List<String> publicKeys, boolean visible);
+
+    List<CourseResource> findAllByPublicSharedAndResourceAndVisible(boolean publiclyShared, boolean resource, boolean visible);
+
 }

@@ -131,7 +131,7 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
     public int getStudentAssignmentsCountsOfCourse(String publicKey) throws DataNotFoundException {
         User authUser = customUserDetailService.getAuthenticatedUser();
         Course course = courseService.findByPublicKey(publicKey);
-        int studentPendingCount = studentAssignmentRepository.countByCourseAndCreatedByAndVisible(course,authUser,true);
+        int studentPendingCount = studentAssignmentRepository.countByAssignmentInAndCreatedByAndVisible(course.getAssignments(), authUser,true);
          return studentPendingCount;
     }
 

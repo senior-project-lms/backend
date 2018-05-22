@@ -316,4 +316,24 @@ public class CourseQTServiceImpl implements CourseQTService {
         pojo.setAvailable(qtUserService.available(pojo.getPublicKey()));
         return pojo;
     }
+
+
+    @Override
+    public int getCountOfAssignments(String coursePublicKey) throws DataNotFoundException {
+        Course course = courseService.findByPublicKey(coursePublicKey);
+        int count = courseQTRepository.countByCourseAndPublishedAndAndVisible(course, true, true);
+        return count;
+    }
+
+    @Override
+    public int getCountOfNotStartedQT(String coursePublicKey) throws DataNotFoundException {
+        int courseTotal = getCountOfAssignments(coursePublicKey);
+        int student = qtUserService.getCountOfStartedQT(coursePublicKey);
+
+        int result = courseTotal - student;
+        if (result < 0){
+            return  0;
+        }
+        return result;
+    }
 }

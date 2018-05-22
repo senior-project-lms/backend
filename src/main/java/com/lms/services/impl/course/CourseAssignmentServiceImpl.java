@@ -196,7 +196,7 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
         entity.setUpdatedBy(authUser);
 
 
-        if (entity.isGradable() && !pojo.isGradable()){
+        if (entity.isGradable() && !pojo.isGradable() && entity.getGrade() != null){
             courseGradeService.delete(entity.getGrade().getPublicKey());
             entity.setGrade(null);
         }
@@ -205,8 +205,8 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
             Grade grade = courseGradeService.findByPublicKey(successPojo.getPublicKey());
             entity.setGrade(grade);
         }
-        else if(entity.isGradable() && pojo.isGradable() && pojo.getGrade() != null){
-            courseGradeService.update(pojo.getGrade().getPublicKey(), pojo.getGrade());
+        else if(entity.isGradable() && pojo.isGradable() && pojo.getGrade() != null && entity.getGrade() != null){
+            courseGradeService.update(entity.getGrade().getPublicKey(), pojo.getGrade());
         }
         entity.setGradable(pojo.isGradable());
 
@@ -364,6 +364,9 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
             return false;
         }
 
+        if (entity.getLastDate() == null){
+            return false;
+        }
 
         Calendar calendar = Calendar.getInstance();
         long currentTime = calendar.getTimeInMillis();

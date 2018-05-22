@@ -16,5 +16,6 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
 
     StudentAssignment findByPublicKey(String publicKey);
 
-    int countByCourseAndCreatedByAndVisible(Course course, User user, boolean visible);
+    int countByAssignmentInAndCreatedByAndVisible(List<Assignment> assignments, User user, boolean visible);
+
 }

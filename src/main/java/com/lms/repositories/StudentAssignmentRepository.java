@@ -2,6 +2,7 @@ package com.lms.repositories;
 
 import com.lms.entities.User;
 import com.lms.entities.course.Assignment;
+import com.lms.entities.course.Course;
 import com.lms.entities.course.StudentAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,6 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
     StudentAssignment findByAssignmentAndCreatedBy(Assignment assignment, User user);
 
     StudentAssignment findByPublicKey(String publicKey);
+
+    int countByCourseAndCreatedByAndVisible(Course course, User user, boolean visible);
 }

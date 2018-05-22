@@ -5,11 +5,13 @@ import com.lms.customExceptions.*;
 import com.lms.pojos.UserPojo;
 import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.UserCoursePrivilegePojo;
+import com.lms.services.interfaces.course.CourseAssignmentService;
 import com.lms.services.interfaces.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,9 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private CourseAssignmentService courseAssignmentService;
 
 
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).READ_COURSES_BY_VISIBILITY.CODE)")
@@ -178,5 +183,13 @@ public class CourseController {
         }
         return true;
     }
+
+    @GetMapping({"/course/{publicKey}/assignment/counts"})
+    public Map<String,Integer> getAssignmentsCounts(@PathVariable String publicKey) throws DataNotFoundException{
+        Map<String,Integer> response = new HashMap<>();
+        response.put("assignment",courseAssignmentService.getPendingCountsOfAssignments(publicKey));
+        return response;
+    }
+
 
 }

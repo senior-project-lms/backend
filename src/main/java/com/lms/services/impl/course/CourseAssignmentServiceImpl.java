@@ -3,10 +3,7 @@ package com.lms.services.impl.course;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
-import com.lms.entities.course.Assignment;
-import com.lms.entities.course.Course;
-import com.lms.entities.course.CourseResource;
-import com.lms.entities.course.Grade;
+import com.lms.entities.course.*;
 import com.lms.pojos.SuccessPojo;
 import com.lms.pojos.course.CourseAssignmentPojo;
 import com.lms.pojos.course.CourseResourcePojo;
@@ -14,19 +11,12 @@ import com.lms.pojos.course.GradePojo;
 import com.lms.repositories.CourseAssignmentRepository;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
-import com.lms.services.interfaces.course.CourseGradeService;
-import com.lms.services.interfaces.course.CourseResourceService;
 import com.lms.services.interfaces.UserService;
-import com.lms.services.interfaces.course.CourseAssignmentService;
-import com.lms.services.interfaces.course.CourseService;
-import org.modelmapper.internal.util.Lists;
+import com.lms.services.interfaces.course.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +43,9 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
 
     @Autowired
     private CourseGradeService courseGradeService;
+
+    @Autowired
+    private StudentAssignmentService studentAssignmentService;
 
     @Override
     public CourseAssignmentPojo entityToPojo(Assignment entity) {
@@ -246,6 +239,33 @@ public class CourseAssignmentServiceImpl implements CourseAssignmentService {
 
 
         return true;
+    }
+
+    @Override
+    public int getAssignmentsCountsOfCourse(String publicKey) throws DataNotFoundException{
+        Course course = courseService.findByPublicKey(publicKey);
+        int pendingCount =courseAssignmentRepository.countByCourseAndPublishedAndVisible(course, true, true);
+         return pendingCount;
+
+    }
+
+    @Override
+    public int getPendingCountsOfAssignments(String publicKey) throws DataNotFoundException {
+
+        int studentPendingCount = studentAssignmentService.getStudentAssignmentsCountsOfCourse(publicKey);
+
+        int courseAssignmentCount = getAssignmentsCountsOfCourse(publicKey);
+
+        int difference = courseAssignmentCount-studentPendingCount;
+
+        if(difference < 0){
+            return 0;
+        }
+
+        else {
+
+            return difference;
+        }
     }
 
     /**

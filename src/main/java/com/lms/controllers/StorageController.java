@@ -4,7 +4,9 @@ package com.lms.controllers;
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.EmptyFieldException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.entities.course.CourseResource;
 import com.lms.pojos.SystemResourcePojo;
+import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.properties.StorageProperties;
 import com.lms.services.interfaces.course.CourseResourceService;
@@ -19,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.crypto.Data;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +32,7 @@ public class StorageController {
 
     private final String systemAnnouncementServeFileURLPath = "/api/system-announcement/storage/file";
 
-    private String getCourseServeFileURLPath(String coursePublicKey){
+    private String getCourseServeFileURLPath(String coursePublicKey) {
         return String.format("/api/course/%s/storage/file", coursePublicKey);
     }
 
@@ -47,10 +50,7 @@ public class StorageController {
     private CourseResourceService courseResourceService;
 
 
-
-
     /**
-     *
      * Upload file that is added the of System Announcement,
      *
      * @param file
@@ -59,9 +59,9 @@ public class StorageController {
      */
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).UPLOAD_SYSTEM_ANNOUNCEMENT_FILE.CODE)")
     @PostMapping(value = {"/system-announcement/storage/file"})
-    public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file){
+    public SystemResourcePojo systemAnnouncementUploadFile(@RequestParam MultipartFile file) {
 
-        return  upload(properties.getSystemAnnouncementFilePath(), file);
+        return upload(properties.getSystemAnnouncementFilePath(), file);
     }
 
 
@@ -83,9 +83,7 @@ public class StorageController {
     }
 
 
-
     /**
-     *
      * Delete file that is added to the System Announcement,
      * Delete the file by publicKey, that comes with request path
      *
@@ -95,16 +93,16 @@ public class StorageController {
      */
     @PreAuthorize("hasRole(T(com.lms.enums.EPrivilege).DELETE_SYSTEM_ANNOUNCEMENT_FILE.CODE)")
     @DeleteMapping(value = {"/system-announcement/storage/file/{publicKey}"})
-    public boolean systemAnnouncementDeleteFile(@PathVariable String publicKey){
+    public boolean systemAnnouncementDeleteFile(@PathVariable String publicKey) {
         try {
 
             SystemResourcePojo pojo = systemResourceService.getByPublicKey(publicKey);
-            if (pojo != null && systemResourceService.delete(pojo.getPublicKey())){
+            if (pojo != null && systemResourceService.delete(pojo.getPublicKey())) {
                 storageService.delete(properties.getSystemAnnouncementFilePath(), pojo.getName());
                 return true;
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -112,11 +110,15 @@ public class StorageController {
     }
 
 
-
     @GetMapping({"/course/{coursePublicKey}/resources"})
-    public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException,DataNotFoundException{
+    public List<CourseResourcePojo> getCourseResources(@PathVariable String coursePublicKey) throws EmptyFieldException, DataNotFoundException {
 
         return courseResourceService.getCourseResources(coursePublicKey);
+    }
+
+    @GetMapping({"/public-resources"})
+    public List<CoursePojo> getAllPublicResources() throws EmptyFieldException, DataNotFoundException, ExecutionFailException {
+        return courseResourceService.getAllPublicResources();
     }
 
     @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/public"})
@@ -125,7 +127,7 @@ public class StorageController {
     }
 
     @PutMapping(value = {"course/{coursePublicKey}/resource/{resourcePublicKey}/private"})
-    public boolean publiclyUnShared(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
+    public boolean publiclyUnShared(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
         return courseResourceService.publiclyShared(resourcePublicKey, false);
     }
 
@@ -138,8 +140,8 @@ public class StorageController {
         return courseResourceService.delete(resourcePublicKey);
 
     }
+
     /**
-     *
      * Upload file that is added the of Course,
      *
      * @param file
@@ -147,7 +149,7 @@ public class StorageController {
      * @author emsal aynaci
      */
     @PostMapping(value = {"/course/{coursePublicKey}/storage/resource/file"})
-    public CourseResourcePojo courseUploadResourceFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file){
+    public CourseResourcePojo courseUploadResourceFile(@PathVariable String coursePublicKey, @RequestParam MultipartFile file) {
 
         return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file, true);
     }
@@ -158,17 +160,17 @@ public class StorageController {
         return courseUpload(coursePublicKey, properties.getCourseFilePath(coursePublicKey), file, false);
     }
 
-        /**
-         * Serve file that is added to the Course,
-         * Finds the file by filename, that comes with request
-         *
-         * @param filename
-         * @return CourseResourcePojo
-         * @author emsal aynaci
-         */
+    /**
+     * Serve file that is added to the Course,
+     * Finds the file by filename, that comes with request
+     *
+     * @param filename
+     * @return CourseResourcePojo
+     * @author emsal aynaci
+     */
     @GetMapping(value = {"/course/{coursePublicKey}/storage/file/{filename:.+}"})
     @ResponseBody
-    public ResponseEntity<Resource> courseServeFile(@PathVariable String coursePublicKey, @PathVariable String filename){
+    public ResponseEntity<Resource> courseServeFile(@PathVariable String coursePublicKey, @PathVariable String filename) {
         Resource file = storageService.loadAsResource(properties.getCourseFilePath(coursePublicKey), filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
@@ -176,14 +178,13 @@ public class StorageController {
 
 
     @DeleteMapping(value = {"/courses/{coursePublicKey}/storage/file/{resourcePublicKey}"})
-    public boolean courseDeleteFile(@PathVariable String coursePublicKey,@PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException{
+    public boolean courseDeleteFile(@PathVariable String coursePublicKey, @PathVariable String resourcePublicKey) throws ExecutionFailException, DataNotFoundException {
 
         CourseResourcePojo pojo = courseResourceService.getByPublicKey(resourcePublicKey);
-        if( courseResourceService.delete(pojo.getPublicKey())){
+        if (courseResourceService.delete(pojo.getPublicKey())) {
             try {
                 storageService.delete(properties.getCourseFilePath(coursePublicKey), pojo.getName());
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 return false;
 
             }
@@ -192,7 +193,6 @@ public class StorageController {
     }
 
     /**
-     *
      * common funtion for uploading, save file to given path,
      * before saving, get the extention type, generates unique name, than saves to file system
      * after savege, insert to record to database
@@ -202,9 +202,9 @@ public class StorageController {
      * @return SystemResourcePojo
      * @author umit.kas
      */
-    private SystemResourcePojo upload(String path, MultipartFile file){
+    private SystemResourcePojo upload(String path, MultipartFile file) {
         try {
-            if (file != null){
+            if (file != null) {
 
                 String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 
@@ -216,7 +216,7 @@ public class StorageController {
 
                 Path f = storageService.load(path, filename);
 
-                if (f != null){
+                if (f != null) {
                     SystemResourcePojo pojo = new SystemResourcePojo();
                     pojo.setPath(f.toString());
                     pojo.setName(f.getFileName().toString());
@@ -232,7 +232,7 @@ public class StorageController {
             }
 
             return null;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -241,8 +241,7 @@ public class StorageController {
 
 
     /**
-     *
-     *  functions for uploading, save file to given path,
+     * functions for uploading, save file to given path,
      * before saving, get the extention type, generates unique name, than saves to file system
      * after save, insert to record to database
      *
@@ -251,9 +250,9 @@ public class StorageController {
      * @return CourseResourcePojo
      * @author emsal aynaci
      */
-    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file, boolean resource){
+    private CourseResourcePojo courseUpload(String coursePublicKey, String path, MultipartFile file, boolean resource) {
         try {
-            if (file != null){
+            if (file != null) {
 
                 String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 
@@ -265,7 +264,7 @@ public class StorageController {
 
                 Path f = storageService.load(path, filename);
 
-                if (f != null){
+                if (f != null) {
 
                     CourseResourcePojo pojo = new CourseResourcePojo();
                     pojo.setPath(f.toString());
@@ -274,7 +273,7 @@ public class StorageController {
                     pojo.setUrl(URL);
                     pojo.setType(extension);
                     pojo.setResource(resource);
-                    courseResourceService.save(coursePublicKey,pojo);
+                    courseResourceService.save(coursePublicKey, pojo);
                     pojo = courseResourceService.getByName(pojo.getName());
 
 
@@ -283,7 +282,7 @@ public class StorageController {
             }
 
             return null;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

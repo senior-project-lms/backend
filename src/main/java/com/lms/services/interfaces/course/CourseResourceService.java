@@ -5,6 +5,7 @@ import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.course.Assignment;
 import com.lms.entities.course.CourseResource;
 import com.lms.entities.course.StudentAssignment;
+import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import org.modelmapper.internal.util.Lists;
 
@@ -37,5 +38,7 @@ public interface CourseResourceService{
     boolean publiclyShared(String publicKey,boolean status) throws DataNotFoundException,ExecutionFailException;
 
     boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
+
+    List<CoursePojo> getAllPublicResources() throws ExecutionFailException,DataNotFoundException;
 
 }

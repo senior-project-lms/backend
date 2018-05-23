@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public interface CourseResourceRepository extends JpaRepository<CourseResource, Long>{
 
-    List<CourseResource> findAllByCourseAndVisible(Course course, boolean visible);
+    List<CourseResource> findAllByCourseAndVisibleAndResource(Course course, boolean visible, boolean resource);
 
     CourseResource findByName(String name);
 

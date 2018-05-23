@@ -67,7 +67,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         pojo.setOriginalFileName(entity.getOriginalFileName());
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
-
+        pojo.setPublicShared(entity.isPublicShared());
         return pojo;
 
     }
@@ -183,14 +183,15 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     public List<CourseResourcePojo> getCourseResources(String publicKey) throws DataNotFoundException {
         Course course = courseService.findByPublicKey(publicKey);
 
-        List<CourseResource> courseResources = courseResourceRepository.findAllByCourseAndVisible(course, true);
+        List<CourseResource> courseResources = courseResourceRepository.findAllByCourseAndVisibleAndResource(
+                course, true, true);
 
         List<CourseResourcePojo> pojos = courseResources
                 .stream()
-                .filter(entity -> entity.isResource())
+                //.filter(entity -> entity.isResource())
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
-        Collections.reverse(pojos);
+        //Collections.reverse(pojos);
         return pojos;
 
     }

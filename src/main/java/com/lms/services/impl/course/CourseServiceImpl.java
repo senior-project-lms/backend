@@ -595,4 +595,53 @@ public class CourseServiceImpl implements CourseService{
 
         return success;
     }
+
+
+    @Override
+    public List<UserPojo> getNotEnrolledOrObserverUsers(String coursePublicKey) throws DataNotFoundException {
+        Course course = findByPublicKey(coursePublicKey);
+
+        List<User> allUsers = new ArrayList<>();
+        allUsers.addAll(course.getRegisteredUsers());
+        allUsers.addAll(course.getObserverUsers());
+        List<String> usernames = allUsers
+                .stream()
+                .map(e -> e.getUsername())
+                .collect(Collectors.toList());
+        List<User> users = userService.findAllUsernamesNotIn(usernames);
+
+        List<UserPojo> userPojos = users
+                .stream()
+                .map(e -> userService.entityToPojo(e))
+                .collect(Collectors.toList());
+
+        return userPojos;
+    }
+
+
+    @Override
+    public boolean registerUsersByAdmin(String coursePublicKey, List<String> usernames) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
+
+        Course course = findByPublicKey(coursePublicKey);
+        List<User> users = userService.findAllByUsernames(usernames);
+
+        ArrayList<User> userIn = new ArrayList<>();
+        userIn.addAll(course.getRegisteredUsers());
+        userIn.addAll(course.getObserverUsers());
+
+        List<User> saveUsers = new ArrayList<>();
+
+        for (User u : users){
+            if (!userIn.contains(u)){
+                saveUsers.add(u);
+            }
+        }
+
+        this.registerUsersToCourse(course, saveUsers);
+        for(User u: saveUsers){
+            enrollmentRequestService.enrollByAdmin(coursePublicKey, u.getPublicKey());
+        }
+
+        return true;
+    }
 }

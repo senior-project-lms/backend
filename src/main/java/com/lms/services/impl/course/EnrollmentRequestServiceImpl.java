@@ -123,6 +123,58 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         return true;
     }
 
+    @Override
+    public boolean enrollByAdmin(String coursePublicKey, String userPublicKey) throws ExistRecordException, ExecutionFailException, DataNotFoundException {
+        User enrolledBy = userService.findByPublicKey(userPublicKey);
+        Course course = courseService.findByPublicKey(coursePublicKey);
+        User createdBy = userDetailService.getAuthenticatedUser();
+
+        if (enrollmentRequestRepository.existsByUserAndCourseAndVisible(enrolledBy, course, true)) {
+            // throw new ExistRecordException(String.format("Already have a request for course %s", course.getCode()));
+            EnrollmentRequest entity = enrollmentRequestRepository.findByUserAndCourse(enrolledBy, course);
+
+            if (entity.isEnrolled()){
+                throw new ExistRecordException(String.format("Already enrolled to course %s", course.getCode()));
+
+            }
+
+
+            entity.setPending(false);
+            entity.setObserver(false);
+            entity.setCancelled(false);
+            entity.setRejected(false);
+            entity.setEnrolled(true);
+            entity.setUpdatedBy(createdBy);
+
+            entity = enrollmentRequestRepository.save(entity);
+
+            if (entity == null || entity.getId() == 0) {
+                throw new ExecutionFailException("No such a enrollment request is saved");
+
+            }
+        }
+        else {
+
+
+            EnrollmentRequest entity = new EnrollmentRequest();
+            entity.setObserver(false);
+            entity.generatePublicKey();
+            entity.setCourse(course);
+            entity.setUser(enrolledBy);
+            entity.setCreatedBy(createdBy);
+            entity.setPending(false);
+            entity.setEnrolled(true);
+
+            entity = enrollmentRequestRepository.save(entity);
+
+            if (entity == null || entity.getId() == 0) {
+                throw new ExecutionFailException("No such a enrollment request is saved");
+            }
+        }
+
+        return true;
+    }
+
     /**
      * returns enrollment request of specific course
      *

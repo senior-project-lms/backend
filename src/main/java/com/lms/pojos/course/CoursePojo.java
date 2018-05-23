@@ -35,4 +35,6 @@ public class CoursePojo extends BasePojo {
     private boolean hasEnrollmentRequest;
 
 
+    private List<CourseResourcePojo> resources;
+
 }

@@ -64,7 +64,7 @@ public class CourseAssignmentController {
 
 
     @PutMapping(value = {"/course/{coursePublicKey}/assignment/{publicKey}"})
-    public boolean update(@PathVariable String coursePublicKey, @RequestBody CourseAssignmentPojo pojo, @PathVariable String publicKey) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
+    public boolean update(@PathVariable String coursePublicKey, @PathVariable String publicKey,  @RequestBody CourseAssignmentPojo pojo) throws EmptyFieldException, ExecutionFailException, DataNotFoundException {
 
         if (pojo == null) {
             throw new EmptyFieldException("Course Assignment object cannot be empty");

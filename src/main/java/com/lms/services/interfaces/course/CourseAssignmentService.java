@@ -22,13 +22,15 @@ public interface CourseAssignmentService {
 
     CourseAssignmentPojo getForAuthStudent(String publicKey) throws DataNotFoundException;
 
-
     Assignment findByPublicKey(String publicKey) throws DataNotFoundException;
 
     boolean save(String coursePublicKey, CourseAssignmentPojo pojo) throws ExecutionFailException, DataNotFoundException;
 
     boolean update(String publicKey, CourseAssignmentPojo pojo) throws ExecutionFailException, DataNotFoundException;
 
+    int getAssignmentsCountsOfCourse(String publicKey) throws DataNotFoundException;
+
+    int getPendingCountsOfAssignments(String publicKey) throws DataNotFoundException;
 
     boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException;
 

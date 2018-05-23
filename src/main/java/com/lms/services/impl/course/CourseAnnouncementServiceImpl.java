@@ -74,7 +74,7 @@ public class CourseAnnouncementServiceImpl implements CourseAnnouncementService 
             throw new DataNotFoundException("No such a course announcement is found");
         }
 
-        for (Announcement announcement : entities) {
+        for   (Announcement announcement : entities) {
             pojos.add(this.entityToPojo(announcement));
         }
         return pojos;

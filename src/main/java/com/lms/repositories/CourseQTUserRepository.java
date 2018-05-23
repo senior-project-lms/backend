@@ -26,4 +26,6 @@ public interface CourseQTUserRepository extends JpaRepository<CourseQTUser, Long
 
     List<CourseQTUser> findByQtAndVisible(CourseQuizTest qt, boolean visible);
 
+    int countByCourseAndCreatedByAndVisible(Course course, User user, boolean visible);
+
 }

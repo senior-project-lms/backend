@@ -2,6 +2,7 @@ package com.lms.services.interfaces.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.customExceptions.ExistRecordException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.pojos.UserPojo;
@@ -60,5 +61,6 @@ public interface CourseService {
     List<Course> findAllCoursesOfAutUser();
 
     List<UserPojo> getAllRegisteredUsers(String publicKey) throws DataNotFoundException;
+    boolean deleteStudent(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
 }

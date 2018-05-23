@@ -20,6 +20,7 @@ public interface StudentAssignmentService {
 
     StudentAssignmentPojo getByPublicKey(String publicKey) throws DataNotFoundException;
 
+    int getStudentAssignmentsCountsOfCourse(String publicKey) throws DataNotFoundException;
 
     SuccessPojo save(String assignmentPublicKey, StudentAssignmentPojo pojo) throws ExecutionFailException, DataNotFoundException;
 

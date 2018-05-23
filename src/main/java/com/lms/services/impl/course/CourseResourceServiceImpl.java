@@ -7,6 +7,8 @@ import com.lms.entities.course.Assignment;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseResource;
 import com.lms.entities.course.StudentAssignment;
+import com.lms.pojos.course.CourseAnnouncementPojo;
+import com.lms.pojos.course.CoursePojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.repositories.CourseResourceRepository;
 import com.lms.services.custom.CustomUserDetailService;
@@ -41,14 +43,16 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     @Autowired
     private CourseResourceRepository courseResourceRepository;
 
+    @Autowired
+    private CourseResourceService resourceService;
 
     /**
      * Converts CourseResource entity to CourseResourcePojo according to boolean variables,
      * some relational objects are converted to pojo with their own services
      *
-     * @author emsal aynaci
      * @param entity
      * @return CourseResourcePojo
+     * @author emsal aynaci
      */
 
 
@@ -63,7 +67,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         pojo.setOriginalFileName(entity.getOriginalFileName());
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setCreatedBy(userService.entityToPojo(entity.getCreatedBy()));
-
+        pojo.setPublicShared(entity.isPublicShared());
         return pojo;
 
     }
@@ -71,10 +75,10 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
     /**
      * Converts CourseResourcePojo to CourseResource  according to values, if the value is null passes it,
-
-     * @author emsal aynaci
+     *
      * @param pojo
      * @return CourseResource
+     * @author emsal aynaci
      */
 
     @Override
@@ -89,15 +93,16 @@ public class CourseResourceServiceImpl implements CourseResourceService {
         entity.setPublicKey(pojo.getPublicKey());
         entity.setResource(pojo.isResource());
 
-        return  entity;
+        return entity;
 
     }
 
     /**
      * Save entity list to database.
-     * @author emsal aynaci
+     *
      * @param resources
      * @return boolean
+     * @author emsal aynaci
      */
     @Override
     public boolean saveEntities(List<CourseResource> resources) {
@@ -149,7 +154,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * @author emsal aynaci
      */
     @Override
-    public boolean save(List<CourseResourcePojo> pojos) throws DataNotFoundException,ExecutionFailException {
+    public boolean save(List<CourseResourcePojo> pojos) throws DataNotFoundException, ExecutionFailException {
 
         User authenticatedUser = customUserDetailService.getAuthenticatedUser();
 
@@ -178,14 +183,15 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     public List<CourseResourcePojo> getCourseResources(String publicKey) throws DataNotFoundException {
         Course course = courseService.findByPublicKey(publicKey);
 
-        List<CourseResource> courseResources = courseResourceRepository.findAllByCourseAndVisible(course,true);
+        List<CourseResource> courseResources = courseResourceRepository.findAllByCourseAndVisibleAndResource(
+                course, true, true);
 
         List<CourseResourcePojo> pojos = courseResources
                 .stream()
-                .filter(entity -> entity.isResource())
+                //.filter(entity -> entity.isResource())
                 .map(entity -> entityToPojo(entity))
                 .collect(Collectors.toList());
-        Collections.reverse(pojos);
+        //Collections.reverse(pojos);
         return pojos;
 
     }
@@ -194,14 +200,14 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     public boolean setResourceAssignment(String publicKey, Assignment assignment) throws ExecutionFailException, DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
-        if (entity == null){
+        if (entity == null) {
             throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
         }
 
         entity.setCourseAssignment(assignment);
         entity = courseResourceRepository.save(entity);
 
-        if (entity != null && entity.getId() == 0){
+        if (entity != null && entity.getId() == 0) {
             throw new ExecutionFailException("No such a course assignment of course resource is saved");
         }
 
@@ -212,14 +218,14 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     public boolean setResourceStudentAssignment(String publicKey, StudentAssignment assignment) throws ExecutionFailException, DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
-        if (entity == null){
+        if (entity == null) {
             throw new DataNotFoundException(String.format("Course resource is not added to for assignment publicKey: %s", publicKey));
         }
 
         entity.setStudentAssignment(assignment);
         entity = courseResourceRepository.save(entity);
 
-        if (entity != null && entity.getId() == 0){
+        if (entity != null && entity.getId() == 0) {
             throw new ExecutionFailException("No such a course assignment of course resource is saved");
         }
 
@@ -229,16 +235,16 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     /**
      * finds the resource by name, if it is not null then converts it to pojo, and returns it.
      *
-     * @author emsal aynaci
      * @param name
      * @return CourseResourcePojo
+     * @author emsal aynaci
      */
 
     @Override
     public CourseResourcePojo getByName(String name) throws DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByName(name);
 
-        if(entity == null){
+        if (entity == null) {
             throw new DataNotFoundException("Course resource is not found by public key");
         }
 
@@ -249,16 +255,16 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     /**
      * finds the resource by publicKey, if it is not null then converts it to pojo, and returns it.
      *
-     * @author emsal aynaci
      * @param publicKey
      * @return CourseResourcePojo
+     * @author emsal aynaci
      */
 
     @Override
     public CourseResourcePojo getByPublicKey(String publicKey) throws DataNotFoundException {
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
-        if(entity == null){
+        if (entity == null) {
             throw new DataNotFoundException("Course resource is not found by public key");
         }
 
@@ -273,7 +279,7 @@ public class CourseResourceServiceImpl implements CourseResourceService {
 
         entity = courseResourceRepository.save(entity);
 
-        if(entity == null || entity.getId() ==0){
+        if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException("No such a course resource is shared");
         }
 
@@ -287,21 +293,21 @@ public class CourseResourceServiceImpl implements CourseResourceService {
      * set visibility to false
      * and call save method of repository.
      *
-     * @author emsal aynaci
      * @param publicKey
      * @return boolean
+     * @author emsal aynaci
      */
     @Override
     public boolean delete(String publicKey) throws DataNotFoundException, ExecutionFailException {
         CourseResource entity = courseResourceRepository.findByPublicKey(publicKey);
 
-        if (entity == null){
+        if (entity == null) {
             throw new DataNotFoundException(String.format("No such a course resource is found publicKey: %s", publicKey));
         }
         entity.setVisible(false);
         entity = courseResourceRepository.save(entity);
 
-        if (entity == null || entity.getId() == 0){
+        if (entity == null || entity.getId() == 0) {
             throw new ExecutionFailException(String.format("Course resource is not deleted by publicKey: %s", publicKey));
         }
         return true;
@@ -312,11 +318,40 @@ public class CourseResourceServiceImpl implements CourseResourceService {
     public List<CourseResource> findByPublicKeys(List<String> publicKeys) {
         List<CourseResource> entities = courseResourceRepository.findAllByPublicKeyInAndVisible(publicKeys, true);
 
-        if (entities == null){
+        if (entities == null) {
             return new ArrayList<>();
         }
 
         return entities;
 
+    }
+
+    @Override
+    public List<CoursePojo> getAllPublicResources() throws ExecutionFailException, DataNotFoundException {
+        List<CoursePojo> pojos = new ArrayList<>();
+        List<String> publicKeys = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
+        List<CourseResource> publicResources = courseResourceRepository.findAllByPublicSharedAndResourceAndVisible(true,true, true);
+
+        for (CourseResource courseResource : publicResources) {
+            if (!publicKeys.contains(courseResource.getCourse().getPublicKey())) {
+                courses.add(courseResource.getCourse());
+                publicKeys.add(courseResource.getCourse().getPublicKey());
+            }
+        }
+
+        for (Course course : courses){
+            CoursePojo coursePojo = courseService.entityToPojo(course);
+            if (course.getResources() != null){
+                List<CourseResourcePojo> resourcePojos = course.getResources()
+                        .stream()
+                        .filter(e -> e.isVisible() && e.isPublicShared())
+                        .map(e -> resourceService.entityToPojo(e))
+                        .collect(Collectors.toList());
+                coursePojo.setResources(resourcePojos);
+            }
+            pojos.add(coursePojo);
+        }
+        return pojos;
     }
 }

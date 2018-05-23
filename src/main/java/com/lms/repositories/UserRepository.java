@@ -40,6 +40,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllBySurnameContainsAndAuthorityInAndVisible(String surname, List<Authority> authorities, boolean visible);
 
+    List<User> findAllByUsernameNotInAndVisible(List<String> usernames, boolean visible);
 
+    List<User> findAllByUsernameInAndVisible(List<String> usernames, boolean visible);
 }
 

@@ -144,7 +144,7 @@ public class CourseController {
         return courseService.getEnrolledObserverUsers(publicKey);
     }
 
-    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS)")
+    @PreAuthorize("@methodSecurity.hasCoursePrivilege(#publicKey, T(com.lms.enums.ECoursePrivilege).READ_REGISTERED_STUDENTS) or hasRole(T(com.lms.enums.ECoursePrivilege).PAGE_COURSE_USERS.CODE)")
     @GetMapping(value = {"/course/{publicKey}/all-registered-users"})
     public List<UserPojo> getAllRegisteredUsers(@PathVariable String publicKey) throws DataNotFoundException {
         return courseService.getAllRegisteredUsers(publicKey);
@@ -201,6 +201,17 @@ public class CourseController {
    @PostMapping("/course/{coursePublicKey}/user/{userPublicKey}")
     public boolean deleteUser(@PathVariable String coursePublicKey, @PathVariable String userPublicKey) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
         return courseService.deleteStudent(coursePublicKey, userPublicKey);
+   }
+
+
+   @GetMapping("/course/{coursePublicKey}/not-enrolled")
+    public List<UserPojo> getNotEnrolledUsers(@PathVariable String coursePublicKey) throws DataNotFoundException {
+        return courseService.getNotEnrolledOrObserverUsers(coursePublicKey);
+   }
+
+   @PostMapping("/course/{coursePublicKey}/register-by-admin")
+    public boolean registerByUser(@PathVariable String coursePublicKey,  @RequestBody List<String> usernames) throws ExecutionFailException, DataNotFoundException, ExistRecordException {
+        return courseService.registerUsersByAdmin(coursePublicKey, usernames);
    }
 
 }

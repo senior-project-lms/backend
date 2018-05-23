@@ -56,5 +56,9 @@ public interface UserService {
 
 
     boolean updatePassword(User user,String newPassword) throws ExecutionFailException;
+
+    List<User> findAllUsernamesNotIn(List<String> usernames);
+
+    List<User> findAllByUsernames(List<String> usernames);
 }
 

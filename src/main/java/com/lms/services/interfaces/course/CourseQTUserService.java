@@ -34,4 +34,6 @@ public interface CourseQTUserService {
     boolean isTimeUp(String qtPublicKey) throws DataNotFoundException;
 
     List<CourseQTUserPojo> getAllQTUsers(String qtPublicKey) throws DataNotFoundException;
+
+    int getCountOfStartedQT(String coursePublicKey) throws DataNotFoundException;
 }

@@ -2,6 +2,7 @@ package com.lms.services.impl.course;
 
 import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
+import com.lms.customExceptions.ExistRecordException;
 import com.lms.entities.User;
 import com.lms.entities.course.Course;
 import com.lms.entities.course.EnrollmentRequest;
@@ -560,5 +561,38 @@ public class CourseServiceImpl implements CourseService{
         enrolledUsers.addAll(students);
         enrolledUsers.addAll(observes);
         return enrolledUsers;
+    }
+
+
+    @Override
+    public boolean deleteStudent(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException {
+        Course course = findByPublicKey(coursePublicKey);
+        User user = userService.findByPublicKey(userPublicKey);
+
+        boolean success = false;
+
+        if (course.getRegisteredUsers().contains(user)){
+            course.getRegisteredUsers().remove(user);
+            success = true;
+        }
+        else if(course.getObserverUsers().contains(user)){
+            course.getObserverUsers().remove(user);
+            success = true;
+        }
+
+        if (success){
+            course = courseRepository.save(course);
+
+
+            if (course == null || course.getId() == 0) {
+                throw new ExecutionFailException("Setting course visibility is not executed successfully");
+            }
+
+            EnrollmentRequest enrollmentRequest = enrollmentRequestService.findByCourseAndUserPublicKeys(coursePublicKey, userPublicKey);
+
+            return enrollmentRequestService.reject(enrollmentRequest.getPublicKey());
+        }
+
+        return success;
     }
 }

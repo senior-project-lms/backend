@@ -401,11 +401,13 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
             throw new DataNotFoundException("No such a enrollment request is found");
         }
 
-        if (entity.isCancelled() || entity.isEnrolled()) {
+        //if (entity.isCancelled() || entity.isEnrolled()) {
+        if (entity.isCancelled()) {
             throw new ExistRecordException("Already cancelled or approved, cannot reject request");
         }
 
         entity.setRejected(true);
+        entity.setEnrolled(false);
         entity.setUpdatedBy(authUser);
         entity.setPending(false);
         entity.setObserver(false);
@@ -455,5 +457,17 @@ public class EnrollmentRequestServiceImpl implements EnrollmentRequestService {
         int pendingCount = enrollmentRequestRepository.countByCourse_PublicKeyAndPendingAndVisible(publicKey, true, true);
         requests.put("pending", pendingCount);
         return requests;
+    }
+
+    @Override
+    public EnrollmentRequest findByCourseAndUserPublicKeys(String coursePublicKey, String userPublicKeys) throws DataNotFoundException {
+        User user = userService.findByPublicKey(userPublicKeys);
+        Course course = courseService.findByPublicKey(coursePublicKey);
+
+        EnrollmentRequest entity = enrollmentRequestRepository.findByUserAndCourse(user, course);
+        if (entity == null) {
+            throw new DataNotFoundException("No such a enrollment request is found");
+        }
+        return entity;
     }
 }

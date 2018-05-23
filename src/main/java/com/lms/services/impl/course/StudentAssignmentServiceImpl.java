@@ -4,12 +4,12 @@ import com.lms.customExceptions.DataNotFoundException;
 import com.lms.customExceptions.ExecutionFailException;
 import com.lms.entities.User;
 import com.lms.entities.course.Assignment;
+import com.lms.entities.course.Course;
 import com.lms.entities.course.CourseResource;
 import com.lms.entities.course.StudentAssignment;
 import com.lms.pojos.SuccessPojo;
 import com.lms.pojos.course.CourseResourcePojo;
 import com.lms.pojos.course.StudentAssignmentPojo;
-import com.lms.repositories.CourseResourceRepository;
 import com.lms.repositories.StudentAssignmentRepository;
 import com.lms.services.custom.CustomUserDetailService;
 import com.lms.services.interfaces.UserService;
@@ -127,7 +127,13 @@ public class StudentAssignmentServiceImpl implements StudentAssignmentService {
         return this.entityToPojo(entity);
     }
 
-
+    @Override
+    public int getStudentAssignmentsCountsOfCourse(String publicKey) throws DataNotFoundException {
+        User authUser = customUserDetailService.getAuthenticatedUser();
+        Course course = courseService.findByPublicKey(publicKey);
+        int studentPendingCount = studentAssignmentRepository.countByAssignmentInAndCreatedByAndVisible(course.getAssignments(), authUser,true);
+         return studentPendingCount;
+    }
 
 
     @Override

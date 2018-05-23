@@ -37,4 +37,8 @@ public interface CourseQTService {
 
     CourseQuizTest findByPublicKey(String publicKey) throws DataNotFoundException;
 
+    int getCountOfAssignments(String coursePublicKey) throws DataNotFoundException;
+
+    int getCountOfNotStartedQT(String coursePublicKey) throws DataNotFoundException;
+
 }

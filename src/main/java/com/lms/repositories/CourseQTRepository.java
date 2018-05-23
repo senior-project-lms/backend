@@ -19,5 +19,6 @@ public interface CourseQTRepository extends JpaRepository<CourseQuizTest, Long> 
 
     CourseQuizTest findByPublicKeyAndVisible(String publicKey, boolean visible);
 
+    int countByCourseAndPublishedAndAndVisible(Course course, boolean published, boolean visible);
 
 }

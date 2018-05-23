@@ -282,4 +282,13 @@ public class CourseQTUserServiceImpl implements CourseQTUserService {
 
         return pojos;
     }
+
+    @Override
+    public int getCountOfStartedQT(String coursePublicKey) throws DataNotFoundException {
+        Course course = courseService.findByPublicKey(coursePublicKey);
+        User authUser = userDetailService.getAuthenticatedUser();
+        int count = courseQTUserRepository.countByCourseAndCreatedByAndVisible(course, authUser, true);
+
+        return count;
+    }
 }

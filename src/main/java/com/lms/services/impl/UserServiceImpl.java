@@ -649,4 +649,25 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
+
+    @Override
+    public List<User> findAllUsernamesNotIn(List<String> usernames) {
+        List<User> users = userRepository.findAllByUsernameNotInAndVisible(usernames, true);
+        if (users == null){
+            return new ArrayList<>();
+        }
+
+        return users;
+    }
+
+    @Override
+    public List<User> findAllByUsernames(List<String> usernames) {
+        List<User> users = userRepository.findAllByUsernameInAndVisible(usernames, true);
+        if (users == null){
+            return new ArrayList<>();
+        }
+
+        return users;
+    }
 }

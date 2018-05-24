@@ -63,4 +63,9 @@ public interface CourseService {
     List<UserPojo> getAllRegisteredUsers(String publicKey) throws DataNotFoundException;
     boolean deleteStudent(String coursePublicKey, String userPublicKey) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
 
+
+    List<UserPojo> getNotEnrolledOrObserverUsers(String coursePublicKey) throws DataNotFoundException;
+
+    boolean registerUsersByAdmin(String coursePublicKey, List<String> usernames) throws DataNotFoundException, ExecutionFailException, ExistRecordException;
+
 }

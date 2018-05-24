@@ -101,7 +101,13 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
         UserCoursePrivilege entity = null;
 
         for (User user : users){
-            entity = new UserCoursePrivilege();
+            UserCoursePrivilege userCoursePrivilege = userCoursePrivilegeRepository.findByCourseAndUser(course, user);
+            if (userCoursePrivilege == null) {
+                entity = new UserCoursePrivilege();
+            }
+            else{
+                entity = userCoursePrivilege;
+            }
             entity.generatePublicKey();
             entity.setCreatedBy(authUser);
             entity.setUser(user);
@@ -290,6 +296,7 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
     @Override
     public boolean saveObserverUserCoursePrivileges(List<User> users, Course course) throws DataNotFoundException, ExecutionFailException {
 
+
         User authUser = userDetailService.getAuthenticatedUser();
         List<Privilege> privileges = null;
         privileges = privilegeService.findAllByCode(getObserverDefaultPrivilegeCodes());
@@ -300,7 +307,13 @@ public class UserCoursePrivilegeServiceImpl implements UserCoursePrivilegeServic
         UserCoursePrivilege entity = null;
 
         for (User user : users) {
-            entity = new UserCoursePrivilege();
+            UserCoursePrivilege userCoursePrivilege = userCoursePrivilegeRepository.findByCourseAndUser(course, user);
+            if (userCoursePrivilege == null) {
+                entity = new UserCoursePrivilege();
+            }
+            else{
+                entity = userCoursePrivilege;
+            }
             entity.generatePublicKey();
             entity.setCreatedBy(authUser);
             entity.setUser(user);

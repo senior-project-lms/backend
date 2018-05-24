@@ -102,6 +102,9 @@ public class GlobalQAServiceImpl implements GlobalQAService {
         }
         pojo.setCreatedAt(entity.getCreatedAt());
         pojo.setUpdatedAt(entity.getUpdatedAt());
+
+        User authenticatedUser = customUserDetailService.getAuthenticatedUser();
+        pojo.setOwner(entity.getCreatedBy().getPublicKey().equals(authenticatedUser.getPublicKey()));
         return pojo;
     }
 

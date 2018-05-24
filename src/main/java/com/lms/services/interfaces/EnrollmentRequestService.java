@@ -48,4 +48,6 @@ public interface EnrollmentRequestService {
     Map<String, Integer> getRequestCountsOfCourse(String publicKey);
 
     EnrollmentRequest findByCourseAndUserPublicKeys(String coursePublicKey, String userPublicKeys) throws DataNotFoundException;
+
+    boolean enrollByAdmin(String coursePublicKey, String userPublicKey) throws ExistRecordException, ExecutionFailException, DataNotFoundException ;
 }

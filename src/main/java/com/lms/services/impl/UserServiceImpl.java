@@ -215,9 +215,13 @@ public class UserServiceImpl implements UserService {
             hmapAuth.put(authority.getPublicKey(), privileges);
         }
 
-
+        List<String> usernames = new ArrayList<>();
         for (UserPojo pojo : pojos) {
 
+            if (usernames.contains(pojo.getUsername())){
+                continue;
+            }
+            usernames.add(pojo.getUsername());
             User entity = pojoToEntity(pojo);
 
 

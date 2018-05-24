@@ -4,7 +4,9 @@ import com.lms.entities.GlobalQA;
 import com.lms.entities.GlobalQAVote;
 import com.lms.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GlobalQAVoteRepository extends JpaRepository<GlobalQAVote, Long>{
 
     long countByQaAndUpAndVisible(GlobalQA qa, boolean up, boolean visible);

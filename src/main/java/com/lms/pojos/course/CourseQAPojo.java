@@ -24,6 +24,7 @@ public class CourseQAPojo extends BasePojo {
 
     private List<CourseQATagPojo> tags;
 
+    private boolean owner;
     private boolean answer;
 
     private long upCount;

@@ -24,6 +24,8 @@ public class GlobalQAPojo extends BasePojo{
 
     private boolean answer;
 
+    private boolean owner;
+
     private long upCount;
     private long downCount;
     private boolean upped;
